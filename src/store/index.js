@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
-Vue.use(Vuex)
+import slotModule from "@/store/modules/slotModule";
+import jobModule from "@/store/modules/jobModule";
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
@@ -11,5 +12,7 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
+    slots:slotModule,
+    jobs:jobModule
   }
 })

@@ -1,60 +1,70 @@
 <template>
-  <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
+    <v-app id="inspire"
     >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
+        <v-navigation-drawer
+                color="primary darken-4"
+                app
+                left
+                :mini-variant="drawerRight"
+        >
+            <v-toolbar color="primary" dark flat>
+                <v-app-bar-nav-icon @click.stop="drawerRight = !drawerRight"/>
+                <v-toolbar-title>
+                    <h1 class="headline"> ARTAPLAN</h1>
+                </v-toolbar-title>
+            </v-toolbar>
+            <v-list >
+                <v-list-item to="/slots">
+                    <v-list-item-icon><v-icon> mdi-brush</v-icon> </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title>
+                            Slots
+                        </v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+                <v-list-item to="/jobs">
+                    <v-list-item-icon><v-icon small> mdi-briefcase</v-icon></v-list-item-icon>
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+                    <v-list-item-content>
+                        <v-list-item-title>
+                            Jobs
+                        </v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
 
-      <v-spacer></v-spacer>
+            </v-list>
+        </v-navigation-drawer>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
-
-    <v-content>
-      <HelloWorld/>
-    </v-content>
-  </v-app>
+        <v-content>
+            <v-container
+                    class="pa-6 pt-2"
+                    style="max-width: 1500px"
+            >
+                <v-btn
+                        fixed
+                        color="primary"
+                        dark
+                        bottom
+                        right
+                        fab
+                >
+                    <v-icon>mdi-calendar</v-icon>
+                </v-btn>
+                <router-view/>
+            </v-container>
+        </v-content>
+    </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+    export default {
+        name: 'App',
 
-export default {
-  name: 'App',
+        components: {},
 
-  components: {
-    HelloWorld,
-  },
-
-  data: () => ({
-    //
-  }),
-};
+        data: () => ({
+            drawerRight: true
+            //
+        }),
+    };
 </script>
