@@ -1,7 +1,7 @@
 <template>
     <v-app id="inspire"
     >
-        <v-navigation-drawer
+        <!--<v-navigation-drawer
                 color="primary darken-4"
                 app
                 left
@@ -31,10 +31,9 @@
                         </v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-
             </v-list>
-        </v-navigation-drawer>
-
+        </v-navigation-drawer> -->
+        <sidebar :show="drawerRight" />
         <v-content>
             <v-container
                     class="pa-6 pt-2"
@@ -57,10 +56,11 @@
 </template>
 
 <script>
+    import Sidebar from "@/components/Sidebar";
     export default {
         name: 'App',
 
-        components: {},
+        components: {Sidebar},
 
         data: () => ({
             drawerRight: true

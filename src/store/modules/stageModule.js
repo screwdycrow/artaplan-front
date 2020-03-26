@@ -1,8 +1,5 @@
-import slotApi from '../../api/slots'
+import slotApi from "@/api/slots";
 
-function findSlot(id) {
-    return (s) => s.slotId === id;
-}
 export default ({
     namespaced: true,
     state: {
@@ -32,7 +29,7 @@ export default ({
     mutations: {
 
         addSlot(state,stage){
-          state.slot.stages.push([])
+            state.slot.stages.push([])
         },
         setSlot(state, slot) {
             state.slot = Object.assign({}, slot)

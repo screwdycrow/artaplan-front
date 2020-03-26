@@ -25,7 +25,7 @@
                                 <v-card-title> Slot Default Stages
                                 </v-card-title>
                                 <v-list >
-                                    <v-list-item ripple link v-for="stage in slot.stages">
+                                    <v-list-item ripple link v-for="stage in slot.stages" :key="stage.stageId" >
                                         <v-list-item-content >
                                             <v-list-item-title> {{stage.name}}</v-list-item-title>
                                             {{stage.description}}
@@ -35,7 +35,14 @@
                                     </v-list-item>
                                 </v-list>
                                 <v-card-actions>
-                                    <v-btn text color="primary"><v-icon>mdi-plus</v-icon> Add stage </v-btn>
+                                    <v-dialog
+                                            v-model="stageListDialog"
+                                            width="500"
+                                    >
+                                        <template v-slot:activator="{ on }">
+                                            <v-btn v-on="on" text color="primary"><v-icon>mdi-pencil</v-icon> Manage Stages </v-btn>
+                                        </template>
+                                    </v-dialog>
                                 </v-card-actions>
                             </v-card>
 
@@ -74,17 +81,18 @@
 <script>
     import {createNamespacedHelpers} from "vuex";
 
-    const {mapState, mapActions, mapGetters, mapMutations} = createNamespacedHelpers('slots')
+    const {mapState, mapActions, mapGetters, mapMutations} = createNamespacedHelpers('slots');
     export default {
         name: "slotEditor",
         data() {
-            return {}
+            return {stageListDialog: false}
         },
 
         computed: {
             ...mapGetters([
                 "slot",
             ]),
+
             heading() {
                 return this.isNew ? "New Slot" : this.slot.name;
             }

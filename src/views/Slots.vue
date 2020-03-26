@@ -13,8 +13,8 @@
 </template>
 
 <script>
-    import SlotList from "@/components/slots/slotList";
-    import SlotEditor from "@/components/slots/slotEditor";
+    import SlotList from "@/components/Slots/SlotList";
+    import SlotEditor from "@/components/Slots/SlotEditor";
     export default {
         name: "Slots",
         components: {SlotEditor, SlotList}

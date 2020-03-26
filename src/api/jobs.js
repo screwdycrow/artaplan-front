@@ -16,7 +16,7 @@ const Job = {
     stages:[
         {
             isFinal:true,
-            stageId:1,
+            stageId:3,
             description:"Make a few rough concepts for the artwork",
             name: "Flat Colouring",
             estimatedHours: 4,

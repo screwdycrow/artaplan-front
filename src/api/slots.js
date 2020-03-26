@@ -5,28 +5,44 @@ const slot =
         price: 45,
         stages: [
             {
+                stageId:1,
                 description:"Make a few rough concepts for the artwork",
                 name: "Thumbnails",
+                isDefault:true,
                 estimatedHours: 3,
                 avgHours:4.3
             },
             {
+                stageId:2,
                 description:"Make a few rough concepts for the artwork",
                 name: "Flat Colouring",
+                isDefault:true,
                 estimatedHours: 3,
                 avgHours:3.2
             },
             {
+                stageId:3,
                 description:"Make a few rough concepts for the artwork",
                 name: "Half Render",
+                isDefault:true,
                 estimatedHours: 3,
                 avgHours:5
             },
             {
+                stageId:4,
                 description:"Make a few rough concepts for the artwork",
                 name: "Full Render",
+                isDefault:true,
                 estimatedHours: 3,
                 avgHours: 4
+            },
+            {
+                stageId:5,
+                description:"Make a few rough concepts for the artwork",
+                name: "Deliver",
+                isDefault:false,
+                estimatedHours: 1,
+                avgHours:3
             },
         ],
         commissions: [],
