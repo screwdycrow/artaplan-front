@@ -1,5 +1,7 @@
 const Job = {
+    token:"asw23ierepw24",
     status:"completed",
+    tags:["hey","hey2"],
     name: "Wisnlow Hunter Commission ",
     jobId: 1,
     price: 45,
@@ -11,7 +13,6 @@ const Job = {
         "https://www.pinterest.com/pinterest/official-news/"
     ],
     deliverables:[
-
     ],
     stages:[
         {

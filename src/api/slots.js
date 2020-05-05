@@ -5,6 +5,7 @@ const slot =
         price: 45,
         stages: [
             {
+                insertedAt:"12/3/2020",
                 stageId:1,
                 description:"Make a few rough concepts for the artwork",
                 name: "Thumbnails",
@@ -13,6 +14,7 @@ const slot =
                 avgHours:4.3
             },
             {
+                insertedAt:"12/3/2020",
                 stageId:2,
                 description:"Make a few rough concepts for the artwork",
                 name: "Flat Colouring",
@@ -21,6 +23,7 @@ const slot =
                 avgHours:3.2
             },
             {
+                insertedAt:"12/3/2020",
                 stageId:3,
                 description:"Make a few rough concepts for the artwork",
                 name: "Half Render",
@@ -29,6 +32,7 @@ const slot =
                 avgHours:5
             },
             {
+                insertedAt:"12/3/2020",
                 stageId:4,
                 description:"Make a few rough concepts for the artwork",
                 name: "Full Render",
@@ -37,6 +41,7 @@ const slot =
                 avgHours: 4
             },
             {
+                insertedAt:"12/3/2020",
                 stageId:5,
                 description:"Make a few rough concepts for the artwork",
                 name: "Deliver",
@@ -54,15 +59,25 @@ const slot =
 const slots = [
     {
         slotId: 1,
-        name: "Character Design"
+        name: "Character Design",
+        description: "It's all about character design to be honest",
+        jobCount:1
     },
     {
         slotId: 2,
-        name: "Character Design 2"
+        name: "Character Design 2",
+        description: "It's all about character design to be honest but with a twist :P ",
+        jobCount:0
     },
 ];
 
 export default {
+    insertStageToSlot(stage){
+      return Promise.resolve(stage)
+    },
+    toggleStageDefault(stage){
+        return Promise.resolve(stage);
+    },
     getSlots() {
         return Promise.resolve(slots);
     },

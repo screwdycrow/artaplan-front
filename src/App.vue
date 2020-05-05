@@ -1,43 +1,50 @@
-<template>
-    <v-app id="inspire"
-    >
-        <!--<v-navigation-drawer
-                color="primary darken-4"
-                app
-                left
-                :mini-variant="drawerRight"
-        >
-            <v-toolbar color="primary" dark flat>
-                <v-app-bar-nav-icon @click.stop="drawerRight = !drawerRight"/>
-                <v-toolbar-title>
-                    <h1 class="headline"> ARTAPLAN</h1>
-                </v-toolbar-title>
-            </v-toolbar>
-            <v-list >
-                <v-list-item to="/slots">
-                    <v-list-item-icon><v-icon> mdi-brush</v-icon> </v-list-item-icon>
-                    <v-list-item-content>
-                        <v-list-item-title>
-                            Slots
-                        </v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-list-item to="/jobs">
-                    <v-list-item-icon><v-icon small> mdi-briefcase</v-icon></v-list-item-icon>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+    <v-app id="inspire">
+        <sidebar :show="drawerRight" :opened="opened"/>
+        <v-app-bar
+                class="hidden-md-and-up"
+                 color="background"
+                collapse-on-scroll
+                flat app
 
-                    <v-list-item-content>
-                        <v-list-item-title>
-                            Jobs
-                        </v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-list>
-        </v-navigation-drawer> -->
-        <sidebar :show="drawerRight" />
-        <v-content>
+        >
+            <v-container style="max-width: 1600px" class="d-flex align-center">
+                <v-app-bar-nav-icon @click.stop="opened = !opened"/>
+                <v-toolbar-title>
+                    <strong class="heading hidden-md-and-up font-weight-black">
+                        <portal-target name="toolbar-title"/>
+                    </strong>
+                </v-toolbar-title>
+                <v-toolbar-items>
+                    <portal-target name="toolbar-items"/>
+                </v-toolbar-items>
+                <v-spacer/>
+            </v-container>
+        </v-app-bar>
+        <v-app-bar
+                class="hidden-sm-and-down"
+                   prominent color="background"
+                   collapse-on-scroll
+                   flat app
+
+        >
+            <v-container style="max-width: 1600px" class="d-flex align-center">
+                <v-toolbar-title>
+                    <h1 class= " font-weight-black">
+                        <portal-target name="toolbar-title"/>
+                    </h1>
+                </v-toolbar-title>
+                <v-toolbar-items>
+                    <portal-target name="toolbar-items"/>
+                </v-toolbar-items>
+                <v-spacer/>
+                <portal-target name="toolbar-actions"/>
+            </v-container>
+        </v-app-bar>
+        <v-content class="background">
             <v-container
-                    class="pa-6 pt-2"
-                    style="max-width: 1500px"
+                    class="pt-2 "
+                    style="max-width: 1600px"
             >
                 <v-btn
                         fixed
@@ -57,14 +64,22 @@
 
 <script>
     import Sidebar from "@/components/Sidebar";
+
     export default {
         name: 'App',
 
         components: {Sidebar},
 
         data: () => ({
-            drawerRight: true
+            drawerRight: true,
+            opened: true,
             //
         }),
     };
 </script>
+
+<style scoped>
+    .topbar .v-toolbar__content {
+        max-width: 1700px !important;
+    }
+</style>

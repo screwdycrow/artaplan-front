@@ -1,22 +1,26 @@
 <template>
-    <v-card color="">
-        <v-toolbar  flat>
+    <v-card  color="transparent" flat class="fill-height">
+        <v-toolbar flat color="transparent">
             <v-toolbar-title>
-              <h3 class="headline">  Your slots</h3>
+              <strong class="text--primary"> Your Templates </strong>
             </v-toolbar-title>
+            <v-toolbar-items>
+                <v-menu></v-menu>
+            </v-toolbar-items>
         </v-toolbar>
+
         <v-list color="transparent">
-            <v-list-item active-class="active" @click="active=slot.slotId" v-model="active===slot.slotId"
-                         v-for="slot in slots" :key="slot.slotId">
-                <v-list-item-title @click="editSlot"> {{slot.name}}</v-list-item-title>
+            <v-list-item  v-model="activeSlotId===slot.slotId"
+                         v-for="slot in slots"
+                          :key="slot.slotId"
+                          @click="editSlot(slot)"
+            >
+                <v-list-item-title > {{slot.name}}</v-list-item-title>
                 <v-list-item-icon>
-                    <v-icon v-if="active===slot.slotId">mdi-chevron-right</v-icon>
+                    <v-icon v-if="activeSlotId===slot.slotId">mdi-chevron-right</v-icon>
                 </v-list-item-icon>
             </v-list-item>
         </v-list>
-        <v-card-actions >
-            <v-btn color="primary" rounded text large> <v-icon> mdi-plus</v-icon> New slot</v-btn>
-        </v-card-actions>
     </v-card>
 </template>
 <script>
@@ -26,11 +30,14 @@
     export default {
         name: "slotList",
         data: () => ({
-            active: 1
+            sorters:{
+
+            }
         }),
         computed: {
             ...mapGetters([
-                "slots"
+                "slots",
+                "activeSlotId"
             ])
         },
         created() {
@@ -38,6 +45,7 @@
         },
         methods: {
             editSlot(slot) {
+                this.setActiveSlot(slot);
                 this.$emit("slotClicked", slot.slotId);
             },
             ...mapActions([
@@ -46,6 +54,7 @@
             ...mapMutations([
                 "pushSlotToList",
                 "removeSlotFromList",
+                "setActiveSlot"
 
             ])
         }
@@ -55,7 +64,4 @@
 </script>
 
 <style scoped>
-    .active {
-
-    }
 </style>

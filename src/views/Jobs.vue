@@ -1,6 +1,13 @@
 <template>
     <div>
-        <v-toolbar extended color="transparent" flat> <h1>Manage Jobs</h1> </v-toolbar>
+        <portal to="toolbar-title">
+            Jobs
+        </portal>
+        <portal to="toolbar-items">
+        </portal>
+        <portal to="toolbar-actions">
+            <v-btn color="primary"  > <v-icon> mdi-plus</v-icon> New</v-btn>
+        </portal>
         <v-row>
             <v-col sm="12" lg="3">
                 <job-list/>
