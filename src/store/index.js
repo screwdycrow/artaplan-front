@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import slotModule from "@/store/modules/slotModule";
 import jobModule from "@/store/modules/jobModule";
 import stageModule from "./modules/stageModule"
+import scheduleModule from "@/store/modules/scheduleModule";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -13,6 +14,7 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
+    schedule:scheduleModule,
     slots:slotModule,
     jobs:jobModule,
     stages:stageModule,

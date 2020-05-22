@@ -1,14 +1,35 @@
 const schedule= [
     {
-        type:"stage",
-        stageId:3,
+        scheduleEntryId: 1,
         jobId:1,
-        jobName:"Star Wars Chararacter",
-        JobCustomer:"Mitsos Parlapipis",
-        description:"Make a few rough concepts for the artwork",
-        name: "Flat Colouring",
-        hours:2,
-        remainingHours:2,
-        jobHours:5,
+        jobStageId: 2,
+        scheduledAt: "2020-05-21",
+        isDeadline: false,
+        done: false,
+        hours: 1,
     },
-]
+    {
+        scheduleEntryId: 3,
+        jobId:2,
+        jobStageId: 2,
+        scheduledAt: "2020-05-21",
+        isDeadline: false,
+        done: false,
+        hours: 1,
+    },
+    {
+        scheduleEntryId: 2,
+        jobId:2,
+        jobStageId: 2,
+        scheduledAt: "2020-05-31",
+        isDeadline: false,
+        done: false,
+        hours: 1,
+    },
+];
+
+export  default {
+    getSchedule(){
+        return Promise.resolve(schedule)
+    }
+}

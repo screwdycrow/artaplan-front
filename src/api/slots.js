@@ -35,7 +35,7 @@ const slot =
                 insertedAt:"12/3/2020",
                 stageId:4,
                 description:"Make a few rough concepts for the artwork",
-                name: "Full Render",
+                name: "Full Render",    
                 isDefault:true,
                 estimatedHours: 3,
                 avgHours: 4

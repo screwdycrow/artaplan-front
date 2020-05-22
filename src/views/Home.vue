@@ -4,9 +4,9 @@
         <portal to="toolbar-actions">
         </portal>
 
-        <v-row >
-            <v-col sm="12" lg="6" class="mb-5">
-                <v-card color="transparent">
+        <v-row>
+            <v-col sm="12" lg="3" class="mb-5">
+                <v-card color="transparent" v-if="ongoingJobs">
                     <v-toolbar flat color="transparent">
                         <v-toolbar-title>
                             <strong class="text--primary"> Today's schedule</strong>
@@ -18,17 +18,15 @@
                     </v-toolbar>
 
                     <v-list two-line>
-                        <stage-item/>
-                        <stage-item/>
-                        <stage-item/>
+                        <schedule-entry-item v-for="entry in scheduleToday"  :item="entry" />
                     </v-list>
                 </v-card>
             </v-col>
-            <v-col sm="12" lg="6">
+            <v-col sm="12" lg="9">
                 <v-card color="transparent">
                     <v-toolbar flat color="transparent">
                         <v-toolbar-title>
-                            <strong class="text--primary"> Next Stage Deadlines</strong>
+                            <strong class="text--primary"> Workload </strong>
                         </v-toolbar-title>
                         <v-spacer/>
                         <v-toolbar-items>
@@ -36,66 +34,30 @@
                     </v-toolbar>
 
                     <v-list two-line>
-                        <stage-item/>
-                        <stage-item/>
-                        <stage-item/>
+                        <job-stage-item/>
+                        <job-stage-item/>
+                        <job-stage-item/>
                     </v-list>
                 </v-card>
             </v-col>
         </v-row>
         <v-toolbar flat color="transparent">
             <v-toolbar-title>
-                <strong class="text--primary"> Ongoing jobs (5) </strong>
+                <strong class="text--primary"> Ongoing Jobs ({{ongoingJobs.length}}) </strong>
             </v-toolbar-title>
             <v-toolbar-items>
             </v-toolbar-items>
             <v-spacer/>
-
         </v-toolbar>
-        <v-row dense="">
-            <v-card width="240" class="mb-3 mr-3" >
-                <v-list dense class="text-center">
-                    <v-list-item>
+        <v-row>
+            <v-col lg="3" v-for="job in ongoingJobs">
+                <v-card :color="job.color" height="100%">
+                    <v-expansion-panels mandatory value="1" style="background:none;">
+                        <job-expandable :job="job"/>
+                    </v-expansion-panels>
+                </v-card>
+            </v-col>
 
-                        <v-list-item-content>
-                            <v-list-item-title>
-                                <strong> Expected Income:</strong>
-                            </v-list-item-title>
-                            <v-list-subtitle>
-                                250$
-                            </v-list-subtitle>
-                        </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item>
-                        <v-list-item-content>
-                            <v-list-item-title>
-                                <strong> Last Deadline:</strong>
-                            </v-list-item-title>
-                            <v-list-subtitle>
-                                29/4/2020
-                            </v-list-subtitle>
-                        </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item>
-                        <v-list-item-content>
-                            <v-list-item-title>
-                                <strong> Total Hours :</strong>
-                            </v-list-item-title>
-                            <v-list-subtitle>
-                                12/20
-                            </v-list-subtitle>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list>
-                <v-card-actions class="justify-center ">
-                    <v-btn outlined color="primary"> New Job</v-btn>
-                </v-card-actions>
-            </v-card>
-            <job-card/>
-            <job-card/>
-            <job-card/>
-            <job-card/>
-            <job-card/>
         </v-row>
 
 
@@ -113,14 +75,50 @@
     // @ is an alias to /src
     import HelloWorld from '@/components/HelloWorld.vue'
     import JobCard from "../components/Jobs/JobCard"
-    import StageItem from "../components/Stages/StageItem"
+    import ScheduleItem from "../components/Schedule/ScheduleEntryItem"
+    import ScheduleEntry from "@/classes/ScheduleEntry";
+    import {mapActions, mapGetters} from "vuex";
+    import ScheduleEntryItem from "@/components/Schedule/ScheduleEntryItem";
+    import JobPreviewList from "@/components/Jobs/JobPreviewList";
+    import JobExpandable from "@/components/Jobs/JobExpandable";
 
     export default {
         name: 'Home',
+        data: () => ({}),
         components: {
-            StageItem,
+            JobExpandable,
+            JobPreviewList,
+            ScheduleEntryItem,
+            ScheduleItem,
             JobCard,
             HelloWorld
+        },
+        computed: {
+            ...mapGetters('schedule', [
+                'scheduleToday'
+            ]),
+            ...mapGetters('jobs', [
+                'ongoingJobs'
+            ])
+        },
+        created() {
+            this.getOngoingJobs().then(r => {
+                this.getSchedule()
+            });
+        },
+        methods: {
+            ...mapActions(
+                'schedule',
+                [
+                    'getSchedule'
+                ]
+            ),
+            ...mapActions(
+                'jobs',
+                [
+                    "getOngoingJobs"
+                ]
+            ),
         }
     }
 </script>

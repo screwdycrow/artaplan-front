@@ -1,23 +1,31 @@
 import jobApi from '../../api/jobs'
+import Job from "@/classes/Job";
 
 function findJob(id) {
     return (s) => s.jobId === id;
 }
+
 export default ({
     namespaced: true,
     state: {
         showJobEditor: false,
-        jobs: [],
+        pastJobs: [],
+        ongoingJobs: [],
+        ongoingJobMap: {},
         job: {},
-        defaultJob: {
-        }
+        defaultJob: {}
     },
     actions: {
-        getAllJobs({commit}) {
-            jobApi.getJobs().then(jobs => {
-                commit("setJobs", jobs)
+        getOngoingJobs({commit}) {
+            return jobApi.getJobs("ongoing").then(jobs => {
+                commit("setOngoingJobs", jobs);
+                return Promise.resolve(jobs)
             })
         },
+        getPastJobs({commit}){
+          commit("setPastJobs",jobs)
+        },
+
         getJob({commit}, id) {
             jobApi.getJob(id).then(job => commit('setJob', job))
         }
@@ -29,27 +37,54 @@ export default ({
         toggleEditor(state) {
             state.showJobEditor = !state.showJobEditor;
         },
-        setJobs(state, jobs) {
-            state.jobs = jobs
+        setPastJobs(state, jobs) {
+            state.pastJobs = [];
+            jobs.forEach(j => {
+                let job = new Job(j);
+                state.pastJobs.push(job);
+            })
+        },
+        setOngoingJobs(state, jobs) {
+            state.ongoingJobs = [];
+            state.ongoingJobMap = {};
+            jobs.forEach(j => {
+                let job = new Job(j);
+                state.ongoingJobs.push(job);
+                state.ongoingJobMap[job.jobId] = job;
+            })
         },
         pushJobToList(state, job) {
-            state.jobs.push({}, Object.assign(job))
+            if (job.status !== Job.status.ONGOING) {
+                state.pastJobs.push(job)
+            } else {
+                state.ongoingJobs.push(job)
+            }
         },
+
         updateJobInList({state}, job) {
-            const index = state.jobs.findIndex(findJob(job.jobId));
+            const index = state.pastJobs.findIndex(findJob(job.jobId));
             if (index !== -1) Vue.set(state.jobs, index, job)
         },
         removeJobFromList({state}, job) {
-            const index = state.jobs.findIndex(findJob(job.jobId));
-            if (index !== -1) {
-                state.jobs.splice(index, 1)
+            if (job.status !== Job.status.ONGOING) {
+                const index = state.pastJobs.findIndex(findJob(job.jobId));
+                if (index !== -1) {
+                    state.pastJobs.splice(index, 1)
+                }
+            } else {
+                const index = state.ongoingJobs.findIndex(findJob(job.jobId));
+                if (index !== -1) {
+                    state.ongoingJobs.splice(index, 1)
+                }
             }
+
         }
 
     },
     getters: {
-        jobs: (s) => s.jobs,
-        job: (s) => Object.assign(s.job),
+        pastJobs: (s) => s.pastJobs,
+        ongoingJobs: (s) => s.ongoingJobs,
         showJobEditor: (s) => s.showJobEditor,
+        getJobById: (s) => (id) => s.ongoingJobMap[id]
     },
 });

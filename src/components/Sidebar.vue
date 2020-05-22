@@ -40,6 +40,15 @@
                     </v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
+            <v-list-item to="/schedule">
+                <v-list-item-icon><v-icon small> mdi-calendar</v-icon></v-list-item-icon>
+
+                <v-list-item-content>
+                    <v-list-item-title>
+                        Schedule
+                    </v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
         </v-list>
     </v-navigation-drawer>
 </template>

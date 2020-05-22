@@ -23,7 +23,7 @@
         </v-app-bar>
         <v-app-bar
                 class="hidden-sm-and-down"
-                   prominent color="background"
+                    color="background"
                    collapse-on-scroll
                    flat app
 
