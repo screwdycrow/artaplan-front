@@ -17,7 +17,7 @@ const Job = {
 const jobs = [
     {
         jobId: 1,
-        status: "ongoing",
+        status: "started",
         color: "#1b4aad",
         image: "https://cdnb.artstation.com/p/assets/images/images/026/484/381/large/dimitris-tzilivakis-fina4.jpg",
         toStartAt: "2020-05-11",
@@ -90,7 +90,7 @@ const jobs = [
     },
     {
         jobId: 2,
-        status: "ongoing",
+        status: "started",
         color: "#cd6d1c",
         image: "https://cdnb.artstation.com/p/assets/images/images/026/484/381/large/dimitris-tzilivakis-fina4.jpg",
         toStartAt: "2020-05-11",
@@ -159,7 +159,7 @@ const jobs = [
     },
     {
         jobId: 3,
-        status: "ongoing",
+        status: "started",
         color: "#cb2c24",
         image: "https://cdnb.artstation.com/p/assets/images/images/026/484/381/large/dimitris-tzilivakis-fina4.jpg",
         toStartAt: "2020-05-11",

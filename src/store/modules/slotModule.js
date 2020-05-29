@@ -1,5 +1,6 @@
 import slotApi from '../../api/slots'
 import Vue from 'vue'
+import Slot from "@/classes/Slot";
 
 function findSlot(id) {
     return (s) => s.slotId === id;
@@ -33,9 +34,10 @@ export default ({
             })
         },
         getAllSlots({commit}) {
-            slotApi.getSlots().then(slots => {
-                commit("setSlots", slots)
-                if(slots.length>0)commit("setActiveSlot",slots[0])
+           return  slotApi.getSlots().then(slots => {
+                commit("setSlots", slots);
+                if(slots.length>0)commit("setActiveSlot",slots[0]);
+                Promise.resolve(slots );
             })
         },
         getSlot({commit}, id) {
@@ -61,7 +63,7 @@ export default ({
             state.activeSlotId = slot.slotId;
         },
         setSlots(state, slots) {
-            state.slots = slots
+            state.slots = slots.map(s=>new Slot(s))
         },
         pushSlotToList(state, slot) {
             state.slots.push(Object.assign({}, slot))

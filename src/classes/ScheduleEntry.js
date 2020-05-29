@@ -16,10 +16,10 @@ export default class  {
         return  this.getJob().jobStages.find(js=>js.jobStageId === this.jobStageId)
     }
     getJob(){
-        return store.getters['pastJobs/getJobById'](this.jobId);
+        return store.getters['jobs/getJobById'](this.jobId);
     }
     setJob(){
-        this.job =  store.getters['pastJobs/getJobById'](this.jobId);
+        this.job =  store.getters['jobs/getJobById'](this.jobId);
         this.jobStage = this.job.jobStages.find(js=>js.jobStageId === this.jobStageId)
     };
 }

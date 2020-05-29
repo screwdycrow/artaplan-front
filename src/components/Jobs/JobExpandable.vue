@@ -1,6 +1,22 @@
 <template>
     <v-expansion-panel>
-        <v-expansion-panel-header :style="'border-left:'+job.color+' solid 5px'" hide-actions style="padding:0 10px 0 0">
+        <v-menu
+                v-model="showMenuJob"
+                :position-x="x"
+                :position-y="y"
+                absolute
+                offset-y
+        >
+            <v-list dense v-if="job">
+                <v-list-item dense @click="showJob()">
+                    <v-list-item-title> Open Job </v-list-item-title>
+                </v-list-item>
+            </v-list>
+        </v-menu>
+        <v-expansion-panel-header :style="'border-left:'+job.color+' solid 5px'"
+                                  hide-actions
+                                  @contextmenu="show2"
+                                  style="padding:0 10px 0 0">
             <v-list-item>
                 <v-list-item-avatar :color="job.color">
                     <v-img :style="'border: 2px solid '+job.color"
@@ -15,16 +31,16 @@
                         {{job.customer.name}}
                     </v-list-item-subtitle>
                 </v-list-item-content>
-                <v-list-item-action  v-if="detailed && job.toStartAt && !job.startedAt" class="align-center">
+                <v-list-item-action v-if="detailed && job.toStartAt && !job.startedAt" class="align-center">
                     <v-list-item-action-text>Scheduled:</v-list-item-action-text>
                     {{moment | formatDate}}
                 </v-list-item-action>
-                <v-list-item-action  v-if="detailed && job.startedAt" class="align-center">
-                    <v-list-item-action-text>Started: </v-list-item-action-text>
+                <v-list-item-action v-if="detailed && job.startedAt" class="align-center">
+                    <v-list-item-action-text>Started:</v-list-item-action-text>
                     {{job.startedAt | formatDate}}
                 </v-list-item-action>
                 <template v-if="job.deadline">
-                    <v-list-item-action  class="align-center">
+                    <v-list-item-action class="align-center">
                         <v-list-item-action-text>Deadline in</v-list-item-action-text>
                         {{job.getFormattedDeadline('days')}} days
                     </v-list-item-action>
@@ -42,6 +58,7 @@
                         :color="job.color"
                 />
             </v-list>
+
             <v-menu
                     v-model="showMenu"
                     :position-x="x"
@@ -77,17 +94,30 @@
         components: {JobStageItem},
         data: () => ({
             showMenu: false,
+            showMenuJob: false,
             activeJobStage: null,
             x: 0,
             y: 0
         }),
         props: {
             job: Job,
-            detailed:Boolean
+            detailed: Boolean
         },
         methods: {
             addHour() {
                 this.activeJobStage.jobHours++;
+            },
+            showJob(){
+
+            },
+            show2(e){
+                e.preventDefault();
+                this.showMenuJob = false;
+                this.x = e.clientX;
+                this.y = e.clientY;
+                this.$nextTick(() => {
+                    this.showMenuJob= true;
+                })
             },
             show(e, js) {
                 e.preventDefault();

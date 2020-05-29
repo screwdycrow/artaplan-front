@@ -1,3 +1,5 @@
+import Stage from "@/classes/Stage";
+
 export default class {
     constructor(slot) {
         this.slotId = slot.slotId;
@@ -12,5 +14,8 @@ export default class {
 
     setStages(stages) {
         this.stages = stages.map(s => new Stage(s))
+    }
+    getDefaultStages() {
+      return  this.stages.filter(s=>s.isDefault)
     }
 }

@@ -8,7 +8,7 @@ export default class {
 
     static status = {
         IDLE:'idle',
-        ONGOING: 'ongoing',
+        STARTED: 'started',
         FINISHED: 'finished',
         SCHEDULED: 'scheduled',
     };

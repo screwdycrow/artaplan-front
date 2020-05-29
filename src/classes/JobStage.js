@@ -19,5 +19,12 @@ export default class  {
     getCompletionPercentage(){
         return ((this.workHours /  this.jobHours)*100).toFixed(0);
     }
+    fillJobStageFromStage(stage){
+        this.stageId = stage.stageId;
+        this.stage = stage;
+        this.workHours = 0;
+        this.jobHours = stage.estimatedHours;
+        this.order = stage.order;
+    }
 
 }

@@ -9,6 +9,7 @@ export default ({
         plannerOptions:{},
         dates:{},
         datesExceptions:[],
+        workload:[]
     },
     actions: {
         getPlannerOptions({commit},options){
@@ -23,6 +24,11 @@ export default ({
         getDateExceptions({commit},from){
 
         },
+        getWorkload({commit}) {
+            return scheduleApi.getWorkload().then(
+                workload => commit('setWorkload',workload)
+            )
+        },
         getWorkHoursOnDate(date){
         }
     },
@@ -35,14 +41,16 @@ export default ({
         addStageHoursToDate(state,{jobStage,hours,scheduledAt}){
         },
 
+        setWorkload(state, workload){
+            state.workload = workload;
+        },
         setScheduleEntries(state, schedule) {
             state.schedule = schedule.map(s=>new ScheduleEntry(s))
         },
-
     },
     getters: {
         schedule:s=>s.schedule,
-        scheduleToday:s=>s.schedule.filter(sch => moment(sch.scheduledAt).isSame(moment(new Date()),'day')),
+        scheduleToday:s=>s.schedule.filter(sch => moment(sch.scheduledAt).isSame(moment( Date.now()),'day')),
         plannerOptions:s=>s.plannerOptions,
         datesExceptions:s=>s.datesExceptions,
     },

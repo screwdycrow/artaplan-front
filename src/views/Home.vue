@@ -5,8 +5,9 @@
         </portal>
 
         <v-row>
-            <v-col sm="12" lg="3" class="mb-5">
-                <v-card color="transparent" v-if="ongoingJobs">
+
+            <v-col sm="12" lg="4" >
+                <v-card class="fill-height" v-if="ongoingJobs">
                     <v-toolbar flat color="transparent">
                         <v-toolbar-title>
                             <strong class="text--primary"> Today's schedule</strong>
@@ -18,12 +19,12 @@
                     </v-toolbar>
 
                     <v-list two-line>
-                        <schedule-entry-item v-for="entry in scheduleToday"  :item="entry" />
+                        <schedule-entry-item v-for="entry in scheduleToday" :item="entry"/>
                     </v-list>
                 </v-card>
             </v-col>
-            <v-col sm="12" lg="9">
-                <v-card color="transparent">
+            <v-col sm="12" lg="4">
+                <v-card  class="fill-height" v-if="scheduleHours && scheduleDays">
                     <v-toolbar flat color="transparent">
                         <v-toolbar-title>
                             <strong class="text--primary"> Workload </strong>
@@ -32,12 +33,7 @@
                         <v-toolbar-items>
                         </v-toolbar-items>
                     </v-toolbar>
-
-                    <v-list two-line>
-                        <job-stage-item/>
-                        <job-stage-item/>
-                        <job-stage-item/>
-                    </v-list>
+                    <work-load-chart :workload="workload"/>
                 </v-card>
             </v-col>
         </v-row>
@@ -77,15 +73,20 @@
     import JobCard from "../components/Jobs/JobCard"
     import ScheduleItem from "../components/Schedule/ScheduleEntryItem"
     import ScheduleEntry from "@/classes/ScheduleEntry";
-    import {mapActions, mapGetters} from "vuex";
+    import {mapActions, mapGetters,mapState} from "vuex";
     import ScheduleEntryItem from "@/components/Schedule/ScheduleEntryItem";
     import JobPreviewList from "@/components/Jobs/JobPreviewList";
     import JobExpandable from "@/components/Jobs/JobExpandable";
+    import WorkLoadChart from "@/components/Schedule/WorkloadChart";
 
     export default {
         name: 'Home',
-        data: () => ({}),
+        data: () => ({
+            scheduleHours:[],
+            scheduleDays:[]
+        }),
         components: {
+            WorkLoadChart,
             JobExpandable,
             JobPreviewList,
             ScheduleEntryItem,
@@ -95,13 +96,21 @@
         },
         computed: {
             ...mapGetters('schedule', [
-                'scheduleToday'
+                'scheduleToday',
+            ]),
+            ...mapState('schedule',[
+               'workload'
             ]),
             ...mapGetters('jobs', [
                 'ongoingJobs'
             ])
         },
         created() {
+            this.getWorkload().then(s=>{
+                this.scheduleHours = this.workload.map(w=>w.hours);
+                this.scheduleDays = this.workload.map(w=>w.date)
+
+            });
             this.getOngoingJobs().then(r => {
                 this.getSchedule()
             });
@@ -110,6 +119,7 @@
             ...mapActions(
                 'schedule',
                 [
+                    'getWorkload',
                     'getSchedule'
                 ]
             ),

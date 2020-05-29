@@ -1,5 +1,6 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <v-app id="inspire">
+        <modals-container />
         <sidebar :show="drawerRight" :opened="opened"/>
         <v-app-bar
                 class="hidden-md-and-up"

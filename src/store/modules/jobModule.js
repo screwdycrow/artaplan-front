@@ -13,7 +13,6 @@ export default ({
         ongoingJobs: [],
         ongoingJobMap: {},
         job: {},
-        defaultJob: {}
     },
     actions: {
         getOngoingJobs({commit}) {
@@ -82,6 +81,7 @@ export default ({
 
     },
     getters: {
+        defaultJob:(s) => new Job(s.defaultJob),
         pastJobs: (s) => s.pastJobs,
         ongoingJobs: (s) => s.ongoingJobs,
         showJobEditor: (s) => s.showJobEditor,
