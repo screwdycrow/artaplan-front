@@ -14,7 +14,7 @@
             </v-dialog>
         </portal>
         <portal to="toolbar-actions">
-            <v-btn color="primary"  > <v-icon> mdi-plus</v-icon> New</v-btn>
+            <v-btn color="primary"  to="/slots/new"  > <v-icon> mdi-plus</v-icon> New</v-btn>
         </portal>
         <v-row class>
             <v-col sm="12" lg="3" md="2" class="hidden-md-and-down">

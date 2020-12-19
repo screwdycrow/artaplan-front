@@ -6,6 +6,9 @@
         <portal to="toolbar-items">
         </portal>
         <portal to="toolbar-actions">
+          <v-dialog>
+
+          </v-dialog>
             <v-btn color="primary" @click="newJob()">
                 <v-icon> mdi-plus</v-icon>
                 New

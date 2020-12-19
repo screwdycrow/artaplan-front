@@ -5,6 +5,7 @@ import jobModule from "@/store/modules/jobModule";
 import stageModule from "./modules/stageModule"
 import scheduleModule from "@/store/modules/scheduleModule";
 import customerModule from "@/store/modules/customerModule";
+import userModule from "@/store/modules/userModule";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -19,6 +20,7 @@ export default new Vuex.Store({
     slots:slotModule,
     jobs:jobModule,
     stages:stageModule,
-    customers:customerModule
+    customers:customerModule,
+    users:userModule
   }
 })

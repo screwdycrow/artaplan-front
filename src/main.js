@@ -20,6 +20,7 @@ Vue.filter('formatDate', function (value) {
   return moment(value).format('DD/MM/YY')
 });
 
+
 new Vue({
   router,
   store,

@@ -21,6 +21,9 @@ export default ({
         }
     },
     actions: {
+        addSlot({commit},slot){
+            slotApi.postSlot(slot).then(resp=>alert(resp));
+        },
         insertStageToSlot({commit}, stage) {
             slotApi.insertStageToSlot({commit}, stage)
                 .then(stage => {
@@ -34,6 +37,7 @@ export default ({
             })
         },
         getAllSlots({commit}) {
+
            return  slotApi.getSlots().then(slots => {
                 commit("setSlots", slots);
                 if(slots.length>0)commit("setActiveSlot",slots[0]);

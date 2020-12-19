@@ -3,10 +3,8 @@
         <portal to="toolbar-title"> Dashboard</portal>
         <portal to="toolbar-actions">
         </portal>
-
         <v-row>
-
-            <v-col sm="12" lg="4" >
+            <v-col sm="12" lg="4">
                 <v-card class="fill-height" v-if="ongoingJobs">
                     <v-toolbar flat color="transparent">
                         <v-toolbar-title>
@@ -24,7 +22,7 @@
                 </v-card>
             </v-col>
             <v-col sm="12" lg="4">
-                <v-card  class="fill-height" v-if="scheduleHours && scheduleDays">
+                <v-card class="fill-height" v-if="scheduleHours && scheduleDays">
                     <v-toolbar flat color="transparent">
                         <v-toolbar-title>
                             <strong class="text--primary"> Workload </strong>
@@ -73,7 +71,7 @@
     import JobCard from "../components/Jobs/JobCard"
     import ScheduleItem from "../components/Schedule/ScheduleEntryItem"
     import ScheduleEntry from "@/classes/ScheduleEntry";
-    import {mapActions, mapGetters,mapState} from "vuex";
+    import {mapActions, mapGetters, mapState} from "vuex";
     import ScheduleEntryItem from "@/components/Schedule/ScheduleEntryItem";
     import JobPreviewList from "@/components/Jobs/JobPreviewList";
     import JobExpandable from "@/components/Jobs/JobExpandable";
@@ -82,8 +80,8 @@
     export default {
         name: 'Home',
         data: () => ({
-            scheduleHours:[],
-            scheduleDays:[]
+            scheduleHours: [],
+            scheduleDays: []
         }),
         components: {
             WorkLoadChart,
@@ -98,17 +96,17 @@
             ...mapGetters('schedule', [
                 'scheduleToday',
             ]),
-            ...mapState('schedule',[
-               'workload'
+            ...mapState('schedule', [
+                'workload'
             ]),
             ...mapGetters('jobs', [
                 'ongoingJobs'
             ])
         },
         created() {
-            this.getWorkload().then(s=>{
-                this.scheduleHours = this.workload.map(w=>w.hours);
-                this.scheduleDays = this.workload.map(w=>w.date)
+            this.getWorkload().then(s => {
+                this.scheduleHours = this.workload.map(w => w.hours);
+                this.scheduleDays = this.workload.map(w => w.date)
 
             });
             this.getOngoingJobs().then(r => {
