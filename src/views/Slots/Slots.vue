@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <div>
         <portal to="toolbar-title">
             Job Templates
@@ -21,7 +21,6 @@
                 <slot-list/>
             </v-col>
             <v-col sm="12" lg="9" md="12">
-                <slot-editor v-if="activeSlotId || activeSlotId === 0  " :slot-id="activeSlotId"/>
             </v-col>
         </v-row>
     </div>
@@ -30,17 +29,24 @@
 <script>
     import SlotList from "@/components/Slots/SlotList";
     import SlotEditor from "@/components/Slots/SlotEditor";
-    import {createNamespacedHelpers} from "vuex";
+    import {mapGetters} from "vuex"
 
-    const {mapState, mapActions, mapGetters, mapMutations} = createNamespacedHelpers('slots');
     export default {
         name: "Slots",
         components: {SlotEditor, SlotList},
+        created(){
+          this.getAllSlots();
+        },
         computed: {
-            ...mapGetters([
+            ...mapGetters('slots',[
+                'slots',
                 "slot",
-                "activeSlotId"
             ]),
+        },
+        methods:{
+          ...mapActions('slots',[
+              'getAllSlots'
+          ])
         }
     }
 </script>
