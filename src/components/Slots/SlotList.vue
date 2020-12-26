@@ -10,41 +10,34 @@
         </v-toolbar>
 
         <v-list color="transparent">
-            <slot-list-item
-                    v-for="slot in slots"
-                    :slot-obj="slot"
-                    :show-action="slot.slotId === activeSlotId"
-                    :key="slot.slotId"
-                    @click="editSlot(slot)"/>
+            <v-list-item v-for="slot in slots" :to="'/slots/'+slot.slotId">
+                <v-list-item-content>
+                    <v-list-item-title> {{slot.name}}</v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
         </v-list>
     </v-card>
 </template>
 <script>
     import {createNamespacedHelpers} from 'vuex'
-    import SlotListItem from "@/components/Slots/SlotListItem";
 
     const {mapState, mapActions, mapGetters, mapMutations} = createNamespacedHelpers('slots');
     export default {
         name: "slotList",
-        components: {SlotListItem},
+        components: {},
         data: () => ({
             sorters: {}
         }),
         computed: {
             ...mapGetters([
                 "slots",
-                "activeSlotId"
             ])
         },
         created() {
-            this.getAllSlots().then(s => console.log(this.slots))
-
+            this.getAllSlots();
         },
         methods: {
-            editSlot(slot) {
-                this.setActiveSlot(slot);
-                this.$emit("slotClicked", slot.slotId);
-            },
+
             ...mapActions([
                 "getAllSlots"
             ]),

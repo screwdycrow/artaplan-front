@@ -24,13 +24,12 @@ export default ({
                 })
         },
         getAllSlots({commit}) {
-
            return  slotApi.getSlots().then(slots => {
                 commit("setSlots", slots);
-                if(slots.length>0)commit("setActiveSlot",slots[0]);
                 Promise.resolve(slots );
             })
         },
+
         getSlot({commit}, id) {
             slotApi.getSlot(id).then(slot => commit('setSlot', slot))
         }

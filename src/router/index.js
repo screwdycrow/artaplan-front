@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import store from '../store'
+import Slot from "../views/Slots/Slot"
+import Slots from "../views/Slots/Slots"
 
 Vue.use(VueRouter)
 
@@ -39,17 +41,27 @@ const routes = [
     },
     {
         path: '/slots',
-        name: 'slots',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "slots" */ '../views/Slots/Slots'),
-        meta: {
-            requiresAuth: true,
-        }
+        component: Slots,
+        children:[
+            {
+                path:'/',
+                meta: {
+                    requiresAuth: true,
+                }
+            } ,
+            {
+                path:':id',
+                component:Slot,
+                meta: {
+                    requiresAuth: true,
+                }
+            }
+        ],
+
+
     },
     {
-        path: '/slots/new',
+        path: '/newSlot',
         name: 'New Slot',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
@@ -62,13 +74,13 @@ const routes = [
     {
         path: '/jobs',
         name: 'jobs',
-        component: () => import(/* webpackChunkName: "jobs" */ '../views/Jobs'),
+        component: () => import(/* webpackChunkName: "jobs" */ '../views/Jobs/Jobs'),
         meta: {
             requiresAuth: true,
         },
     },
     {
-        path: '/jobs/new',
+        path: '/newJob',
         name: 'New job',
         component: () => import(/* webpackChunkName: "newjob" */ '../components/Jobs/NewJob'),
         meta: {
@@ -82,8 +94,7 @@ const routes = [
         meta: {
             requiresAuth: true,
         }
-    }
-    ,
+    },
 
     {
         path: '/login',

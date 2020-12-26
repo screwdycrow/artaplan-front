@@ -208,7 +208,8 @@ export default {
         return axios.get('/Slots').then(resp=>resp.data);
     },
     getSlot(slotId) {
-        return Promise.resolve(slot)
+        return axios.get('/Slots/'+slotId)
+            .then(resp=> Promise.resolve( new Slot(resp.data)))
     }
 }
 

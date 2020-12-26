@@ -2,11 +2,12 @@
     <v-navigation-drawer
             tile
             color="secondary"
+            permanent
             app
             dark
             left
             v-model="opened"
-            :mini-variant="show"
+            expand-on-hover
     >
         <v-toolbar class="pt-4" extended extension-height="30" color="transparent" dark flat>
             <v-app-bar-nav-icon class="" color=""  @click.stop="show = !show"><v-icon>mdi-arrow-left</v-icon> </v-app-bar-nav-icon>

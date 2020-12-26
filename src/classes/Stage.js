@@ -5,8 +5,7 @@ export default class  {
         this.name = stage.name;
         this.estimatedHours = stage.estimatedHours;
         this.avgHours = stage.avgHours;
-        this.insertedAt = stage.insertedAt;
-        this.isDefault = stage.isDefault;
         this.order = stage.order;
+        this.tags = stage.tags;
     }
 }

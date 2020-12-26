@@ -6,10 +6,7 @@
         <portal to="toolbar-items">
         </portal>
         <portal to="toolbar-actions">
-          <v-dialog>
-
-          </v-dialog>
-            <v-btn color="primary" @click="newJob()">
+            <v-btn color="primary" to="/newJob">
                 <v-icon> mdi-plus</v-icon>
                 New
             </v-btn>
@@ -81,7 +78,7 @@
 
 <script>
 
-    import {mapGetters, mapActions} from 'vuex';
+    import {mapGetters, mapActions} from 'vuex'
     import JobExpandable from "@/components/Jobs/JobExpandable";
     import NewJob from "@/components/Jobs/NewJob";
 

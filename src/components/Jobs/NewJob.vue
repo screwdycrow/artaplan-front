@@ -18,7 +18,11 @@
                             </v-toolbar>
                             <v-list>
                                 <v-list-item-group v-model="job.slot">
-                                    <slot-list-item :key="slot.slotId" v-for="slot in slots" :slot-obj="slot"/>
+                                    <v-list-item :value="slot" v-for="slot in slots">
+                                        <v-list-tile-content>
+                                            <v-list-item-title> {{slot.name}}</v-list-item-title>
+                                        </v-list-tile-content>
+                                    </v-list-item>
                                 </v-list-item-group>
                             </v-list>
                             <v-card-actions>
@@ -104,7 +108,6 @@
 <script>
 
     import Job from "@/classes/Job";
-    import SlotListItem from "@/components/Slots/SlotListItem";
     import JobStage from "@/classes/JobStage";
     import draggable from 'vuedraggable';
 
@@ -112,7 +115,7 @@
 
     export default {
         name: "NewJob",
-        components: {SlotListItem, draggable},
+        components: { draggable},
         data: () => ({
             el: 1,
             job: {
@@ -191,7 +194,7 @@
             },
             finishSlotStep() {
                 this.job.slotId = this.job.slot.slotId;
-                this.job.jobStages = this.job.slot.getDefaultStages().map(s => {
+                this.job.jobStages = this.job.slot.stages.map(s => {
                     let js = new JobStage({});
                     js.fillJobStageFromStage(s);
                     return js
