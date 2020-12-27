@@ -62,7 +62,7 @@
                             </v-card-text>
                             <v-card-actions>
                                 <v-btn @click="goBack"> Back</v-btn>
-                                <v-btn color="primary" @click="finishDetaisStep()"
+                                <v-btn color="primary" @click="finishDetailsStep()"
                                        :disabled="!(job.customer && job.name && job.price)"> Next
                                 </v-btn>
                             </v-card-actions>
@@ -71,10 +71,13 @@
                     <v-stepper-content step="3">
                         <v-card color="transparent">
                             <v-card-text>
-                                <draggable v-model="job.jobStages" @change="onDragEnd()">
-                                    <v-list-item ripple v-for="js in job.jobStages">
+                                <draggable v-model="stages" @change="onDragEnd()">
+                                    <v-list-item ripple v-for="js in stages">
                                         <v-list-item-action>
                                             <v-icon>mdi-drag</v-icon>
+                                        </v-list-item-action>
+                                        <v-list-item-action>
+                                            <v-checkbox hide-details v-model="js.selected"></v-checkbox>
                                         </v-list-item-action>
                                         <v-list-item-content>
                                             <v-list-item-title>
@@ -87,11 +90,10 @@
                                         </v-list-item-action>
                                     </v-list-item>
                                 </draggable>
-
-                            </v-card-text>
+                               </v-card-text>
                             <v-card-actions>
                                 <v-btn @click="goBack"> Back</v-btn>
-                                <v-btn color="primary" @click="finishDetaisStep()"
+                                <v-btn color="primary" @click="finishStageStep()"
                                        :disabled="!(job.customer && job.name && job.price)"> Next
                                 </v-btn>
                             </v-card-actions>
@@ -118,13 +120,21 @@
         components: { draggable},
         data: () => ({
             el: 1,
+            customer:{
+                customerId:null,
+                name:null,
+                email:null,
+            },
+            stages:[],
             job: {
                 slot: null,
                 slotId: null,
                 price: 0,
                 priority: 0,
-                insertedAt: 0,
+                insertedAt:  moment(Date.now()).format("YYYY-MM-DD HH:MI:SS"),
+                startedAtL: null,
                 deadline: "",
+                estimatedDays:5,
                 customerId: null,
                 customer: {},
                 color: "#ccc",
@@ -136,7 +146,6 @@
                 required: [
                     value => !!value || 'Required.',
                 ]
-
             },
             steps: {
                 jobDetails: {
@@ -168,6 +177,11 @@
         },
         methods: {
             ...mapActions(
+                "jobs",[
+                    "addJob"
+                ]
+            ),
+            ...mapActions(
                 "customers",
                 [
                     "getAllCustomers"
@@ -182,21 +196,29 @@
             goBack() {
                 this.el--;
             },
-            finishDetaisStep() {
+            finishStageStep(){
+                this.job.jobStages = this.stages.filter(js=>js.selected)
+                this.addJob(this.job).then(
+                    this.$router.push('/jobs')
+                )
+
+            },
+            finishDetailsStep() {
                 this.job.customerId = this.job.customer.customerId;
                 this.el = 3;
             },
             onDragEnd() {
-                this.job.jobStages.forEach((js,index)=>{
+                this.stages.forEach((js,index)=>{
                    js.order = index;
                    console.log(this.job.jobStages);
                 });
             },
             finishSlotStep() {
                 this.job.slotId = this.job.slot.slotId;
-                this.job.jobStages = this.job.slot.stages.map(s => {
+                this.stages = this.job.slot.stages.map(s => {
                     let js = new JobStage({});
                     js.fillJobStageFromStage(s);
+                    js['selected']= true;
                     return js
                 });
                 this.job.price = this.job.slot.price;

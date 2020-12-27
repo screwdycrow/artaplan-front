@@ -25,6 +25,10 @@ export default ({
           commit("setPastJobs",jobs)
         },
 
+        addJob({commit},job){
+
+            return jobApi.addJob(new Job(job))
+        },
         getJob({commit}, id) {
             jobApi.getJob(id).then(job => commit('setJob', job))
         }
