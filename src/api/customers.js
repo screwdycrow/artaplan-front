@@ -1,20 +1,10 @@
-const customers = [
-    {
-        customerId:1,
-        name:'Wynslow',
-        email:null,
-        token:"12ifjdk4dkfdkfds"
-    },
-    {
-        customerId:2,
-        name:'Thomie Dimensor',
-        email:null,
-        token:"12ifjdk4dkfdkfsds"
-    }
-];
+import axios from '@/api/axios'
+import Customer from "@/classes/Customer";
+
 export default {
-    getCustomers(){
-        return Promise.resolve(customers)
+    getCustomers() {
+      return  axios.get('/customers')
+          .then(resp=>resp.data)
     }
 }
 

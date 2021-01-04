@@ -52,7 +52,7 @@
                                         </v-col>
                                         <v-col lg="3">
                                             <v-text-field :rules="rules.required" required filled type="number"
-                                                          label="Job Price (*) " v-model="job.price"
+                                                          label="Job Price (*) " v-model.number="job.price"
                                                           append-icon="mdi-cash"/>
                                         </v-col>
                                     </v-row>
@@ -86,7 +86,7 @@
                                         </v-list-item-content>
                                         <v-list-item-action>
                                             <v-text-field label="Hours needed" style="width:100px;" filled hide-details
-                                                          type="number" v-model="js.jobHours"/>
+                                                          type="number" v-model.number="js.jobHours"/>
                                         </v-list-item-action>
                                     </v-list-item>
                                 </draggable>
@@ -110,6 +110,7 @@
 <script>
 
     import Job from "@/classes/Job";
+    import moment from "moment"
     import JobStage from "@/classes/JobStage";
     import draggable from 'vuedraggable';
 
@@ -131,9 +132,10 @@
                 slotId: null,
                 price: 0,
                 priority: 0,
-                insertedAt:  moment(Date.now()).format("YYYY-MM-DD HH:MI:SS"),
-                startedAtL: null,
-                deadline: "",
+                insertedAt:  moment(Date.now()).toISOString(),
+                startedAt: null,
+                deadline: null,
+                references:null,
                 estimatedDays:5,
                 customerId: null,
                 customer: {},

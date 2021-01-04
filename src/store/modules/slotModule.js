@@ -44,7 +44,7 @@ export default ({
         },
 
         setSlot(state, slot) {
-            state.slot = Object.assign({}, slot)
+            state.slot = new Slot(slot)
         },
 
         setSlots(state, slots) {

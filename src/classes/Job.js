@@ -3,7 +3,6 @@ import Slot from "@/classes/Slot";
 import Customer from "@/classes/Customer";
 import tinycolor from 'tinycolor2'
 import moment from 'moment';
-
 export default class {
 
     static status = {
@@ -15,7 +14,7 @@ export default class {
 
     constructor(obj) {
         this.jobId = obj.jobId;
-        this.status = obj.status;
+        this.status = obj.status || 'idle'
         this.color = obj.color;
         this.image = obj.image;
         this.name = obj.name;
@@ -25,7 +24,9 @@ export default class {
         this.priority = obj.priority;
         this.insertedAt = obj.insertedAt;
         this.deadline = obj.deadline;
-        this.references = {};
+        this.references = null;
+        this.customerId = obj.customerId;
+        this.slotId = obj.slotId
         if (obj.references) this.setReferences(obj.references);
         this.slot = {};
         if (obj.slot) this.setSlot(obj.slot);
