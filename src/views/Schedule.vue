@@ -45,6 +45,7 @@
     import JobExpandable from "@/components/Jobs/JobExpandable";
     import JobPreviewList from "@/components/Jobs/JobPreviewList";
     import {mapActions, mapGetters} from 'vuex';
+    import jobs from "@/api/jobs";
 
     export default {
         name: "Schedule",
@@ -66,7 +67,7 @@
             ]
         }),
         created() {
-            this.getOngoingJobs().then(r => {
+            this.getJobs().then(r => {
                 this.getSchedule()
             });
         },
@@ -93,6 +94,7 @@
             ...mapActions(
                 'jobs',
                 [
+                    "getJobs",
                     "getOngoingJobs"
                 ]
             ),

@@ -88,21 +88,18 @@
         computed: {
             ...mapGetters('jobs', [
                 'ongoingJobs',
-                'pastJobs'
+                'pastJobs',
+                'idleJobs'
             ])
         },
         methods: {
             ...mapActions('jobs', [
-                "getOngoingJobs",
+                "getJobs",
             ]),
-            newJob() {
-                this.$modal.show(NewJob,{},{height: 'auto'},
-                )
-            },
         },
 
         created() {
-            this.getOngoingJobs();
+            this.getJobs();
         }
     }
 </script>

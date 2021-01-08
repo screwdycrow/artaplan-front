@@ -12,9 +12,32 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         isMobile: false,
+        isLoading:true,
+        activeMessages: [],
+
     },
-    mutations: {},
+    mutations: {
+        setLoading(state,value){
+            state.isLoading = value
+        },
+        pushMessage(state, {type, text}) {
+            state.activeMessages.push({
+                date: moment().format('DD/MM hh:mm:ss'),
+                active:true,
+                type: type,
+                text:text,
+            });
+        },
+        removeMessage(state, message) {
+            const index = state.activeMessages.findIndex( m => m.date === message.date);
+            state.activeMessages.splice(index, 1)
+        },
+    },
     actions: {},
+    getters:{
+        activeMessages:(s)=> s.activeMessages
+
+    },
     modules: {
         schedule: scheduleModule,
         slots: slotModule,

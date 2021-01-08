@@ -191,9 +191,7 @@ export default {
     insertStageToSlot(stage) {
         return Promise.resolve(stage)
     },
-    toggleStageDefault(stage) {
-        return Promise.resolve(stage);
-    },
+
     postSlot(slot) {
         let _slot = null;
         if (slot instanceof Slot) {
@@ -202,14 +200,20 @@ export default {
             _slot = new Slot(slot)
             _slot.setStages(slot.stages)
         }
-        return axios.post('/Slots',_slot)
+        return axios.post('/Slots', _slot).then(resp => {
+            return Promise.resolve(resp.data);
+        })
     },
     getSlots() {
-        return axios.get('/Slots').then(resp=>resp.data);
+        return axios.get('/Slots').then(resp => {
+            return Promise.resolve(resp.data)
+        });
     },
     getSlot(slotId) {
-        return axios.get('/Slots/'+slotId)
-            .then(resp=> resp.data)
+        return axios.get('/Slots/' + slotId)
+            .then(resp => {
+                return Promise.resolve(resp.data);
+            })
     }
 }
 

@@ -12,8 +12,8 @@ export default {
         }
         return axios.post('/Jobs', job).then(resp => Promise.resolve(resp.data))
     },
-    getJobs(type) {
-        return Promise.resolve([]);
+    getJobs() {
+        return axios.get('/Jobs').then(resp=>resp.data)
     },
     getJob() {
         return Promise.resolve([]);

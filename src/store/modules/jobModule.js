@@ -1,5 +1,6 @@
 import jobApi from '../../api/jobs'
 import Job from "@/classes/Job";
+import Messages from "@/store/Messages";
 
 function findJob(id) {
     return (s) => s.jobId === id;
@@ -10,7 +11,7 @@ export default ({
     state: {
         showJobEditor: false,
         pastJobs: [],
-        ongoingJobs: [],
+        jobs: [],
         ongoingJobMap: {},
         job: {},
     },
@@ -21,19 +22,35 @@ export default ({
                 return Promise.resolve(jobs)
             })
         },
-        getPastJobs({commit}){
-          commit("setPastJobs",jobs)
+        getJobs({commit}) {
+            commit('setLoading', true, {root: true})
+            return jobApi.getJobs().then(jobs => {
+                commit('setJobs', jobs);
+                commit('setLoading', false, {root: true})
+                return Promise.resolve(jobs)
+            })
         },
 
-        addJob({commit},job){
-
-            return jobApi.addJob(new Job(job))
+        addJob({commit}, job) {
+            commit('setLoading', true, {root: true})
+            return jobApi.addJob(new Job(job)).then(resp => {
+                commit('setLoading', false, {root: false})
+                commit('pushMessage', Messages.JOB_ADDED, {root: true})
+            })
         },
         getJob({commit}, id) {
-            jobApi.getJob(id).then(job => commit('setJob', job))
+            commit('setLoading', true, {root: true})
+            jobApi.getJob(id).then(job => {
+                    commit('setLoading', false, {root: false})
+                    commit('setJob', job)
+                }
+            )
         }
     },
     mutations: {
+        setJobs(state, jobs) {
+            state.jobs = jobs;
+        },
         setJob(state, job) {
             state.job = Object.assign({}, job)
         },
@@ -85,9 +102,10 @@ export default ({
 
     },
     getters: {
-        defaultJob:(s) => new Job(s.defaultJob),
-        pastJobs: (s) => s.pastJobs,
-        ongoingJobs: (s) => s.ongoingJobs,
+        defaultJob: (s) => new Job(s.defaultJob),
+        pastJobs: (s) => s.jobs,
+        ongoingJobs: (s) => s.jobs,
+        idleJobs:(s)=> s.jobs,
         showJobEditor: (s) => s.showJobEditor,
         getJobById: (s) => (id) => s.ongoingJobMap[id]
     },

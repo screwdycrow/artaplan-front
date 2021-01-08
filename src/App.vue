@@ -1,6 +1,6 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-app id="inspire">
-    <modals-container/>
+    <ui-messages></ui-messages>
     <sidebar v-if="!$route.meta.noMenu" :show="drawerRight"  :opened="opened"/>
     <v-app-bar
         class="hidden-md-and-up"
@@ -28,7 +28,6 @@
         color="background"
         collapse-on-scroll
         flat app
-
     >
       <v-container style="max-width: 1600px" class="d-flex align-center">
         <v-toolbar-title>
@@ -44,6 +43,7 @@
 
       </v-container>
     </v-app-bar>
+    <v-progress-linear v-if="isLoading" striped stream height="10"></v-progress-linear>
     <v-content class="background">
       <v-container
           class="pt-2 "
@@ -68,12 +68,16 @@
 <script>
 import Sidebar from "@/components/Sidebar";
 import {mapState} from "vuex";
+import UiMessages from "@/components/UiMessages";
 
 export default {
   name: 'App',
 
-  components: {Sidebar},
+  components: {UiMessages, Sidebar},
   computed:{
+    ...mapState([
+       "isLoading"
+    ]),
     ...mapState('users',[
         'activeUser'
     ])
