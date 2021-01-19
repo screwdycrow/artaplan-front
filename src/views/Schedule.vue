@@ -95,7 +95,7 @@
                 'jobs',
                 [
                     "getJobs",
-                    "getOngoingJobs"
+
                 ]
             ),
         }

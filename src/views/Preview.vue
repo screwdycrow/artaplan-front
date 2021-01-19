@@ -15,7 +15,7 @@
     import ScheduleEntry from "@/classes/ScheduleEntry";
     import ScheduleEntryItem from "@/components/Schedule/ScheduleEntryItem";
     import JobExpandable from "@/components/Jobs/JobExpandable";
-    import NewJob from "@/components/Jobs/NewJob";
+    import NewJob from "@/views/Jobs/NewJob";
 
     export default {
         name: "Preview",

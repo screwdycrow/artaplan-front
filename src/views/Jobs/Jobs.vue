@@ -80,7 +80,7 @@
 
     import {mapGetters, mapActions} from 'vuex'
     import JobExpandable from "@/components/Jobs/JobExpandable";
-    import NewJob from "@/components/Jobs/NewJob";
+    import NewJob from "@/views/Jobs/NewJob";
 
     export default {
         name: "Jobs",

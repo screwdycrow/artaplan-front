@@ -1,5 +1,7 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-app id="inspire">
+    <v-progress-linear v-if="isLoading"  absolute bottom   indeterminate striped height="10" ></v-progress-linear>
+
     <ui-messages></ui-messages>
     <sidebar v-if="!$route.meta.noMenu" :show="drawerRight"  :opened="opened"/>
     <v-app-bar
@@ -21,8 +23,8 @@
         </v-toolbar-items>
         <v-spacer/>
       </v-container>
-
     </v-app-bar>
+
     <v-app-bar
         class="hidden-sm-and-down pt-2"
         color="background"
@@ -43,7 +45,6 @@
 
       </v-container>
     </v-app-bar>
-    <v-progress-linear v-if="isLoading" striped stream height="10"></v-progress-linear>
     <v-content class="background">
       <v-container
           class="pt-2 "

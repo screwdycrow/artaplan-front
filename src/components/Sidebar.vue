@@ -41,6 +41,15 @@
                     </v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
+          <v-list-item to="/customers">
+            <v-list-item-icon><v-icon small> mdi-account</v-icon></v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>
+                Customers
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
             <v-list-item to="/schedule">
                 <v-list-item-icon><v-icon small> mdi-calendar</v-icon></v-list-item-icon>
 

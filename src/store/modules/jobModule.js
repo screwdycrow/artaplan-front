@@ -16,12 +16,7 @@ export default ({
         job: {},
     },
     actions: {
-        getOngoingJobs({commit}) {
-            return jobApi.getJobs("ongoing").then(jobs => {
-                commit("setOngoingJobs", jobs);
-                return Promise.resolve(jobs)
-            })
-        },
+
         getJobs({commit}) {
             commit('setLoading', true, {root: true})
             return jobApi.getJobs().then(jobs => {
@@ -49,7 +44,7 @@ export default ({
     },
     mutations: {
         setJobs(state, jobs) {
-            state.jobs = jobs;
+            state.jobs = jobs.map(j=> new Job(j));
         },
         setJob(state, job) {
             state.job = Object.assign({}, job)
@@ -64,15 +59,7 @@ export default ({
                 state.pastJobs.push(job);
             })
         },
-        setOngoingJobs(state, jobs) {
-            state.ongoingJobs = [];
-            state.ongoingJobMap = {};
-            jobs.forEach(j => {
-                let job = new Job(j);
-                state.ongoingJobs.push(job);
-                state.ongoingJobMap[job.jobId] = job;
-            })
-        },
+
         pushJobToList(state, job) {
             if (job.status !== Job.status.ONGOING) {
                 state.pastJobs.push(job)
