@@ -6,6 +6,7 @@ import stageModule from "./modules/stageModule"
 import scheduleModule from "@/store/modules/scheduleModule";
 import customerModule from "@/store/modules/customerModule";
 import userModule from "@/store/modules/userModule";
+import moment from 'moment'
 
 Vue.use(Vuex);
 

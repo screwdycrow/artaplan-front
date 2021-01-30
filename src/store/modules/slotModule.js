@@ -2,10 +2,7 @@ import slotApi from '../../api/slots'
 import Vue from 'vue'
 import Slot from "@/classes/Slot";
 import Messages from "@/store/Messages";
-
-function findSlot(id) {
-    return (s) => s.slotId === id;
-}
+import _ from 'lodash'
 
 export default ({
     namespaced: true,
@@ -15,6 +12,15 @@ export default ({
 
     },
     actions: {
+        putSlot({commit},slot){
+            commit('setLoading', true, {root: true})
+            return  slotApi.putSlot(slot).then(resp => {
+                commit('updateSlotInList',slot)
+                commit('setLoading', false, {root: true})
+                commit('pushMessage',{type:'success',text:Messages.SLOT_ADDED})
+                return Promise.resolve(resp)
+            });
+        },
         addSlot({commit}, slot) {
             commit('setLoading', true, {root: true})
            return  slotApi.postSlot(slot).then(resp => {
@@ -55,7 +61,12 @@ export default ({
         pushStageToSlot(state, stage) {
             state.slot.stages.push(Object.assign({}, stage))
         },
-
+        updateSlotInList(state, slot){
+            const index = state.slots.findIndex((s) => s.slotId === slot.slotId);
+            if (index !== -1) {
+                Vue.set(state.slots,index,slot)
+            }
+        },
         setSlot(state, slot) {
             state.slot = new Slot(slot)
         },
@@ -66,17 +77,17 @@ export default ({
         pushSlotToList(state, slot) {
             state.slots.push(Object.assign({}, slot))
         },
-        removeSlotFromList({state}, slot) {
-            const index = state.slots.findIndex(findSlot(slot.slotId));
+        removeSlotFromList({state}, slot){
+            const index = state.slots.findIndex((s) => s.slotId === slot.slotId);
             if (index !== -1) {
                 state.slots.splice(index, 1)
             }
-        }
+        },
 
     },
     getters: {
         slots: (s) => s.slots,
-        slot: (s) => Object.assign(s.slot),
+        slot: (s) => s.slot,
         slotId: (s) => s.slotId,
     },
 });

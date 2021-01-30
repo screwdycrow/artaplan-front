@@ -12,18 +12,35 @@
       </v-form>
     </v-card-text>
     <v-card-actions>
-      <v-btn> Add Customer </v-btn>
+      <v-btn @click="submit()"> Add Customer </v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
+import {mapActions} from "vuex"
+
 export default {
   name: "NewCustomer",
-  customer:{
-    name:"",
-    email:""
+  data:()=>({
+    customer:{
+      name:"",
+      email:""
+    }
+  }),
+  methods:{
+    ...mapActions('customers',[
+            "addCustomer"
+    ]),
+
+    submit(){
+      this.addCustomer(this.customer).then(resp=>{
+        this.$router.push('/customers')
+      })
+    }
+
   }
+
 }
 </script>
 

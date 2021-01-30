@@ -1,6 +1,6 @@
 import slotApi from "@/api/slots";
 import customers from "@/api/customers";
-import Customer from "@/classes/Customer";
+import  Customer from "@/classes/Customer";
 import Messages  from "@/store/Messages";
 
 export default ({

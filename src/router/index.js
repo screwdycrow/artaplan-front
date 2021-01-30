@@ -6,6 +6,7 @@ import Slot from "../views/Slots/Slot"
 import Slots from "../views/Slots/Slots"
 import Customers from "@/views/Customers/Customers"
 import Customer from "@/views/Customers/Customer"
+import NewCustomer from "../views/Customers/NewCustomer"
 
 Vue.use(VueRouter)
 
@@ -50,6 +51,14 @@ const routes = [
             }
         ],
 
+    },
+    {
+        path:'/newCustomer',
+        name:'New Customer',
+        component: NewCustomer,
+        meta:{
+            requiresAuth:true,
+        }
     },
     {
         path: '/preview',

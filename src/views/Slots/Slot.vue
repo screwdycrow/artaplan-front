@@ -1,9 +1,9 @@
 <template>
     <v-card>
-        <v-toolbar   flat color="faded">
+        <v-toolbar flat color="faded">
             <v-toolbar-title><h2 class="headline"> {{slot.name}}</h2></v-toolbar-title>
         </v-toolbar>
-        <v-tabs show-arrows=""  background-color="faded">
+        <v-tabs show-arrows="" background-color="faded">
             <v-tab>Details</v-tab>
             <v-tab>Stages</v-tab>
             <v-tab>Past Jobs</v-tab>
@@ -12,38 +12,42 @@
                     <v-text-field outlined v-model="slot.name" label="Name"/>
                     <v-text-field outlined v-model="slot.price" label="Price" append-icon="mdi-cash"/>
                     <v-textarea outlined v-model="slot.description" label="Description"/>
+                    <v-card-actions>
+                        <v-btn outlined color="success" @click="putSlot(slot)"> Update Details</v-btn>
+                    </v-card-actions>
                 </v-card-text>
+
             </v-tab-item>
             <v-tab-item>
-                        <v-card-text>
+                <v-card-text>
 
-                        <v-list>
-                            <v-list-item ripple @click="toggleStageDefault(stage)" link v-for="stage in slot.stages"
-                                         :key="stage.stageId">
-                                <v-list-item-content>
-                                    <v-list-item-title> {{stage.name}}</v-list-item-title>
-                                    {{stage.description}}
-                                </v-list-item-content>
-                                <v-list-item-action class="text-center">
-                                        <v-list-item-action-text>
-                                            Estimated
-                                        </v-list-item-action-text>
-                                        <v-icon>mdi-clock</v-icon>
-                                        {{stage.estimatedHours}} h
+                    <v-list>
+                        <v-list-item ripple @click="toggleStageDefault(stage)" link v-for="stage in slot.stages"
+                                     :key="stage.stageId">
+                            <v-list-item-content>
+                                <v-list-item-title> {{stage.name}}</v-list-item-title>
+                                {{stage.description}}
+                            </v-list-item-content>
+                            <v-list-item-action class="text-center">
+                                <v-list-item-action-text>
+                                    Estimated
+                                </v-list-item-action-text>
+                                {{stage.estimatedHours}} h
 
-                                </v-list-item-action>
-                                <v-list-item-action class="text-center">
-                                    <v-list-item-action-text>
-                                        Average
-                                    </v-list-item-action-text>
-                                    <v-icon>mdi-clock</v-icon>
-                                    {{stage.avgHours}} h
-                                </v-list-item-action>
-                            </v-list-item>
-                        </v-list>
-                        </v-card-text>
+                            </v-list-item-action>
+                            <v-list-item-action class="text-center">
+                                <v-list-item-action-text>
+                                    Average
+
+                                </v-list-item-action-text>
+                                {{stage.avgHours}} h
+                            </v-list-item-action>
+                        </v-list-item>
+                    </v-list>
+                </v-card-text>
             </v-tab-item>
         </v-tabs>
+
     </v-card>
 
 </template>
@@ -54,30 +58,30 @@
     export default {
         name: "Slot",
         created() {
+            this.getSlot(this.$route.params.id)
         },
-        data:()=>({
+        data: () => ({
+            activeSlot: {},
             stage: {
                 name: null,
                 description: null,
                 estimatedHours: null,
             },
         }),
-        watch:{
-            $route (to, from){
-                this.getSlot(this.$route.params.id).then(slot=>{
-
-                })
-            }
-
+        watch: {
+            $route(to, from) {
+                this.getSlot(this.$route.params.id);
+            },
         },
-        computed:{
-          ...mapGetters('slots',[
-              "slot"
-          ])
+        computed: {
+            ...mapGetters('slots', [
+                "slot"
+            ])
         },
-        methods:{
-            ...mapActions('slots',[
-                "getSlot"
+        methods: {
+            ...mapActions('slots', [
+                "getSlot",
+                "putSlot"
             ])
         },
         onDragEnd() {

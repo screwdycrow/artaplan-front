@@ -45,19 +45,27 @@
                                     </v-row>
                                     <strong> Details </strong>
                                     <v-row>
-                                        <v-col lg="9">
+                                        <v-col lg="10">
                                             <v-text-field :rules="rules.required" required filled type="text"
                                                           label="Job Name (*)"
                                                           v-model="job.name"/>
                                         </v-col>
-                                        <v-col lg="3">
+                                        <v-col lg="2">
                                             <v-text-field :rules="rules.required" required filled type="number"
                                                           label="Job Price (*) " v-model.number="job.price"
                                                           append-icon="mdi-cash"/>
                                         </v-col>
                                     </v-row>
-                                    <v-textarea dense filled label="Job Description"
-                                                v-model="job.description"/>
+                                    <v-row>
+                                        <v-col lg="10">
+                                            <v-textarea dense filled label="Job Description"
+                                                        v-model="job.description"/>
+                                        </v-col>
+                                        <v-col lg="2">
+                                            <v-color-picker v-model="job.color"></v-color-picker>
+                                        </v-col>
+                                    </v-row>
+
                                 </v-form>
                             </v-card-text>
                             <v-card-actions>
@@ -139,7 +147,7 @@
                 estimatedDays:5,
                 customerId: null,
                 customer: {},
-                color: "#ccc",
+                color: "#cccccc",
                 jobStages: [],
                 name: "",
                 description: "",

@@ -1,6 +1,7 @@
 import jobApi from '../../api/jobs'
 import Job from "@/classes/Job";
 import Messages from "@/store/Messages";
+import _ from 'lodash'
 
 function findJob(id) {
     return (s) => s.jobId === id;
@@ -44,7 +45,7 @@ export default ({
     },
     mutations: {
         setJobs(state, jobs) {
-            state.jobs = jobs.map(j=> new Job(j));
+            state.jobs = jobs.map(j => new Job(j));
         },
         setJob(state, job) {
             state.job = Object.assign({}, job)
@@ -92,8 +93,9 @@ export default ({
         defaultJob: (s) => new Job(s.defaultJob),
         pastJobs: (s) => s.jobs,
         ongoingJobs: (s) => s.jobs,
-        idleJobs:(s)=> s.jobs,
+        idleJobs: (s) => s.jobs,
         showJobEditor: (s) => s.showJobEditor,
-        getJobById: (s) => (id) => s.ongoingJobMap[id]
+        getJobById: (s) => (id) => s.ongoingJobMap[id],
+        job: s => _.cloneDeep(s)
     },
 });

@@ -7,6 +7,7 @@ export default class {
         this.price = slot.price;
         this.notes = slot.notes;
         this.description = slot.description;
+        this.userId = slot.userId;
         this.stages = [];
         if (slot.stages) this.setStages(slot.stages)
     }

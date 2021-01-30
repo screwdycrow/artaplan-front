@@ -19,11 +19,15 @@
                 <job-preview-list :jobs="ongoingJobs"/>
             </v-col>
             <v-col lg="9">
+                <v-btn @click="changeDays(-7)" rounded>
+                    <v-icon> mdi-chevron-up</v-icon>
+                </v-btn>
                 <v-row dense v-if="ongoingJobs.length>0">
-                    <v-col lg="4" v-for="date in dates">
+                    <v-col lg="3" v-for="day in days">
                         <v-card min-height="270" color="transparent" flat outlined>
-                            <v-toolbar dense>
-                                {{date}}
+                            <v-toolbar dense :color="today === day?'secondary':''">
+                                {{day | format}}
+                                <v-spacer/>
                             </v-toolbar>
                             <v-card-text>
                                 <v-list class="pa-0" dense>
@@ -33,8 +37,10 @@
                         </v-card>
                     </v-col>
                 </v-row>
+                <v-btn @click="changeDays(+7)" rounded>
+                    <v-icon> mdi-chevron-down</v-icon>
+                </v-btn>
             </v-col>
-
         </v-row>
     </div>
 </template>
@@ -44,8 +50,9 @@
     import ScheduleEntry from "@/classes/ScheduleEntry";
     import JobExpandable from "@/components/Jobs/JobExpandable";
     import JobPreviewList from "@/components/Jobs/JobPreviewList";
-    import {mapActions, mapGetters} from 'vuex';
+    import {mapActions, mapGetters, mapMutations} from 'vuex';
     import jobs from "@/api/jobs";
+    import moment from "moment"
 
     export default {
         name: "Schedule",
@@ -53,30 +60,33 @@
 
         data: () => ({
 
+            minus: -1,
+            plus: 6,
+            today: moment().toISOString(),
+            date: moment(),
             scheduleEntry: null,
-            dates: [
-                '12/12/12',
-                '12/12/12',
-                '12/12/12',
-                '12/12/12',
-                '12/12/12',
-                '12/12/12',
-                '12/12/12',
-                '12/12/12',
-                '12/12/12'
-            ]
+
         }),
         created() {
+            this.makeDays();
             this.getJobs().then(r => {
-                this.getSchedule()
             });
+        },
+        filters: {
+            format(date) {
+                return moment(date).format('DD/MM')
+            },
+            duration(date) {
+                return moment(date).format('DD/MM')
+            }
         },
         computed: {
             ...mapGetters(
                 'schedule',
                 [
-                    "schedule"
+                    "days"
                 ]),
+
             ...mapGetters(
                 'jobs',
                 [
@@ -84,11 +94,17 @@
                 ])
         },
         methods: {
-
-            ...mapActions(
+            changeDays(days) {
+                this.date.add(days, 'days')
+                this.makeDays();
+            },
+            makeDays() {
+                this.setDays({date: this.date, minus: this.minus, plus: this.plus});
+            },
+            ...mapMutations(
                 'schedule',
                 [
-                    'getSchedule'
+                    "setDays"
                 ]
             ),
             ...mapActions(

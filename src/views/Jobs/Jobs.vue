@@ -13,63 +13,73 @@
         </portal>
         <v-row>
             <v-col sm="12" lg="4">
-                <v-card class="mb-4">
-                    <v-toolbar color="transparent" flat>
-                        <v-toolbar-title>
-                            <strong class="text--primary"> Started jobs ({{ongoingJobs.length}}) </strong>
-                        </v-toolbar-title>
-                        <v-toolbar-items>
-                        </v-toolbar-items>
-                        <v-spacer/>
-                    </v-toolbar>
-                    <v-card-text>
-                        <v-expansion-panels>
-                            <job-expandable detailed v-for=" job in ongoingJobs" :job="job"/>
-                        </v-expansion-panels>
-                    </v-card-text>
-                </v-card>
-                <v-card class="mb-4">
-                    <v-toolbar flat color="transparent">
-                        <v-toolbar-title>
-                            <strong class="text--primary"> Scheduled (0) </strong>
-                        </v-toolbar-title>
-                        <v-toolbar-items>
-                        </v-toolbar-items>
-                        <v-spacer/>
-                    </v-toolbar>
-                    <v-card-text>
-                        <v-expansion-panels>
-                        </v-expansion-panels>
-                    </v-card-text>
-                </v-card>
-                <v-card class="mb-4">
-                    <v-toolbar flat color="transparent">
-                        <v-toolbar-title>
-                            <strong class="text--primary"> Idle (0) </strong>
-                        </v-toolbar-title>
-                        <v-toolbar-items>
-                        </v-toolbar-items>
-                        <v-spacer/>
-                    </v-toolbar>
-                    <v-card-text>
+                <v-tabs z>
+                    <v-tab> Current </v-tab>
+                    <v-tab> Past</v-tab>
+                    <v-tab-item>
+                        <v-card color="transparent" flat>
+                            <v-toolbar color="transparent" flat>
+                                <v-toolbar-title>
+                                    <strong class="text--primary"> Started jobs ({{ongoingJobs.length}}) </strong>
+                                </v-toolbar-title>
+                                <v-toolbar-items>
+                                </v-toolbar-items>
+                                <v-spacer/>
+                            </v-toolbar>
+                            <v-card-text>
+                                <v-expansion-panels>
+                                    <job-expandable detailed v-for=" job in ongoingJobs" :job="job"/>
+                                </v-expansion-panels>
+                            </v-card-text>
+                        </v-card>
+                        <v-card class="mb-4">
+                            <v-toolbar flat color="transparent">
+                                <v-toolbar-title>
+                                    <strong class="text--primary"> Scheduled (0) </strong>
+                                </v-toolbar-title>
+                                <v-toolbar-items>
+                                </v-toolbar-items>
+                                <v-spacer/>
+                            </v-toolbar>
+                            <v-card-text>
+                                <v-expansion-panels>
+                                </v-expansion-panels>
+                            </v-card-text>
+                        </v-card>
+                        <v-card class="mb-4">
+                            <v-toolbar flat color="transparent">
+                                <v-toolbar-title>
+                                    <strong class="text--primary"> Idle (0) </strong>
+                                </v-toolbar-title>
+                                <v-toolbar-items>
+                                </v-toolbar-items>
+                                <v-spacer/>
+                            </v-toolbar>
+                            <v-card-text>
 
-                    </v-card-text>
-                </v-card>
+                            </v-card-text>
+                        </v-card>
+                    </v-tab-item>
+                    <v-tab-item>
+                        <v-card>
+                            <v-toolbar flat color="transparent">
+                                <v-toolbar-title>
+                                    <strong class="text--primary"> Past Jobs </strong>
+                                </v-toolbar-title>
+                                <v-toolbar-items>
+                                </v-toolbar-items>
+                                <v-spacer/>
+                            </v-toolbar>
+                            <v-card-text>
+
+                            </v-card-text>
+                        </v-card>
+                    </v-tab-item>
+                </v-tabs>
+
             </v-col>
             <v-col sm="12" lg="8">
-                <v-card>
-                    <v-toolbar flat color="transparent">
-                        <v-toolbar-title>
-                            <strong class="text--primary"> Past Jobs </strong>
-                        </v-toolbar-title>
-                        <v-toolbar-items>
-                        </v-toolbar-items>
-                        <v-spacer/>
-                    </v-toolbar>
-                    <v-card-text>
 
-                    </v-card-text>
-                </v-card>
             </v-col>
         </v-row>
     </div>
