@@ -3,13 +3,15 @@ import Slot from "@/classes/Slot";
 import Customer from "@/classes/Customer";
 import tinycolor from 'tinycolor2'
 import moment from 'moment';
+
 export default class {
 
     static status = {
-        IDLE:'idle',
-        STARTED: 'started',
+        IDLE: 'idle',
+        ONGOING: 'ongoing',
         FINISHED: 'finished',
         SCHEDULED: 'scheduled',
+        CANCELLED: 'cancelled',
     };
 
     constructor(obj) {
@@ -18,8 +20,11 @@ export default class {
         this.color = obj.color;
         this.image = obj.image;
         this.name = obj.name;
+        this.description = obj.description;
         this.toStartAt = obj.toStartAt;
         this.startedAt = obj.startedAt;
+        this.finishedAt = obj.finishedAt;
+        this.cancelledAt = obj.cancelledAt;
         this.price = obj.price;
         this.priority = obj.priority;
         this.insertedAt = obj.insertedAt;
@@ -56,8 +61,9 @@ export default class {
         color.setAlpha(alpha);
         return color.toHex8String()
     }
-    getJobColor(){
-        return (this.status === this.status.FINISHED)?'grey':this.color;
+
+    getJobColor() {
+        return (this.status === this.status.FINISHED) ? 'grey' : this.color;
     }
 
     getCompletionPercentage() {
@@ -68,6 +74,30 @@ export default class {
             workHours += js.workHours;
         });
         return ((workHours / jobHours) * 100).toFixed(0);
+    }
+
+    markJobAsOngoing() {
+        this.status = Job.ONGOING;
+        this.startedAt = moment().toISOString()
+    }
+
+    markJobAsFinished() {
+        this.job.status = Job.FINISHED;
+        this.job.finishedAt = moment().toISOString()
+    }
+
+    markJobAsScheduled(date) {
+        this.job.status = Job.SCHEDULED;
+        this.job.toStartAt = moment(date).toISOString()
+    }
+
+    markJobAsCancelled() {
+        this.job.status = Job.CANCELLED;
+        this.job.cancelledAt = moment().toISOString()
+    }
+
+    setDeadline(date) {
+        this.job.deadline = moment(state).toISOString()
     }
 
     getFormattedDeadline(mode) {

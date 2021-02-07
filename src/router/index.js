@@ -7,6 +7,8 @@ import Slots from "../views/Slots/Slots"
 import Customers from "@/views/Customers/Customers"
 import Customer from "@/views/Customers/Customer"
 import NewCustomer from "../views/Customers/NewCustomer"
+import Jobs from "../views/Jobs/Jobs"
+import Job from "../views/Jobs/Job"
 
 Vue.use(VueRouter)
 
@@ -35,7 +37,7 @@ const routes = [
         path: '/customers',
         name: 'Customers',
         component: Customers,
-        children:[
+        children: [
             {
                 path: '/',
                 meta: {
@@ -53,11 +55,11 @@ const routes = [
 
     },
     {
-        path:'/newCustomer',
-        name:'New Customer',
+        path: '/newCustomer',
+        name: 'New Customer',
         component: NewCustomer,
-        meta:{
-            requiresAuth:true,
+        meta: {
+            requiresAuth: true,
         }
     },
     {
@@ -74,16 +76,16 @@ const routes = [
     {
         path: '/slots',
         component: Slots,
-        children:[
+        children: [
             {
-                path:'/',
+                path: '/',
                 meta: {
                     requiresAuth: true,
                 }
-            } ,
+            },
             {
-                path:':id',
-                component:Slot,
+                path: ':id',
+                component: Slot,
                 meta: {
                     requiresAuth: true,
                 }
@@ -106,11 +108,20 @@ const routes = [
     {
         path: '/jobs',
         name: 'jobs',
-        component: () => import(/* webpackChunkName: "jobs" */ '../views/Jobs/Jobs'),
+        component: Jobs,
         meta: {
             requiresAuth: true,
         },
     },
+    {
+        path: '/jobs/:id',
+        name: 'job',
+        component: Job,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+
     {
         path: '/newJob',
         name: 'New job',
@@ -156,11 +167,11 @@ router.beforeEach((to, from, next) => {
         if (store.getters['isAuthenticated']) {
             next()
             return
-        }else{
-            store.dispatch('getUserFromToken').then(resp=>{
+        } else {
+            store.dispatch('getUserFromToken').then(resp => {
                 next()
-            }).catch(err=>{
-                next ('/login');
+            }).catch(err => {
+                next('/login');
             })
             return;
         }

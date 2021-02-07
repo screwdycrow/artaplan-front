@@ -58,9 +58,9 @@
                                     </v-row>
                                     <v-row>
                                         <v-col lg="10">
-                                            <v-textarea dense filled label="Job Description"
-                                                        v-model="job.description"/>
-                                        </v-col>
+                                        <v-textarea dense filled label="Job Description"
+                                                    v-model="job.description"/>
+                                    </v-col>
                                         <v-col lg="2">
                                             <v-color-picker v-model="job.color"></v-color-picker>
                                         </v-col>

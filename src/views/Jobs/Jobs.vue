@@ -12,74 +12,54 @@
             </v-btn>
         </portal>
         <v-row>
-            <v-col sm="12" lg="4">
-                <v-tabs z>
-                    <v-tab> Current </v-tab>
-                    <v-tab> Past</v-tab>
-                    <v-tab-item>
-                        <v-card color="transparent" flat>
-                            <v-toolbar color="transparent" flat>
-                                <v-toolbar-title>
-                                    <strong class="text--primary"> Started jobs ({{ongoingJobs.length}}) </strong>
-                                </v-toolbar-title>
-                                <v-toolbar-items>
-                                </v-toolbar-items>
-                                <v-spacer/>
-                            </v-toolbar>
+            <v-col sm="12" lg="10">
+                <h2> Ongoing ({{ongoingJobs.length}})</h2>
+                <v-row>
+                    <v-col>
+
+                        <swiper :options="swiperOptions" v-if="ongoingJobs.length">
+                            <swiper-slide v-for="job in ongoingJobs">
+                                <job-item :job="job"></job-item>
+                            </swiper-slide>
+                        </swiper>
+                        <v-card flat color="transparent" v-else>
                             <v-card-text>
-                                <v-expansion-panels>
-                                    <job-expandable detailed v-for=" job in ongoingJobs" :job="job"/>
-                                </v-expansion-panels>
+                                There are no ongoing jobs
                             </v-card-text>
                         </v-card>
-                        <v-card class="mb-4">
-                            <v-toolbar flat color="transparent">
-                                <v-toolbar-title>
-                                    <strong class="text--primary"> Scheduled (0) </strong>
-                                </v-toolbar-title>
-                                <v-toolbar-items>
-                                </v-toolbar-items>
-                                <v-spacer/>
-                            </v-toolbar>
+                    </v-col>
+                </v-row>
+                <v-row>
+
+                    <v-col lg="6">
+                        <h2> Idle ({{idleJobs.length}})</h2>
+                        <swiper v-if="idleJobs.length" :options="swiperOptions2">
+                            <swiper-slide v-for="job in idleJobs">
+                                <job-item :job="job"></job-item>
+                            </swiper-slide>
+                        </swiper>
+                        <v-card v-else flat color="transparent" >
                             <v-card-text>
-                                <v-expansion-panels>
-                                </v-expansion-panels>
+                                There are no ongoing jobs
                             </v-card-text>
                         </v-card>
-                        <v-card class="mb-4">
-                            <v-toolbar flat color="transparent">
-                                <v-toolbar-title>
-                                    <strong class="text--primary"> Idle (0) </strong>
-                                </v-toolbar-title>
-                                <v-toolbar-items>
-                                </v-toolbar-items>
-                                <v-spacer/>
-                            </v-toolbar>
-                            <v-card-text>
+                    </v-col>
+                    <v-col lg="6">
+                        <h2> Scheduled ({{scheduledJobs.length}})</h2>
 
+                        <swiper v-if="scheduledJobs.length" :options="swiperOptions2">
+                            <swiper-slide v-for="job in scheduledJobs">
+                                <job-item :job="job"></job-item>
+                            </swiper-slide>
+                        </swiper>
+                        <v-card v-else flat color="transparent" v-else>
+                            <v-card-text>
+                                There are no scheduled jobs
                             </v-card-text>
                         </v-card>
-                    </v-tab-item>
-                    <v-tab-item>
-                        <v-card>
-                            <v-toolbar flat color="transparent">
-                                <v-toolbar-title>
-                                    <strong class="text--primary"> Past Jobs </strong>
-                                </v-toolbar-title>
-                                <v-toolbar-items>
-                                </v-toolbar-items>
-                                <v-spacer/>
-                            </v-toolbar>
-                            <v-card-text>
+                    </v-col>
 
-                            </v-card-text>
-                        </v-card>
-                    </v-tab-item>
-                </v-tabs>
-
-            </v-col>
-            <v-col sm="12" lg="8">
-
+                </v-row>
             </v-col>
         </v-row>
     </div>
@@ -91,14 +71,37 @@
     import {mapGetters, mapActions} from 'vuex'
     import JobExpandable from "@/components/Jobs/JobExpandable";
     import NewJob from "@/views/Jobs/NewJob";
+    import JobItem from "../../components/Jobs/JobItem"
+    import {Swiper, SwiperSlide, directive} from 'vue-awesome-swiper'
 
     export default {
         name: "Jobs",
-        components: {JobExpandable},
+        data: () => ({
+            swiperOptions: {
+                slidesPerView: 4,
+                spaceBetween: 10,
+                freeMode: true,
+            },
+            swiperOptions2: {
+                slidesPerView: 2,
+                spaceBetween: 10,
+                freeMode: true,
+            }
+        }),
+        components: {
+            JobItem,
+            JobExpandable,
+            Swiper,
+            SwiperSlide
+        },
+        directives: {
+            swiper: directive
+        },
         computed: {
             ...mapGetters('jobs', [
                 'ongoingJobs',
                 'pastJobs',
+                'scheduledJobs',
                 'idleJobs'
             ])
         },

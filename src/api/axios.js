@@ -14,8 +14,14 @@ let instance = axios.create({
 instance.interceptors.request.use((config) => ({
     ...config,
     headers: {
-        Authorization: 'Bearer '+store.getters['token'] || "",
+        Authorization: 'Bearer ' + store.getters['token'] || "",
         ...config.headers
     }
 }));
+axios.interceptors.response.use(function (response) {
+    return response;
+}, function (error) {
+    store.commit('setLoading',false)
+    return Promise.reject(error);
+});
 export default instance;

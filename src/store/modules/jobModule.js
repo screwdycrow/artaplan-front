@@ -2,6 +2,7 @@ import jobApi from '../../api/jobs'
 import Job from "@/classes/Job";
 import Messages from "@/store/Messages";
 import _ from 'lodash'
+import moment from "moment"
 
 function findJob(id) {
     return (s) => s.jobId === id;
@@ -27,17 +28,25 @@ export default ({
             })
         },
 
+        updateJob({commit}, job) {
+            commit('setLoading', true, {root: true})
+            return jobApi.putJob(new Job(job)).then(resp => {
+                commit('setLoading', false, {root: true})
+                commit('pushMessage', Messages.UPDATED, {root: true})
+            })
+        },
+
         addJob({commit}, job) {
             commit('setLoading', true, {root: true})
             return jobApi.addJob(new Job(job)).then(resp => {
-                commit('setLoading', false, {root: false})
+                commit('setLoading', false, {root: true})
                 commit('pushMessage', Messages.JOB_ADDED, {root: true})
             })
         },
         getJob({commit}, id) {
             commit('setLoading', true, {root: true})
             jobApi.getJob(id).then(job => {
-                    commit('setLoading', false, {root: false})
+                    commit('setLoading', false, {root: true})
                     commit('setJob', job)
                 }
             )
@@ -45,13 +54,10 @@ export default ({
     },
     mutations: {
         setJobs(state, jobs) {
-            state.jobs = jobs.map(j => new Job(j));
+            state.jobs = jobs.map(j => new Job(j))
         },
         setJob(state, job) {
-            state.job = Object.assign({}, job)
-        },
-        toggleEditor(state) {
-            state.showJobEditor = !state.showJobEditor;
+            state.job = new Job(job);
         },
         setPastJobs(state, jobs) {
             state.pastJobs = [];
@@ -90,12 +96,10 @@ export default ({
 
     },
     getters: {
-        defaultJob: (s) => new Job(s.defaultJob),
-        pastJobs: (s) => s.jobs,
-        ongoingJobs: (s) => s.jobs,
-        idleJobs: (s) => s.jobs,
-        showJobEditor: (s) => s.showJobEditor,
-        getJobById: (s) => (id) => s.ongoingJobMap[id],
-        job: s => _.cloneDeep(s)
+        pastJobs: (s) => s.jobs.filter(j=>j.status === Job.status.FINISHED || j.status === Job.status.CANCELLED),
+        ongoingJobs: (s) => s.jobs.filter(j=>j.status === Job.status.ONGOING),
+        idleJobs: (s) => s.jobs.filter(j=>j.status === Job.status.IDLE),
+        scheduledJobs:(s)=>s.jobs.filter(j=>j.status === Job.status.SCHEDULED),
+        job: s => s.job
     },
 });
