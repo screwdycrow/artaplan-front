@@ -68,7 +68,6 @@
 <script>
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue'
-import JobCard from "../components/Jobs/JobCard"
 import ScheduleItem from "../components/Schedule/ScheduleEntryItem"
 import ScheduleEntry from "@/classes/ScheduleEntry";
 import {mapActions, mapGetters, mapState} from "vuex";
@@ -90,8 +89,6 @@ export default {
     JobPreviewList,
     ScheduleEntryItem,
     ScheduleItem,
-    JobCard,
-    HelloWorld
   },
   computed: {
     ...mapGetters('schedule', [

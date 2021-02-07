@@ -1,18 +1,96 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
 
     <div>
         <portal to="toolbar-title">
-        {{job.name}}
-    </portal>
+            {{job.name}}
+        </portal>
+        <portal to="toolbar-actions">
+            <v-btn class="mr-3" v-if="job.status === 'idle' || job.status === 'scheduled' " color="primary">Start Job
+            </v-btn>
+            <v-btn v-if="job.status !== 'finished' || job.status !== 'ongoing' ">Cancel Job</v-btn>
+            <v-btn color="secondary" v-if="job.status === 'ongoing'">Finish</v-btn>
+        </portal>
+
         <v-row>
             <v-col lg="3">
+                <v-toolbar flat color="transparent">
+                    <v-toolbar-title>
+                        <h3>Details</h3>
+                    </v-toolbar-title>
+                </v-toolbar>
+                <v-card>
+                    <v-card-text>
+                        <v-row>
+                            <v-col lg="10">
+                                <v-text-field hide-details required outlined type="text"
+                                              label="Job Name (*)"
+                                              v-model="job.name"/>
+                            </v-col>
+                            <v-col lg="2">
+                                <v-dialog
+                                        ref="menu2"
+                                        :close-on-content-click="false"
+                                        transition="scale-transition"
+                                        offset-y
+                                        max-width="290px"
+                                        min-width="auto"
+                                >
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn icon large outlined="" v-on="on" rounded :color="job.color">
+                                            <v-icon>mdi-palette</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <v-color-picker v-model="job.color"></v-color-picker>
+                                </v-dialog>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col lg=6>
+                                <v-text-field
+                                        outlined
+                                        hide-details
+                                        required type="number"
+                                        label="Job Price (*) " v-model.number="job.price"
+                                        append-icon="mdi-cash"/>
 
-                <v-card >
-                    <v-card-actions color="transparent" flat>
-                        <v-btn v-if="job.status === 'idle' || job.status === 'scheduled' " color="secondary">Start Job </v-btn>
-                        <v-btn v-if="job.status !== 'finished' || job.status !== 'ongoing' ">Cancel Job </v-btn>
-                        <v-btn color="secondary" v-if="job.status === 'ongoing'">Finish</v-btn>
-                    </v-card-actions>
+                            </v-col>
+                            <v-col lg="6">
+                                <v-menu
+                                        ref="menu1"
+                                        :close-on-content-click="false"
+                                        transition="scale-transition"
+                                        offset-y
+                                        max-width="290px"
+                                        min-width="auto"
+                                >
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-text-field
+                                                outlined
+                                                readonly
+                                                hide-details
+                                                v-model="job.deadline"
+                                                label="Deadline"
+                                                persistent-hint
+                                                append-icon="mdi-calendar"
+                                                v-bind="attrs"
+                                                v-on="on"
+                                        ></v-text-field>
+                                    </template>
+                                    <v-date-picker
+                                            @input="job.setDeadline"
+                                            no-title
+                                    ></v-date-picker>
+                                </v-menu>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                </v-card>
+                <v-toolbar flat color="transparent">
+                    <v-toolbar-title>
+                        <h3>Stages</h3>
+                    </v-toolbar-title>
+                </v-toolbar>
+                <v-card>
                     <v-expansion-panels mandatory>
                         <job-expandable :job="job"></job-expandable>
 
@@ -20,52 +98,23 @@
                 </v-card>
             </v-col>
             <v-col lg="9">
-                <v-tabs>
-                    <v-tab>
-                        Details
-                    </v-tab>
-                    <v-tab>
-                        Schedule
-                    </v-tab>
-                    <v-tab>
-                        References
-                    </v-tab>
-                    <v-tab-item>
-                        <v-card >
-                            <v-card-text>
-                                <v-form>
-                                    <strong> Details </strong>
-                                    <v-row>
-                                        <v-col lg="10">
-                                            <v-text-field required filled type="text"
-                                                          label="Job Name (*)"
-                                                          v-model="job.name"/>
-                                        </v-col>
-                                        <v-col lg="2">
-                                            <v-text-field required filled type="number"
-                                                          label="Job Price (*) " v-model.number="job.price"
-                                                          append-icon="mdi-cash"/>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row>
-                                        <v-col>
-                                            <v-textarea dense filled label="Job Description"
-                                                        v-model="job.description"/>
-                                        </v-col>
+                <v-toolbar flat color="transparent">
+                    <v-toolbar-title>
+                        <h3>Description</h3>
+                    </v-toolbar-title>
+                </v-toolbar>
+                <v-card>
+                    <v-card-text>
+                        <v-textarea rows="6" hide-details dense outlined label="Job Description"
+                                    v-model="job.description"/>
 
-                                    </v-row>
-                                </v-form>
-                            </v-card-text>
-                        </v-card>
-                    </v-tab-item>
-                    <v-tab-item>
-
-                    </v-tab-item>
-                    <v-tab-item>
-
-                    </v-tab-item>
-                </v-tabs>
-
+                    </v-card-text>
+                </v-card>
+                <v-toolbar flat color="transparent">
+                    <v-toolbar-title>
+                        <h3>References</h3>
+                    </v-toolbar-title>
+                </v-toolbar>
             </v-col>
         </v-row>
     </div>
