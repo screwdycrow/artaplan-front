@@ -1,25 +1,15 @@
 import JobStage from "@/classes/JobStage";
 import store from '../store';
-export default class  {
+
+export default class {
     constructor(scheduleEntry) {
+        this.tempId = Math.floor(Math.random() * 1000000000)
         this.scheduleEntryId = scheduleEntry.scheduleEntryId;
         this.jobStageId = scheduleEntry.jobStageId;
         this.jobId = scheduleEntry.jobId;
         this.jobStage = {};
-        this.setJob(scheduleEntry.jobId);
-        this.scheduledAt = scheduleEntry.scheduledAt;
-        this.isDeadline = scheduleEntry.isDeadline;
-        this.done = scheduleEntry.done;
-        this.hours = scheduleEntry.hours;
+        this.dateFrom = scheduleEntry.dateFrom;
+        this.dateTo = scheduleEntry.dateAt;
     }
-    getJobStage(){
-        return  this.getJob().jobStages.find(js=>js.jobStageId === this.jobStageId)
-    }
-    getJob(){
-        return store.getters['jobs/getJobById'](this.jobId);
-    }
-    setJob(){
-        this.job =  store.getters['jobs/getJobById'](this.jobId);
-        this.jobStage = this.job.jobStages.find(js=>js.jobStageId === this.jobStageId)
-    };
+
 }

@@ -5,7 +5,8 @@
             {{job.name}}
         </portal>
         <portal to="toolbar-actions">
-            <v-btn class="mr-3" v-if="job.status === 'idle' || job.status === 'scheduled' " color="primary">Start Job
+            <v-btn class="mr-3" @click="startJob()" v-if="job.status === 'idle' || job.status === 'scheduled' "
+                   color="primary">Start Job
             </v-btn>
             <v-btn v-if="job.status !== 'finished' || job.status !== 'ongoing' ">Cancel Job</v-btn>
             <v-btn color="secondary" v-if="job.status === 'ongoing'">Finish</v-btn>
@@ -68,7 +69,7 @@
                                                 outlined
                                                 readonly
                                                 hide-details
-                                                v-model="job.deadline"
+                                                :value="job.deadline|formatDate"
                                                 label="Deadline"
                                                 persistent-hint
                                                 append-icon="mdi-calendar"
@@ -77,7 +78,7 @@
                                         ></v-text-field>
                                     </template>
                                     <v-date-picker
-                                            @input="job.setDeadline"
+                                            v-model="job.deadline"
                                             no-title
                                     ></v-date-picker>
                                 </v-menu>
@@ -128,23 +129,33 @@
     export default {
         name: "Job",
         components: {JobExpandable},
+        data: () => ({
+            job:null
+        }),
         watch: {
             $route(to, from) {
-                this.getJob(this.$route.params.id);
+                this.getJob(this.$route.params.id)
+                    .then(job => this.job = job);
             },
         },
         created() {
             this.getJob(this.$route.params.id)
+                .then(job => this.job = job);
         },
-        computed: {
-            ...mapGetters('jobs', [
-                'job',
-            ])
-        },
+        computed: {},
         methods: {
+            startJob() {
+                this.job.markJobAsOngoing();
+                this.updateJob(this.job);
+            },
+            finishJob() {
+                this.job.markJobAsFinished();
+                this.updateJob(this.job)
+                    .then(job=>this.job = job)
+            },
             ...mapActions('jobs', [
-                "getJob",
-                "updateJob"
+                "updateJob",
+                "getJob"
             ]),
             ...mapMutations('jobs', [])
         }

@@ -31,7 +31,7 @@
                             </v-toolbar>
                             <v-card-text>
                                 <v-list class="pa-0" dense>
-                                    <schedule-entry-item :item="scheduleEntry"/>
+
                                 </v-list>
                             </v-card-text>
                         </v-card>
@@ -64,7 +64,6 @@
             plus: 6,
             today: moment().toISOString(),
             date: moment(),
-            scheduleEntry: null,
 
         }),
         created() {

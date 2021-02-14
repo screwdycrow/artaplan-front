@@ -30,9 +30,10 @@ export default ({
 
         updateJob({commit}, job) {
             commit('setLoading', true, {root: true})
-            return jobApi.putJob(new Job(job)).then(resp => {
+            return jobApi.putJob(new Job(job)).then(job => {
                 commit('setLoading', false, {root: true})
                 commit('pushMessage', Messages.UPDATED, {root: true})
+                return Promise.resolve(new Job(job))
             })
         },
 
@@ -45,9 +46,9 @@ export default ({
         },
         getJob({commit}, id) {
             commit('setLoading', true, {root: true})
-            jobApi.getJob(id).then(job => {
+           return jobApi.getJob(id).then(job => {
                     commit('setLoading', false, {root: true})
-                    commit('setJob', job)
+                    return Promise.resolve(new Job(job))
                 }
             )
         }
@@ -56,9 +57,7 @@ export default ({
         setJobs(state, jobs) {
             state.jobs = jobs.map(j => new Job(j))
         },
-        setJob(state, job) {
-            state.job = new Job(job);
-        },
+
         setPastJobs(state, jobs) {
             state.pastJobs = [];
             jobs.forEach(j => {
@@ -96,10 +95,9 @@ export default ({
 
     },
     getters: {
-        pastJobs: (s) => s.jobs.filter(j=>j.status === Job.status.FINISHED || j.status === Job.status.CANCELLED),
-        ongoingJobs: (s) => s.jobs.filter(j=>j.status === Job.status.ONGOING),
-        idleJobs: (s) => s.jobs.filter(j=>j.status === Job.status.IDLE),
-        scheduledJobs:(s)=>s.jobs.filter(j=>j.status === Job.status.SCHEDULED),
-        job: s => s.job
+        pastJobs: (s) => s.jobs.filter(j => j.status === Job.status.FINISHED || j.status === Job.status.CANCELLED),
+        ongoingJobs: (s) => s.jobs.filter(j => j.status === Job.status.ONGOING),
+        idleJobs: (s) => s.jobs.filter(j => j.status === Job.status.IDLE),
+        scheduledJobs: (s) => s.jobs.filter(j => j.status === Job.status.SCHEDULED),
     },
 });

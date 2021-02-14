@@ -4,7 +4,7 @@ import Customer from "@/classes/Customer";
 import tinycolor from 'tinycolor2'
 import moment from 'moment';
 
-export default class {
+export default class Job {
 
     static status = {
         IDLE: 'idle',
@@ -15,6 +15,7 @@ export default class {
     };
 
     constructor(obj) {
+        this.userId = obj.userId;
         this.jobId = obj.jobId;
         this.status = obj.status || 'idle'
         this.color = obj.color;
@@ -77,22 +78,22 @@ export default class {
     }
 
     markJobAsOngoing() {
-        this.status = Job.ONGOING;
+        this.status = Job.status.ONGOING;
         this.startedAt = moment().toISOString()
     }
 
     markJobAsFinished() {
-        this.job.status = Job.FINISHED;
+        this.job.status = Job.status.FINISHED;
         this.job.finishedAt = moment().toISOString()
     }
 
     markJobAsScheduled(date) {
-        this.job.status = Job.SCHEDULED;
+        this.job.status = Job.status.SCHEDULED;
         this.job.toStartAt = moment(date).toISOString()
     }
 
     markJobAsCancelled() {
-        this.job.status = Job.CANCELLED;
+        this.job.status = Job.status.CANCELLED;
         this.job.cancelledAt = moment().toISOString()
     }
 

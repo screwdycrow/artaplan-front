@@ -1,64 +1,27 @@
-const schedule= [
-    {
-        scheduleEntryId: 1,
-        jobId:1,
-        jobStageId: 2,
-        scheduledAt: "2020-05-28",
-        isDeadline: false,
-        done: false,
-        hours: 1,
-    },
-    {
-        scheduleEntryId: 3,
-        jobId:2,
-        jobStageId: 2,
-        scheduledAt: "2020-05-28",
-        isDeadline: false,
-        done: false,
-        hours: 1,
-    },
-    {
-        scheduleEntryId: 2,
-        jobId:2,
-        jobStageId: 2,
-        scheduledAt: "2020-05-31",
-        isDeadline: false,
-        done: false,
-        hours: 1,
-    },
-];
+import axios from '../api/axios'
 
-const workload = [
-    {
-        date:"2020-05-28",
-        hours:5
+export default {
+    getSchedule() {
+        return axios.get('/ScheduleEntries')
+            .then(resp => resp.data)
     },
-    {
-        date:"2020-05-29",
-        hours:2
+    postScheduleEntry(entry) {
+        return axios.post('/ScheduleEntries', entry).then(
+            resp => resp.data
+        )
     },
-    {
-        date:"2020-05-30",
-        hours:2
+    putScheduleEntry(entry) {
+        return axios.get('/ScheduleEntries/' + entry.scheduleEntryId, entry)
+            .then(
+                resp => resp.data
+            )
     },
-    {
-        date:"2020-05-31",
-        hours:4
+    deleteScheduleEntry(entry) {
+        return axios.delete('/ScheduleEntries/' + entry.scheduleEntryId)
+            .then(resp => resp.data)
     },
-    {
-        date:"2020-06-01",
-        hours:4
-    },  {
-        date:"2020-06-02",
-        hours:1
-    }
-];
 
-export  default {
-    getSchedule(){
-        return Promise.resolve(schedule)
-    },
-    getWorkload(){
+    getWorkload() {
         return Promise.resolve(workload)
     }
 }
