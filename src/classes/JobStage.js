@@ -7,14 +7,22 @@ export default class  {
         this.jobId = jobStage.jobId;
         this.stageId = jobStage.stageId;
         this.job = {};
+        this.setJob(jobStage.job)
         this.stage = {};
-        if(jobStage.stage)this.setStage(jobStage.stage);
+        this.setStage(jobStage.stage);
         this.workHours = jobStage.workHours;
         this.jobHours = jobStage.jobHours;
         this.order = jobStage.order;
     }
+    setJob(job){
+        if(job){
+            this.job = new Job(job);
+        }
+    }
     setStage(stage){
-        this.stage = new Stage(stage);
+        if(stage){
+            this.stage = new Stage(stage);
+        }
     }
     getCompletionPercentage(){
         return ((this.workHours /  this.jobHours)*100).toFixed(0);

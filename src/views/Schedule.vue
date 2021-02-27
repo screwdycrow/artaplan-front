@@ -23,18 +23,8 @@
                     <v-icon> mdi-chevron-up</v-icon>
                 </v-btn>
                 <v-row dense v-if="ongoingJobs.length>0">
-                    <v-col lg="3" v-for="day in days">
-                        <v-card min-height="270" color="transparent" flat outlined>
-                            <v-toolbar dense :color="today === day?'secondary':''">
-                                {{day | format}}
-                                <v-spacer/>
-                            </v-toolbar>
-                            <v-card-text>
-                                <v-list class="pa-0" dense>
-
-                                </v-list>
-                            </v-card-text>
-                        </v-card>
+                    <v-col lg="2" v-for="day in days">
+                        <day-entries  :day="day"></day-entries>
                     </v-col>
                 </v-row>
                 <v-btn @click="changeDays(+7)" rounded>
@@ -53,32 +43,24 @@
     import {mapActions, mapGetters, mapMutations} from 'vuex';
     import jobs from "@/api/jobs";
     import moment from "moment"
+    import DayEntries from "../components/Schedule/DayEntries"
 
     export default {
         name: "Schedule",
-        components: {JobPreviewList, JobExpandable, ScheduleEntryItem},
+        components: {DayEntries, JobPreviewList, JobExpandable, ScheduleEntryItem},
 
         data: () => ({
-
             minus: -1,
-            plus: 6,
-            today: moment().toISOString(),
+            plus: 10,
             date: moment(),
-
         }),
         created() {
-            this.makeDays();
-            this.getJobs().then(r => {
-            });
+            this.getJobs();
+            this.getSchedule()
+                .then(() => this.makeDays())
+
         },
-        filters: {
-            format(date) {
-                return moment(date).format('DD/MM')
-            },
-            duration(date) {
-                return moment(date).format('DD/MM')
-            }
-        },
+
         computed: {
             ...mapGetters(
                 'schedule',
@@ -110,6 +92,13 @@
                 'jobs',
                 [
                     "getJobs",
+
+                ]
+            ),
+            ...mapActions(
+                'schedule',
+                [
+                    "getSchedule"
 
                 ]
             ),

@@ -3,6 +3,7 @@ import ScheduleEntry from "@/classes/ScheduleEntry";
 import moment from 'moment'
 import Mappers from "../../classes/Mappers"
 import _ from 'lodash'
+import Vue from 'vue'
 
 export default ({
     namespaced: true,
@@ -16,52 +17,68 @@ export default ({
     },
     actions: {
 
-        getSchedule({commit}) {
+        getSchedule({commit, state}, reloadData) {
             commit('setLoading', true, {root: true})
-            return scheduleApi.getSchedule()
-                .then(scheduleItems => {
-                    scheduleItems.forEach((s, index) => {
-                        let entry = new ScheduleEntry(s)
-                        scheduleItems[index] = entry
-                        commit('addEntryToDay', {entry: entry, date: entry.scheduledAt})
+            if (reloadData || state.schedule.length === 0) {
+                return scheduleApi.getSchedule()
+                    .then(scheduleItems => {
+                        scheduleItems.forEach((s, index) => {
+                            let entry = new ScheduleEntry(s)
+                            scheduleItems[index] = entry
+                            commit('addEntryToDay', {entry: entry, date: entry.dateFrom})
+                        })
+                        commit('setSchedule', scheduleItems)
+                        commit('setLoading', false, {root: true})
                     })
-                    commit('setSchedule', schedule)
-                    commit('setLoading', false, {root: true})
-                })
+            } else {
+                return Promise.resolve()
+            }
         },
         updateScheduleEntry({commit}, entry) {
+            commit('setLoading', true, {root: true})
             return scheduleApi.putScheduleEntry(entry).then(s => {
                 let entry = new ScheduleEntry(s)
                 commit('updateScheduleEntry', entry)
-                commit('updateEntryOnDay', {entry: entry, date: entry.scheduledAt})
+                commit('updateEntryOnDay', {entry: entry, date: entry.dateFrom})
+                commit('setLoading', false, {root: true})
+                return Promise.resolve(entry);
+            }).catch(()=>{
+                commit('setLoading', false, {root: true})
             })
         },
-        changeDateEntry(state, {entry, date}) {
-            commit('removeEntryFromDay', {entry, date})
+        changeDateEntry({commit}, {entry, date}) {
+            commit('setLoading', true, {root: true})
+            commit('removeEntryFromDay', entry)
             let newEntry = _.cloneDeep(entry);
-            newEntry.dateFrom = moment(date).toISOString()
-            newEntry.dateTo = moment(date).toISOString()
-            return scheduleApi.putScheduleEntry(newEntry).then(s=>{
+            newEntry.dateFrom = moment(date).format("YYYY-MM-DD")
+            newEntry.dateTo = moment(date).format("YYYY-MM-DD")
+            return scheduleApi.putScheduleEntry(newEntry).then(s => {
                 let entry = new ScheduleEntry(s);
                 commit('updateScheduleEntry', entry)
                 commit('addEntryToDay', {entry: entry, date: entry.dateFrom})
+                commit('setLoading', false, {root: true})
+                return Promise.resolve(entry);
+            }).catch(()=>{
+                commit('setLoading', false, {root: true})
             })
         },
         addScheduleEntry({commit}, {jobStage, date}) {
             let entry = Mappers.ScheduleEntryFromJobStage(jobStage);
-            entry.dateFrom = moment(date).toISOString();
-            entry.dateTo = moment(date).toISOString();
+            entry.dateFrom = moment(date).moment(date).format("YYYY-MM-DD");
+            entry.dateTo = moment(date).moment(date).format("YYYY-MM-DD");
 
             return scheduleApi.postScheduleEntry(entry).then((s) => {
                 let entry = new ScheduleEntry(s)
                 commit('addToSchedule', new ScheduleEntry(entry))
                 commit('addEntryToDay', {entry: entry, date: entry.dateFrom})
+                return Promise.resolve(entry);
             })
         },
         deleteScheduleEntry({commit}, entry) {
             return scheduleApi.deleteScheduleEntry(entry).then(() => {
                 commit('removeFromSchedule', entry)
                 commit('removeEntryFromDay', {entry: entry, date: entry.dateFrom})
+                return Promise.resolve(true)
             })
         },
 
@@ -74,20 +91,24 @@ export default ({
     mutations: {
 
         setDays(state, {date, minus, plus}) {
-            let today = moment(date).toISOString();
+            let today = moment(date).startOf('day').format("YYYY-MM-DD");
             let i = 0;
             let j = 0;
             let daysBefore = [];
             let daysAfter = [];
             while (i > minus) {
                 i--;
-                daysBefore.push(moment(date).add(i, 'days').toISOString());
+                let formatted = moment(today).add(i, 'days').format("YYYY-MM-DD")
+                daysBefore.push(formatted);
+                if (state.daysEntries[formatted] === undefined) state.daysEntries[formatted] = []
             }
             while (j < plus) {
+                let formatted = moment(today).add(j, 'days').format("YYYY-MM-DD")
+                daysAfter.push(formatted);
+                if (state.daysEntries[formatted] === undefined) state.daysEntries[formatted] = []
                 j++
-                daysAfter.push(moment(date).add(j, 'days').toISOString());
             }
-            state.days = [].concat(daysBefore, today, daysAfter)
+            state.days = [].concat(daysBefore, daysAfter)
         },
 
         setWorkload(state, workload) {
@@ -96,7 +117,7 @@ export default ({
 
 
         updateScheduleEntry(state, entry) {
-            const index = state.schedule.findIndex(entry.scheduleEntryId)
+            const index = state.schedule.findIndex(e => e.scheduleEntriesId === entry.scheduleEntriesId)
             if (index !== -1) {
                 state.schedule[index] = entry
             }
@@ -105,31 +126,34 @@ export default ({
             state.schedule.push(entry)
         },
         removeFromSchedule(state, entry) {
-            const index = state.schedule.findIndex(entry.scheduleEntryId)
+            const index = state.schedule.findIndex(e => e.scheduleEntriesId === entry.scheduleEntriesId)
             if (index !== -1) {
                 state.schedule.splice(index);
             }
         },
-        removeEntryFromDay(state, {entry, date}) {
-            let dateIndex = moment(date).toISOString()
-            const index = state.daysEntries[dateIndex].findIndex(e => e.tempId === entry.scheduleEntryId)
+        removeEntryFromDay(state, entry) {
+            let dateIndex = moment(entry.dateFrom).format("YYYY-MM-DD")
+            const index = state.daysEntries[dateIndex].findIndex(e => e.scheduleEntriesId === entry.scheduleEntriesId)
+            console.log(state.daysEntries[dateIndex]);
+            console.log(dateIndex);
+            console.log(index);
             if (index !== -1) {
-                state.state.daysEntries[dateIndex].splice(index)
+                state.daysEntries[dateIndex].splice(index, 1)
             }
         },
         updateEntryOnDay(state, {entry, date}) {
-            let dateIndex = moment(date).toISOString()
-            const index = state.daysEntries[dateIndex].findIndex(e => e.tempId === entry.scheduleEntryId)
+            let dateIndex = moment(date).format("YYYY-MM-DD")
+            const index = state.daysEntries[dateIndex].findIndex(e => e.scheduleEntriesId === entry.scheduleEntriesId)
 
             if (index !== -1) {
                 state.state.daysEntries[dateIndex] = entry
             }
         },
         addEntryToDay(state, {entry, date}) {
-            if (state.daysEntries[date] !== undefined) state.daysEntries[date] = [];
-            state.daysEntries[date].push(entry);
+            let formatted = moment(date).format("YYYY-MM-DD")
+            if (state.daysEntries[formatted] === undefined) Vue.set(state.daysEntries, formatted, [])
+            state.daysEntries[formatted].push(entry);
         },
-
         setSchedule(state, schedule) {
             state.schedule = schedule;
         },
@@ -140,6 +164,7 @@ export default ({
         scheduleToday: s => s.schedule.filter(sch => moment(sch.scheduledAt).isSame(moment(Date.now()), 'day')),
         plannerOptions: s => s.plannerOptions,
         datesExceptions: s => s.datesExceptions,
-        entriesOfDay: s => (date) => s.daysEntries[moment(date).toISOString()]
+        entriesOfDay: s => day => s.daysEntries[day]
     },
 });
+

@@ -1,6 +1,7 @@
 import api from '@/api'
 import User from "@/classes/User";
 import jsCookies from 'js-cookie';
+import store from "../index"
 
 export default ({
     state: {
@@ -13,6 +14,7 @@ export default ({
                 const activeUser = new User(resp.user)
                 commit('setToken', resp.token)
                 commit('setActiveUser', activeUser)
+                commit('setLoading',false,{root:true})
                 return Promise.resolve(resp.User);
             })
         },
@@ -24,9 +26,11 @@ export default ({
                 return api.users.getUser().then(
                     user => {
                         commit('setActiveUser', user)
+                        commit('setLoading',false,{root:true})
                         return Promise.resolve(user)
                     })
             } else {
+                commit('setLoading',false,{root:true})
                 return Promise.reject('noToken')
             }
         }

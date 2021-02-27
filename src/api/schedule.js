@@ -11,13 +11,13 @@ export default {
         )
     },
     putScheduleEntry(entry) {
-        return axios.get('/ScheduleEntries/' + entry.scheduleEntryId, entry)
+        return axios.put('/ScheduleEntries/' + entry.scheduleEntriesId, entry)
             .then(
                 resp => resp.data
             )
     },
     deleteScheduleEntry(entry) {
-        return axios.delete('/ScheduleEntries/' + entry.scheduleEntryId)
+        return axios.delete('/ScheduleEntries/' + entry.scheduleEntriesId)
             .then(resp => resp.data)
     },
 
