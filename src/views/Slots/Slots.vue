@@ -13,7 +13,9 @@
         </portal>
         <v-row class>
             <v-col sm="12" lg="3" md="2">
-                <slot-list/>
+                <v-card flat class="fill-height">
+                    <slot-list/>
+                </v-card>
             </v-col>
             <v-col sm="12" lg="9" md="12">
                 <router-view></router-view>

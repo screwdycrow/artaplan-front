@@ -6,7 +6,7 @@ import moment from 'moment';
 
 export default class Job {
 
-    static status = {
+    static STATUS = {
         IDLE: 'idle',
         ONGOING: 'ongoing',
         FINISHED: 'finished',
@@ -63,8 +63,34 @@ export default class Job {
         return color.toHex8String()
     }
 
+    getHoursSpent() {
+        let workHours = 0;
+        this.jobStages.forEach(js => {
+            workHours += js.workHours;
+        });
+        return workHours
+    }
+
+    getJobHours() {
+        let jobHours = 0;
+        this.jobStages.forEach(js => {
+            jobHours += js.jobHours;
+        });
+        return jobHours;
+    }
+
+    getHoursLeft() {
+        return this.getJobHours() - this.getHoursSpent();
+    }
+
+    getValue() {
+        let hoursLeft = this.getHoursLeft();
+        let addedHours = hoursLeft<0? -1*hoursLeft:0
+        return this.price / (this.getJobHours() + addedHours);
+    }
+
     getJobColor() {
-        return (this.status === this.status.FINISHED) ? 'grey' : this.color;
+        return (this.status === this.status.FINISHED) ? 'grey' : this.color.trim();
     }
 
     getCompletionPercentage() {
@@ -78,27 +104,31 @@ export default class Job {
     }
 
     markJobAsOngoing() {
-        this.status = Job.status.ONGOING;
+        this.status = Job.STATUS.ONGOING;
         this.startedAt = moment().toISOString()
     }
 
     markJobAsFinished() {
-        this.job.status = Job.status.FINISHED;
-        this.job.finishedAt = moment().toISOString()
+        this.status = Job.STATUS.FINISHED;
+        this.finishedAt = moment().toISOString()
     }
 
     markJobAsScheduled(date) {
-        this.job.status = Job.status.SCHEDULED;
-        this.job.toStartAt = moment(date).toISOString()
+        this.status = Job.STATUS.SCHEDULED;
+        this.toStartAt = moment(date).toISOString()
     }
 
     markJobAsCancelled() {
-        this.job.status = Job.status.CANCELLED;
-        this.job.cancelledAt = moment().toISOString()
+        this.status = Job.STATUS.CANCELLED;
+        this.cancelledAt = moment().toISOString()
     }
 
     setDeadline(date) {
         this.job.deadline = moment(state).toISOString()
+    }
+
+    isOverWork() {
+        return this.getJobHours() < this.getHoursSpent();
     }
 
     getFormattedDeadline(mode) {

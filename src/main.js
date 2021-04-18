@@ -7,7 +7,7 @@ import vuetify from '@/plugins/vuetify';
 import PortalVue from 'portal-vue'
 import  moment from "moment";
 import VueApexCharts from 'vue-apexcharts'
-
+import customcss from "./assets/custom.css"
 // import style (>= Swiper 6.x)
 import 'swiper/swiper-bundle.css'
 
@@ -21,8 +21,9 @@ Vue.filter('formatDate', function (value) {
   return moment(value).format('DD/MM/YY')
 });
 
-Vue.filter('fixed',function(value){
-  return Number(value).toFixed(0);
+Vue.filter('fixed',function(value, digits){
+  let fractionDigits = digits === undefined?0:digits
+  return Number(value).toFixed(fractionDigits);
 })
 
 new Vue({

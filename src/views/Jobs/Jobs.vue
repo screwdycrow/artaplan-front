@@ -13,53 +13,84 @@
         </portal>
         <v-row>
             <v-col sm="12" lg="10">
-                <h2> Ongoing ({{ongoingJobs.length}})</h2>
-                <v-row>
-                    <v-col>
-
-                        <swiper :options="swiperOptions" v-if="ongoingJobs.length">
-                            <swiper-slide v-for="job in ongoingJobs">
-                                <job-item :job="job"></job-item>
-                            </swiper-slide>
-                        </swiper>
-                        <v-card flat color="transparent" v-else>
+                <v-card >
+                    <v-card-text>
+                        <v-card flat="">
+                        <v-card-title> Ongoing ({{ongoingJobs.length}})</v-card-title>
                             <v-card-text>
-                                There are no ongoing jobs
+                                <v-row>
+                                    <v-col>
+
+                                        <v-row  v-if="ongoingJobs.length">
+                                            <v-col lg="3" v-for="job in ongoingJobs">
+                                                <job-item :job="job"></job-item>
+                                            </v-col>
+                                        </v-row>
+                                        <v-card flat color="transparent" v-else>
+                                            <v-card-text>
+                                                There are no ongoing jobs
+                                            </v-card-text>
+                                        </v-card>
+                                    </v-col>
+                                </v-row>
                             </v-card-text>
                         </v-card>
-                    </v-col>
-                </v-row>
-                <v-row>
 
-                    <v-col lg="6">
-                        <h2> Idle ({{idleJobs.length}})</h2>
-                        <swiper v-if="idleJobs.length" :options="swiperOptions2">
-                            <swiper-slide v-for="job in idleJobs">
-                                <job-item :job="job"></job-item>
-                            </swiper-slide>
-                        </swiper>
-                        <v-card v-else flat color="transparent" >
+                        <v-card flat="">
+                            <v-card-title> Idle ({{idleJobs.length}})</v-card-title>
                             <v-card-text>
-                                There are no ongoing jobs
+                                <v-row>
+                                    <v-col>
+                                        <v-row  v-if="idleJobs.length">
+                                            <v-col lg="3"  v-for="job in idleJobs">
+                                                <job-item :job="job"></job-item>
+                                            </v-col>
+                                        </v-row>
+                                        <v-card v-else flat color="transparent">
+                                            <v-card-text>
+                                                There are no idle jobs
+                                            </v-card-text>
+                                        </v-card>
+                                    </v-col>
+                                </v-row>
                             </v-card-text>
                         </v-card>
-                    </v-col>
-                    <v-col lg="6">
-                        <h2> Scheduled ({{scheduledJobs.length}})</h2>
-
-                        <swiper v-if="scheduledJobs.length" :options="swiperOptions2">
-                            <swiper-slide v-for="job in scheduledJobs">
+                    </v-card-text>
+                </v-card>
+                <v-card class="mt-5">
+                    <v-card-title> Past Jobs ({{pastJobs.length}})</v-card-title>
+                    <v-card-text v-if="pastJobs.length">
+                        <v-row  >
+                            <v-col lg="3"  v-for="job in pastJobs">
                                 <job-item :job="job"></job-item>
-                            </swiper-slide>
-                        </swiper>
-                        <v-card v-else flat color="transparent" v-else>
-                            <v-card-text>
-                                There are no scheduled jobs
-                            </v-card-text>
-                        </v-card>
-                    </v-col>
+                            </v-col>
+                        </v-row>
 
-                </v-row>
+                    </v-card-text>
+                    <v-card-text v-else>
+                        There are no idle jobs
+                    </v-card-text>
+                </v-card>
+            </v-col>
+            <v-col lg="2">
+                <v-card v-if="ongoingJobs.length">
+                    <v-card-text>
+                        <p>Expected Earnings</p>
+                        <span class="text-md-h3">{{getEarnings}} € </span>
+                    </v-card-text>
+                </v-card>
+                <v-card class="mt-4" v-if="ongoingJobs.length">
+                    <v-card-text>
+                        <p>Total Hours  </p>
+                        <span class="text-md-h3">{{getTotalHours}} hr </span>
+                    </v-card-text>
+                </v-card>
+                <v-card class="mt-4" v-if="ongoingJobs.length">
+                    <v-card-text>
+                        <p>Value  </p>
+                        <span class="text-md-h3">{{(getEarnings / getTotalHours) |fixed(2)}} € /hr </span>
+                    </v-card-text>
+                </v-card>
             </v-col>
         </v-row>
     </div>
@@ -78,12 +109,12 @@
         name: "Jobs",
         data: () => ({
             swiperOptions: {
-                slidesPerView: 4,
+                slidesPerView: 5,
                 spaceBetween: 10,
                 freeMode: true,
             },
             swiperOptions2: {
-                slidesPerView: 2,
+                slidesPerView: 4,
                 spaceBetween: 10,
                 freeMode: true,
             }
@@ -97,15 +128,25 @@
         directives: {
             swiper: directive
         },
+
         computed: {
+            getEarnings(){
+                return this.ongoingJobs.reduce((acc,b)=> {
+                    return acc + b.price},0);
+            },
+            getTotalHours(){
+                return this.ongoingJobs.reduce((acc,b)=> {
+                    return acc + b.getJobHours()},0);
+            },
             ...mapGetters('jobs', [
                 'ongoingJobs',
                 'pastJobs',
                 'scheduledJobs',
-                'idleJobs'
+                'idleJobs',
             ])
         },
         methods: {
+
             ...mapActions('jobs', [
                 "getJobs",
             ]),
@@ -117,6 +158,7 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+
 
 </style>

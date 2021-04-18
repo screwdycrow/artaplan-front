@@ -6,32 +6,47 @@
         <portal to="toolbar-items">
         </portal>
         <portal to="toolbar-actions">
-            <v-btn color="primary">
-                Auto Assign
-            </v-btn>
-            <v-btn icon>
-                <v-icon> mdi-cog</v-icon>
-            </v-btn>
+
         </portal>
         <v-row>
-            <v-col lg="3">
-                <v-toolbar dense flat> Ongoing Jobs</v-toolbar>
-                <job-preview-list :jobs="ongoingJobs"/>
+            <v-col lg="2">
+                <v-toolbar flat dense>
+                    <v-toolbar-title>
+                        Ongoing Jobs
+                    </v-toolbar-title>
+                </v-toolbar>
+                <v-card  flat>
+                    <job-preview-list :jobs="ongoingJobs"></job-preview-list>
+                </v-card>
+
             </v-col>
-            <v-col lg="9">
-                <v-btn @click="changeDays(-7)" rounded>
-                    <v-icon> mdi-chevron-up</v-icon>
-                </v-btn>
-                <v-row dense v-if="ongoingJobs.length>0">
-                    <v-col lg="2" v-for="day in days">
-                        <day-entries  :day="day"></day-entries>
-                    </v-col>
-                </v-row>
-                <v-btn @click="changeDays(+7)" rounded>
-                    <v-icon> mdi-chevron-down</v-icon>
-                </v-btn>
+            <v-col lg="10">
+                <v-card >
+                    <v-toolbar flat dense="">
+                        <v-toolbar-title>
+                             3-Week Schedule
+                        </v-toolbar-title>
+                        <v-spacer></v-spacer>
+                        <v-btn icon @click="changeDays(-7)" rounded>
+                            <v-icon> mdi-chevron-up</v-icon>
+                        </v-btn>
+                        <v-btn icon="" @click="changeDays(+7)" rounded>
+                            <v-icon> mdi-chevron-down</v-icon>
+                        </v-btn>
+                    </v-toolbar>
+                    <v-card-text>
+                        <v-row dense v-if="ongoingJobs.length>0">
+                            <v-col class="cols-7" v-for="day in days">
+                                <day-entries :day="day"></day-entries>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+
+                </v-card>
+
             </v-col>
         </v-row>
+
     </div>
 </template>
 
@@ -51,7 +66,7 @@
 
         data: () => ({
             minus: -1,
-            plus: 10,
+            plus: 20,
             date: moment(),
         }),
         created() {
@@ -107,5 +122,9 @@
 </script>
 
 <style scoped>
-
+    .cols-7 {
+        width: 14%;
+        max-width: 14%;
+        flex-basis: 14%;
+    }
 </style>

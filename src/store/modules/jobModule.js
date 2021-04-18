@@ -30,10 +30,12 @@ export default ({
 
         updateJob({commit}, job) {
             commit('setLoading', true, {root: true})
-            return jobApi.putJob(new Job(job)).then(job => {
+            return jobApi.putJob(new Job(job)).then(resp => {
                 commit('setLoading', false, {root: true})
                 commit('pushMessage', Messages.UPDATED, {root: true})
-                return Promise.resolve(new Job(job))
+                let job = new Job(resp);
+                commit('updateJobInList', job)
+                return Promise.resolve(job)
             })
         },
 
@@ -46,18 +48,29 @@ export default ({
         },
         getJob({commit}, id) {
             commit('setLoading', true, {root: true})
-           return jobApi.getJob(id).then(job => {
+            return jobApi.getJob(id).then(j => {
+                    let job = new Job(j)
                     commit('setLoading', false, {root: true})
-                    return Promise.resolve(new Job(job))
+                    commit('setActiveJob', job)
+                    return Promise.resolve(job)
                 }
             )
         }
     },
     mutations: {
+        updateJobStageWorkHours(state, {workHours, jobId, jobStageId}) {
+            let index = state.jobs.findIndex(j => j.jobId === jobId)
+            let index2 = state.jobs[index].jobStages.findIndex(j => j.jobStageId === jobStageId)
+            let currWorkHours = state.jobs[index].jobStages[index2].workHours;
+            Vue.set(state.jobs[index].jobStages[index2],currWorkHours+=workHours)
+        },
         setJobs(state, jobs) {
             state.jobs = jobs.map(j => new Job(j))
         },
 
+        setActiveJob(state, job) {
+            state.job = job
+        },
         setPastJobs(state, jobs) {
             state.pastJobs = [];
             jobs.forEach(j => {
@@ -95,9 +108,11 @@ export default ({
 
     },
     getters: {
-        pastJobs: (s) => s.jobs.filter(j => j.status === Job.status.FINISHED || j.status === Job.status.CANCELLED),
-        ongoingJobs: (s) => s.jobs.filter(j => j.status === Job.status.ONGOING),
-        idleJobs: (s) => s.jobs.filter(j => j.status === Job.status.IDLE),
-        scheduledJobs: (s) => s.jobs.filter(j => j.status === Job.status.SCHEDULED),
+
+        job: (s) => s.job,
+        pastJobs: (s) => s.jobs.filter(j => j.status === Job.STATUS.FINISHED || j.status === Job.STATUS.CANCELLED),
+        ongoingJobs: (s) => s.jobs.filter(j => j.status === Job.STATUS.ONGOING),
+        idleJobs: (s) => s.jobs.filter(j => j.status === Job.STATUS.IDLE),
+        scheduledJobs: (s) => s.jobs.filter(j => j.status === Job.STATUS.SCHEDULED),
     },
 });

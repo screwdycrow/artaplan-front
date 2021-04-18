@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card flat>
     <v-toolbar flat>
       <v-toolbar-title >
         <strong> {{customer.name}} </strong>
@@ -26,6 +26,9 @@ export default {
       this.getCustomer(this.$route.params.id).then(customer => {
       })
     }
+  },
+  created(){
+    this.getCustomer(this.$route.params.id)
   },
   methods:{
     ...mapActions("customers",[

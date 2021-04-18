@@ -3,6 +3,7 @@ import Job from "@/classes/Job";
 
 export default class  {
     constructor(jobStage) {
+        this.tempId = Math.floor(Math.random() * 1000000000)
         this.jobStageId = jobStage.jobStageId;
         this.jobId = jobStage.jobId;
         this.stageId = jobStage.stageId;

@@ -3,7 +3,7 @@
     <portal to="toolbar-title"> Customers </portal>
     <portal to="toolbar-actions"> <v-btn color="primary" to="/newCustomer"> <v-icon> mdi-plus </v-icon> Customer</v-btn> </portal>
     <v-col lg="4">
-      <v-card color="transparent" flat>
+      <v-card  class="fill-height" flat>
         <v-card-title><strong> Customers </strong></v-card-title>
         <v-list color="transparent">
           <v-list-item :to="'/customers/'+customer.customerId"

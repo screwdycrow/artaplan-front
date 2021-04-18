@@ -7,7 +7,6 @@
     <v-app-bar
         class="hidden-md-and-up"
         color="background"
-        collapse-on-scroll
         flat app
 
     >
@@ -28,7 +27,6 @@
     <v-app-bar
         class="hidden-sm-and-down pt-2"
         color="background"
-        collapse-on-scroll
         flat app
     >
       <v-container style="max-width: 1600px" class="d-flex align-center">
@@ -57,6 +55,7 @@
             bottom
             right
             fab
+            to="/schedule"
         >
           <v-icon>mdi-calendar</v-icon>
         </v-btn>

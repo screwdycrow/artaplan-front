@@ -23,5 +23,10 @@ export default {
 
     getWorkload() {
         return Promise.resolve(workload)
+    },
+    doScheduleEntry(entry){
+        console.log(entry);
+      return axios.patch('/ScheduleEntries/' + entry.scheduleEntriesId+'/status/'+(!entry.isDone?"done":"undone"))
+          .then(resp=>data)
     }
 }

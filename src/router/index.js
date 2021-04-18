@@ -7,8 +7,9 @@ import Slots from "../views/Slots/Slots"
 import Customers from "@/views/Customers/Customers"
 import Customer from "@/views/Customers/Customer"
 import NewCustomer from "../views/Customers/NewCustomer"
-import Jobs from "../views/Jobs/Jobs"
-import Job from "../views/Jobs/Job"
+import JobOverview from "../views/Jobs/JobOverview"
+import JobDetails from "../views/Jobs/JobDetails"
+
 
 Vue.use(VueRouter)
 
@@ -36,7 +37,7 @@ const routes = [
     {
         path: '/customers',
         name: 'Customers',
-        component: Customers,
+        component: () => import(/* webpackChunkName: "customers" */ '../views/Customers/Customers.vue'),
         children: [
             {
                 path: '/',
@@ -65,9 +66,7 @@ const routes = [
     {
         path: '/preview',
         name: 'Preview',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
+
         component: () => import(/* webpackChunkName: "about" */ '../views/Preview.vue'),
         meta: {
             requiresAuth: true,
@@ -97,9 +96,6 @@ const routes = [
     {
         path: '/newSlot',
         name: 'New Slot',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
         component: () => import(/* webpackChunkName: "newslot" */ '../views/Slots/NewSlot'),
         meta: {
             requiresAuth: true,
@@ -108,7 +104,7 @@ const routes = [
     {
         path: '/jobs',
         name: 'jobs',
-        component: Jobs,
+        component:()=> import(/* webpackChunkName: "jobs" */ '../views/Jobs/Jobs'),
         meta: {
             requiresAuth: true,
         },
@@ -116,7 +112,23 @@ const routes = [
     {
         path: '/jobs/:id',
         name: 'job',
-        component: Job,
+        component:()=> import(/* webpackChunkName: "job" */ '../views/Jobs/Job'),
+        children: [
+            {
+                path: '/',
+                component:JobOverview,
+                meta: {
+                    requiresAuth: true,
+                }
+            },
+            {
+                path: 'details',
+                component: JobDetails,
+                meta: {
+                    requiresAuth: true,
+                }
+            }
+        ],
         meta: {
             requiresAuth: true,
         },

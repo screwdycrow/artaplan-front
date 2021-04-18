@@ -1,15 +1,20 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-    <v-card min-height="250" color="transparent" flat outlined>
-        <v-toolbar dense :color="today === day?'secondary':''">
-            {{day | format}}
+    <v-card min-height="250" outlined :color="today === day?'secondary lighten-3':''">
+        <v-toolbar dense flat>
+            <v-toolbar-title>
+                {{day | dayName}}
+            </v-toolbar-title>
             <v-spacer/>
+            {{day | format}}
+
         </v-toolbar>
-        <v-list dense >
-            <drop-list :key="v" style="min-height: 200px;" :class="day+' fill-height'" mode="cut" :items="entriesOfDay(day)" @insert="onInsert">
+        <v-list dense>
+            <drop-list :key="v" style="min-height: 200px;" :class="day+' fill-height'" mode="cut"
+                       :items="entriesOfDay(day)" @insert="onInsert">
                 <template v-slot:item="{item}">
-                    <drag :key="item.scheduleEntriesId" :data="item" @cut="onCut(item)">
-                            <schedule-entry-item :entry="item">
-                            </schedule-entry-item>
+                    <drag :key="item.tempId" :data="item" @cut="onCut(item)">
+                        <schedule-entry-item :entry="item" @onDone="v++" @onDelete="v++">
+                        </schedule-entry-item>
                     </drag>
                 </template>
                 <template v-slot:inserting-drag-image="{data}">
@@ -20,8 +25,8 @@
                 <template v-slot:feedback="{data}">
                     <v-skeleton-loader
                             type="list-item-two-line"
-                            :key="data.scheduleEntriesId"
-                            :style="'border-left: 4px solid '+data.jobStage.job.color+'; margin-left: -2px;'"
+                            :key="data.tempId"
+                            :style="'border-left: 4px solid; margin-left: -2px;'"
                     />
                 </template>
             </drop-list>
@@ -43,22 +48,22 @@
         components: {ScheduleEntryItem, DropList, Drag},
         props: {
             day: String,
-            dayEntries:Array
+            dayEntries: Array
         },
         data: () => ({
-            v:1,
+            v: 1,
             today: moment().format("YYYY-MM-DD"),
         }),
         filters: {
+
             format(date) {
                 return moment(date).format('DD/MM')
             },
-            duration(date) {
-                return moment(date).format('DD/MM')
+            dayName(date) {
+                return moment(date).format('ddd')
             },
         },
-        watch:{
-        },
+        watch: {},
         methods: {
             ...mapActions('schedule',
                 [
@@ -76,7 +81,7 @@
             onInsert(event) {
                 let item = event.data;
                 console.log('start bonking ', item)
-                if (JobStage === typeof item) {
+                if ( item instanceof JobStage) {
                     this.addScheduleEntry({jobStage: item, date: this.day}).then(entry => {
                         console.log('new bonk')
                         this.v++;
@@ -85,7 +90,7 @@
                     this.changeDateEntry({
                         entry: item,
                         date: this.day
-                    }).then(()=>{
+                    }).then(() => {
                         this.v++;
 
                     })

@@ -1,11 +1,11 @@
 <template>
     <v-card class="fill-height" :to="'/jobs/'+job.jobId">
-        <v-toolbar dense="" :color="job.color"  >
+        <v-toolbar dense="" flat="" :color="job.getFormatedColor(0.4)"  >
             <v-toolbar-title>
                 <strong>{{job.name}} </strong>
             </v-toolbar-title>
         </v-toolbar>
-        <v-list dense="">
+        <v-list dense="" >
             <v-list-item>
                 <v-list-item-action>
                     <v-icon> mdi-account </v-icon>

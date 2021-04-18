@@ -21,7 +21,7 @@ export default new Vuetify({
                 primary: '#f378ca',
                 secondary: '#525adb',
                 anchor: '#8c9eff',
-                background: '#f5f5f5'
+                background: '#f6f7f9'
             },
         },
     },

@@ -10,7 +10,14 @@ export default class {
         this.userId = scheduleEntry.userId;
         this.dateFrom = scheduleEntry.dateFrom;
         this.dateTo = scheduleEntry.dateTo;
-        this.jobStage = new JobStage(scheduleEntry.jobStage)
+        this.isDone = scheduleEntry.isDone;
+        this.jobStage = {}
+        this.setJobStage(scheduleEntry.jobStage)
     }
 
+    setJobStage(jobStage){
+        if(jobStage){
+            this.jobStage = new JobStage(jobStage);
+        }
+    }
 }

@@ -34,6 +34,18 @@ export default ({
                 return Promise.resolve()
             }
         },
+        doScheduleEntry({commit},entry){
+            commit('setLoading', true, {root: true})
+            return scheduleApi.doScheduleEntry(entry).then(s => {
+                let entry = new ScheduleEntry(s)
+                commit('updateScheduleEntry', entry)
+                commit('updateEntryOnDay', {entry: entry, date: entry.dateFrom})
+                commit('setLoading', false, {root: true})
+                return Promise.resolve(entry);
+            }).catch(()=>{
+                commit('setLoading', false, {root: true})
+            })
+        },
         updateScheduleEntry({commit}, entry) {
             commit('setLoading', true, {root: true})
             return scheduleApi.putScheduleEntry(entry).then(s => {
@@ -46,6 +58,7 @@ export default ({
                 commit('setLoading', false, {root: true})
             })
         },
+
         changeDateEntry({commit}, {entry, date}) {
             commit('setLoading', true, {root: true})
             commit('removeEntryFromDay', entry)
@@ -64,8 +77,8 @@ export default ({
         },
         addScheduleEntry({commit}, {jobStage, date}) {
             let entry = Mappers.ScheduleEntryFromJobStage(jobStage);
-            entry.dateFrom = moment(date).moment(date).format("YYYY-MM-DD");
-            entry.dateTo = moment(date).moment(date).format("YYYY-MM-DD");
+            entry.dateFrom = moment(date).format("YYYY-MM-DD");
+            entry.dateTo = moment(date).format("YYYY-MM-DD");
 
             return scheduleApi.postScheduleEntry(entry).then((s) => {
                 let entry = new ScheduleEntry(s)
@@ -76,8 +89,8 @@ export default ({
         },
         deleteScheduleEntry({commit}, entry) {
             return scheduleApi.deleteScheduleEntry(entry).then(() => {
+                commit('removeEntryFromDay', entry)
                 commit('removeFromSchedule', entry)
-                commit('removeEntryFromDay', {entry: entry, date: entry.dateFrom})
                 return Promise.resolve(true)
             })
         },
@@ -133,6 +146,7 @@ export default ({
         },
         removeEntryFromDay(state, entry) {
             let dateIndex = moment(entry.dateFrom).format("YYYY-MM-DD")
+            console.log(entry)
             const index = state.daysEntries[dateIndex].findIndex(e => e.scheduleEntriesId === entry.scheduleEntriesId)
             console.log(state.daysEntries[dateIndex]);
             console.log(dateIndex);

@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-card flat>
         <v-toolbar flat color="faded">
             <v-toolbar-title><h2 class="headline"> {{slot.name}}</h2></v-toolbar-title>
         </v-toolbar>
