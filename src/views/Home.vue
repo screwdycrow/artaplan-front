@@ -21,32 +21,37 @@
                 </v-card>
             </v-col>
             <v-col>
+              <v-card>
+                <v-toolbar flat color="transparent">
+                  <v-toolbar-title>
+                    <strong class="text--primary"> Ongoing Jobs ({{ ongoingJobs.length }}) </strong>
+                  </v-toolbar-title>
+                  <v-toolbar-items>
+                  </v-toolbar-items>
+                  <v-spacer/>
+                </v-toolbar>
+                <v-card-text>
 
-
-            </v-col>
-        </v-row>
-        <v-toolbar flat color="transparent">
-            <v-toolbar-title>
-                <strong class="text--primary"> Ongoing Jobs ({{ ongoingJobs.length }}) </strong>
-            </v-toolbar-title>
-            <v-toolbar-items>
-            </v-toolbar-items>
-            <v-spacer/>
-        </v-toolbar>
-        <v-row>
-            <v-col>
-                <v-row v-if="ongoingJobs.length">
-                    <v-col lg="3" v-for="job in ongoingJobs">
+                <v-row>
+                  <v-col>
+                    <v-row v-if="ongoingJobs.length">
+                      <v-col lg="4" v-for="job in ongoingJobs">
                         <job-item :job="job"></job-item>
-                    </v-col>
-                </v-row>
-                <v-card flat color="transparent" v-else>
-                    <v-card-text>
+                      </v-col>
+                    </v-row>
+                    <v-card flat color="transparent" v-else>
+                      <v-card-text>
                         There are no ongoing jobs
-                    </v-card-text>
-                </v-card>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                </v-row>
+                </v-card-text>
+              </v-card>
+
             </v-col>
         </v-row>
+
 
 
         <v-row>

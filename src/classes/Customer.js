@@ -4,5 +4,6 @@ export default class  {
         this.name = customer.name;
         this.email = customer.email;
         this.userId = customer.userId;
+        this.notes = customer.notes || '';
     }
 }

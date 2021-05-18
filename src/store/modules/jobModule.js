@@ -51,8 +51,19 @@ export default ({
             _job.references = JSON.stringify(_job.references);
             return jobApi.addJob(_job).then(resp => {
                 commit('setLoading', false, {root: true})
+                commit('pushJobToList', job)
                 commit('pushMessage', {text: Messages.JOB_ADDED, type: 'success'}, {root: true})
             })
+        },
+        deleteJob({commit}, job) {
+            commit('setLoading', true, {root: true})
+            return jobApi.deleteJob(job)
+                .then(resp => {
+                    commit('setLoading', false, {root: true})
+                    commit('pushMessage', {text: 'deleted', type: 'success'}, {root: true})
+                    commit('removeJobFromList', job)
+                    return Promise.resolve(true)
+                })
         },
         getJob({commit}, id) {
             commit('setLoading', true, {root: true})
@@ -88,28 +99,18 @@ export default ({
         },
 
         pushJobToList(state, job) {
-            if (job.status !== Job.status.ONGOING) {
-                state.pastJobs.push(job)
-            } else {
-                state.ongoingJobs.push(job)
-            }
+            state.jobs.push(job)
         },
 
-        updateJobInList({state}, job) {
-            const index = state.pastJobs.findIndex(findJob(job.jobId));
+        updateJobInList(state, job) {
+            const index = state.jobs.findIndex(findJob(job.jobId));
             if (index !== -1) Vue.set(state.jobs, index, job)
         },
-        removeJobFromList({state}, job) {
-            if (job.status !== Job.status.ONGOING) {
-                const index = state.pastJobs.findIndex(findJob(job.jobId));
-                if (index !== -1) {
-                    state.pastJobs.splice(index, 1)
-                }
-            } else {
-                const index = state.ongoingJobs.findIndex(findJob(job.jobId));
-                if (index !== -1) {
-                    state.ongoingJobs.splice(index, 1)
-                }
+        removeJobFromList(state, job) {
+            const index = state.jobs.findIndex
+            (findJob(job.jobId));
+            if (index !== -1) {
+                state.jobs.splice(index, 1)
             }
 
         }

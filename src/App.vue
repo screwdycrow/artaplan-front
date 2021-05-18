@@ -24,7 +24,8 @@
     </v-app-bar>
 
     <v-app-bar
-        class="hidden-sm-and-down pt-2"
+        class="hidden-sm-and-down"
+        height="100"
         color="background"
         flat app
     >

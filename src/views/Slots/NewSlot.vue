@@ -25,7 +25,8 @@
                 </v-row>
                 <v-row>
                   <v-col>
-                    <v-textarea v-model="slot.description" label="Description"></v-textarea>
+                    <label>Description</label>
+                    <ckeditor v-model="slot.description" ></ckeditor>
                   </v-col>
                 </v-row>
                 <v-btn

@@ -21,6 +21,15 @@ export default ({
                 return Promise.resolve(resp)
             });
         },
+        deleteSlot({commit},slot){
+            commit('setLoading', true, {root: true})
+            return  slotApi.deleteSlot(slot).then(resp => {
+                commit('removeSlotFromList',slot)
+                commit('setLoading', false, {root: true})
+                commit('pushMessage',{type:'success',text:'deleted'},{root:true})
+                return Promise.resolve(resp)
+            });
+        },
         addSlot({commit}, slot) {
             commit('setLoading', true, {root: true})
            return  slotApi.postSlot(slot).then(resp => {
@@ -77,7 +86,7 @@ export default ({
         pushSlotToList(state, slot) {
             state.slots.push(Object.assign({}, slot))
         },
-        removeSlotFromList({state}, slot){
+        removeSlotFromList(state, slot){
             const index = state.slots.findIndex((s) => s.slotId === slot.slotId);
             if (index !== -1) {
                 state.slots.splice(index, 1)

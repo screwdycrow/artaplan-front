@@ -9,11 +9,12 @@
             <v-form>
                 <v-text-field v-model="customer.name" label="Name"></v-text-field>
                 <v-text-field v-model="customer.email" label="Email"></v-text-field>
+                <v-textarea v-model="customer.notes" label="Notes"> </v-textarea>
             </v-form>
         </v-card-text>
         <v-card-actions>
             <v-btn color="success" outlined @click="updateCustomer(customer)"> Update Customer</v-btn>
-            <v-btn color="error" outlined @click="deleteCustomer(customer)"> Delete Customer and its jobs</v-btn>
+            <v-btn color="error" outlined @click="deleteCustomer(customer)"> Delete Customer and their jobs</v-btn>
         </v-card-actions>`
     </v-card>
 

@@ -102,6 +102,22 @@
                 </v-card>
             </v-col>
         </v-row>
+      <v-row>
+        <v-col>
+          <v-row no-gutters>
+            <div style="display: inline;" v-for="(hyperlink, index) in job.references.hyperlinks">
+              <v-btn
+                  class="mr-6"
+                  target="_blank" :color="job.getFormatedColor(0.5)"
+                  :href="hyperlink.url">
+                <v-icon class="mr-2"> mdi-link</v-icon>
+                {{ hyperlink.title || hyperlink.url }}
+              </v-btn>
+            </div>
+
+          </v-row>
+        </v-col>
+      </v-row>
         <v-row>
             <v-col lg="2" v-for="(link, index) in job.references.links">
                 <v-card>

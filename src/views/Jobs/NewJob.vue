@@ -58,9 +58,10 @@
                                     </v-row>
                                     <v-row>
                                         <v-col lg="10">
-                                        <v-textarea dense filled label="Job Description"
-                                                    v-model="job.description"/>
-                                    </v-col>
+                                          <label> Description </label>
+                                          <ckeditor v-model="job.description" :config="editorConfig"></ckeditor>
+
+                                        </v-col>
                                         <v-col lg="2">
                                             <v-color-picker v-model="job.color"></v-color-picker>
                                         </v-col>
@@ -144,7 +145,7 @@
                 insertedAt:  moment(Date.now()).toISOString(),
                 startedAt: null,
                 deadline: null,
-                references:null,
+                references:{},
                 estimatedDays:5,
                 customerId: null,
                 customer: {},
@@ -232,6 +233,7 @@
                     js['selected']= true;
                     return js
                 });
+                this.job.description = this.job.slot.description;
                 this.job.price = this.job.slot.price;
                 this.el = 2;
             }

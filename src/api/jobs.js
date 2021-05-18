@@ -16,8 +16,8 @@ export default {
     getJob(jobId) {
         return axios.get('/Jobs/' + jobId).then(resp => resp.data)
     },
-    deleteJob(jobId) {
-        return axios.get('/Jobs/' + jobId).then(resp => resp.data)
+    deleteJob(job) {
+        return axios.delete('/Jobs/' + job.jobId).then(resp => resp.data)
     }
 }
 
