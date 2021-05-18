@@ -1,5 +1,10 @@
 <template>
     <div>
+        <v-toolbar flat color="transparent">
+            <v-toolbar-title>
+                <h3>Details</h3>
+            </v-toolbar-title>
+        </v-toolbar>
             <v-card>
                 <v-card-text>
                     <v-row>
@@ -68,14 +73,13 @@
                 </v-card-text>
             </v-card>
             <v-toolbar flat color="transparent">
-                <v-toolbar-title>\
+                <v-toolbar-title>
                     <h3>Description</h3>
                 </v-toolbar-title>
             </v-toolbar>
             <v-card>
                 <v-card-text>
-                    <v-textarea rows="6" hide-details dense outlined label="Job Description"
-                                v-model="job.description"/>
+                    <ckeditor v-model="job.description" :config="editorConfig"></ckeditor>
 
                 </v-card-text>
             </v-card>
@@ -88,6 +92,10 @@
 
     export default {
         name: "JobDetails",
+        data:()=>({
+            editorConfig: {
+            }
+        }),
         mixins: [JobMixin]
     }
 </script>

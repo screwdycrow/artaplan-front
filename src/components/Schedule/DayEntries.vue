@@ -9,6 +9,14 @@
 
         </v-toolbar>
         <v-list dense>
+            <v-list-item dense v-for="j in deadlinesOfDay(day)">
+                <v-list-item-action>
+                    <v-icon color="#ff1b0e  ">mdi-flag-checkered</v-icon>
+                </v-list-item-action>
+            <v-list-item-content>
+                <v-list-item-title style="color:#ff1b0e;">{{j.name}}</v-list-item-title>
+            </v-list-item-content>
+            </v-list-item>
             <drop-list :key="v" style="min-height: 200px;" :class="day+' fill-height'" mode="cut"
                        :items="entriesOfDay(day)" @insert="onInsert">
                 <template v-slot:item="{item}">
@@ -16,7 +24,7 @@
                         <schedule-entry-item :entry="item" @onDone="v++" @onDelete="v++">
                         </schedule-entry-item>
                     </drag>
-                </template>
+                </template> 
                 <template v-slot:inserting-drag-image="{data}">
                     <v-list-item-avatar style="transform:translate(-50%, -50%) scale(1.5)">
                     </v-list-item-avatar>
@@ -99,6 +107,9 @@
             }
         },
         computed: {
+            ...mapGetters('jobs',[
+                "deadlinesOfDay"
+            ]),
             ...mapGetters('schedule', [
                 "entriesOfDay",
             ])

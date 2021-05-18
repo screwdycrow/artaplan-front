@@ -23,6 +23,14 @@
                 </v-list-item-content>
             </v-list-item>
             <v-list-item>
+                <v-list-item-action>
+                    <v-icon>mdi-flag-checkered </v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                    {{job.deadline | formatDate}}
+                </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
                 <v-list-item-content>
                         <job-tags :job="job"></job-tags>
                 </v-list-item-content>

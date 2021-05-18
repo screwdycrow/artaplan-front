@@ -17,7 +17,7 @@ export default ({
             return  slotApi.putSlot(slot).then(resp => {
                 commit('updateSlotInList',slot)
                 commit('setLoading', false, {root: true})
-                commit('pushMessage',{type:'success',text:Messages.SLOT_ADDED})
+                commit('pushMessage',{type:'success',text:'updated'},{root:true})
                 return Promise.resolve(resp)
             });
         },
@@ -25,7 +25,7 @@ export default ({
             commit('setLoading', true, {root: true})
            return  slotApi.postSlot(slot).then(resp => {
                 commit('setLoading', false, {root: true})
-                commit('pushMessage',{type:'success',text:Messages.SLOT_ADDED})
+                commit('pushMessage',{type:'success',text:Messages.SLOT_ADDED},{root:true})
                 return Promise.resolve(resp)
             });
         },

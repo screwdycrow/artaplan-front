@@ -16,6 +16,10 @@
                 this.job.markJobAsFinished();
                 this.updateJob(this.job);
             },
+            reopen(){
+                this.job.reopen();
+                this.updateJob(this.job);
+            },
             update(){
               this.updateJob(this.job);
             },

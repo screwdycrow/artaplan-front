@@ -13,7 +13,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         isMobile: false,
-        isLoading:true,
+        isLoading:false,
         activeMessages: [],
 
     },
@@ -37,7 +37,6 @@ export default new Vuex.Store({
     actions: {},
     getters:{
         activeMessages:(s)=> s.activeMessages
-
     },
     modules: {
         schedule: scheduleModule,

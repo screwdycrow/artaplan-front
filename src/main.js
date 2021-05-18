@@ -10,9 +10,15 @@ import VueApexCharts from 'vue-apexcharts'
 import customcss from "./assets/custom.css"
 // import style (>= Swiper 6.x)
 import 'swiper/swiper-bundle.css'
+import CKEditor from 'ckeditor4-vue';
+import { VueMasonryPlugin } from "vue-masonry";
+
 
 Vue.config.productionTip = false;
+Vue.use( CKEditor );
 Vue.use(PortalVue);
+Vue.use(VueMasonryPlugin);
+
 Vue.component('apexchart', VueApexCharts);
 
 Vue.filter('formatDate', function (value) {

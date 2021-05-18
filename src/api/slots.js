@@ -20,6 +20,11 @@ export default {
             return Promise.resolve(resp.data);
         })
     },
+    deleteSlot(slotId){
+      return axios.delete('/Slots/'+slotId).then(resp=>{
+          return Promise.resolve(resp.data);
+        })
+    },
     getSlots() {
         return axios.get('/Slots').then(resp => {
             return Promise.resolve(resp.data)

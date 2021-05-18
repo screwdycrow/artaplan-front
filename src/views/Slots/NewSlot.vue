@@ -8,7 +8,6 @@
           <v-divider></v-divider>
           <v-stepper-step :complete="el > 2" step="2"> Template Stages</v-stepper-step>
           <v-divider></v-divider>
-          <v-stepper-step :complete="el > 3" step="3">Template Notes</v-stepper-step>
         </v-stepper-header>
         <v-stepper-items>
           <v-stepper-content step="1">
@@ -31,7 +30,7 @@
                 </v-row>
                 <v-btn
                     :disabled="!steps.slotDetails.valid"
-                    color="success"
+                    color="primary"
                     class="mr-4"
                     @click="el++"
                 >
@@ -90,39 +89,27 @@
                 </v-row>
               </v-form>
             </v-card-text>
-            <v-card-title> Sum </v-card-title>
-            <v-card-text>
-              This job will need approximately from 9 - 12 hours to be completed
-            </v-card-text>
             <v-card-actions>
               <v-btn
-                  :disabled="!slot.stages.length"
-                  color="success"
-                  class="mr-4"
-                  @click="el++"
+                      color="success"
+                      class="mr-4"
+                      @click="el--"
               >
-                Next Step
+                back
+              </v-btn>
+              <v-btn
+                      color="success"
+                      class="mr-4"
+                      @click="insert()"
+                      :disabled="!slot.stages.length"
+              >
+                Submit
               </v-btn>
 
             </v-card-actions>
-
-          </v-stepper-content>
-          <v-stepper-content step="3">
-            <v-card-title> Notes </v-card-title>
-            <v-card-text> Notes are an easy way to add quick replies that you can easily copy paste </v-card-text>
-            <v-alert> Notes are coming soon to Artaplan, stay tuned </v-alert>
           </v-stepper-content>
         </v-stepper-items>
       </v-stepper>
-      <v-card-actions>
-        <v-btn
-            color="success"
-            class="mr-4"
-            @click="insert()"
-        >
-          Submit
-        </v-btn>
-      </v-card-actions>
     </v-card-text>
 
   </v-card>
@@ -151,9 +138,6 @@ export default {
         valid: false
       },
       slotStages: {
-        valid: false
-      },
-      slotNotes: {
         valid: false
       },
     },

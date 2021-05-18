@@ -24,6 +24,14 @@
                     </v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
+            <v-list-item @click="logoutClick()">
+                <v-list-item-icon><v-icon> mdi-logout</v-icon> </v-list-item-icon>
+                <v-list-item-content>
+                    <v-list-item-title>
+                        Logout
+                    </v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
             <v-list-item to="/slots">
                 <v-list-item-icon><v-icon> mdi-brush</v-icon> </v-list-item-icon>
                 <v-list-item-content>
@@ -64,9 +72,21 @@
 </template>
 
 <script>
+    import {mapActions} from "vuex"
+
     export default {
         name: "Sidebar",
-        props:{show:Boolean,opened:Boolean}
+        props:{show:Boolean,opened:Boolean},
+        methods:{
+            ...mapActions([
+                'logout'
+            ]),
+            logoutClick(){
+                this.logout().then(()=>{
+                    this.$router.push('/login');
+                })
+            }
+        }
     }
 </script>
 

@@ -4,18 +4,20 @@ import Job from "../classes/Job"
 
 export default {
     putJob(job) {
-        let _job = makeJob(job);
-        return axios.put('/Jobs/'+job.jobId, job).then(resp => Promise.resolve(resp.data))
+        return axios.put('/Jobs/' + job.jobId, job).then(resp => Promise.resolve(resp.data))
     },
     addJob(job) {
-        let _job = makeJob(job);
+        job.references = JSON.stringify(job.references);
         return axios.post('/Jobs', job).then(resp => Promise.resolve(resp.data))
     },
     getJobs() {
         return axios.get('/Jobs').then(resp => resp.data)
     },
     getJob(jobId) {
-        return axios.get('/Jobs/'+jobId).then(resp => resp.data)
+        return axios.get('/Jobs/' + jobId).then(resp => resp.data)
+    },
+    deleteJob(jobId) {
+        return axios.get('/Jobs/' + jobId).then(resp => resp.data)
     }
 }
 

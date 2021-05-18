@@ -102,6 +102,28 @@
                 </v-card>
             </v-col>
         </v-row>
+        <v-row>
+            <v-col lg="2" v-for="(link, index) in job.references.links">
+                <v-card>
+                    <v-dialog
+                            @input="repaint()"
+                            max-width="800px"
+                            transition="dialog-bottom-transition"
+                    >
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-img aspect-ratio="1" v-ripple v-on="on" v-bind="attrs"
+                                   v-if="link.type === 'imageUrl'" :src="link.url"></v-img>
+                        </template>
+                        <v-card>
+                            <v-img v-ripple
+                                   v-if="link.type === 'imageUrl'" :src="link.url"></v-img>
+                        </v-card>
+                    </v-dialog>
+                    <v-img v-ripple
+                           v-if="link.type === 'url'" src="link.png"></v-img>
+                </v-card>
+            </v-col>
+        </v-row>
     </div>
 
 </template>
@@ -112,11 +134,10 @@
     export default {
         data: () => ({
             hoursSpent: 0,
-            hoursLeft:0,
-            valuePerHour:0,
+            hoursLeft: 0,
+            valuePerHour: 0,
         }),
-        watch:{
-        },
+        watch: {},
         name: "JobOverview",
         mixins: [JobMixin]
     }

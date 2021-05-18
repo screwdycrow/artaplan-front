@@ -9,6 +9,7 @@ import Customer from "@/views/Customers/Customer"
 import NewCustomer from "../views/Customers/NewCustomer"
 import JobOverview from "../views/Jobs/JobOverview"
 import JobDetails from "../views/Jobs/JobDetails"
+import JobReferences from "../views/Jobs/JobReferences"
 
 
 Vue.use(VueRouter)
@@ -104,7 +105,7 @@ const routes = [
     {
         path: '/jobs',
         name: 'jobs',
-        component:()=> import(/* webpackChunkName: "jobs" */ '../views/Jobs/Jobs'),
+        component: () => import(/* webpackChunkName: "jobs" */ '../views/Jobs/Jobs'),
         meta: {
             requiresAuth: true,
         },
@@ -112,11 +113,11 @@ const routes = [
     {
         path: '/jobs/:id',
         name: 'job',
-        component:()=> import(/* webpackChunkName: "job" */ '../views/Jobs/Job'),
+        component: () => import(/* webpackChunkName: "job" */ '../views/Jobs/Job'),
         children: [
             {
                 path: '/',
-                component:JobOverview,
+                component: JobOverview,
                 meta: {
                     requiresAuth: true,
                 }
@@ -124,6 +125,13 @@ const routes = [
             {
                 path: 'details',
                 component: JobDetails,
+                meta: {
+                    requiresAuth: true,
+                }
+            },
+            {
+                path: 'references',
+                component: JobReferences,
                 meta: {
                     requiresAuth: true,
                 }
@@ -183,6 +191,7 @@ router.beforeEach((to, from, next) => {
             store.dispatch('getUserFromToken').then(resp => {
                 next()
             }).catch(err => {
+
                 next('/login');
             })
             return;

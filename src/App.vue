@@ -1,7 +1,6 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-app id="inspire">
     <v-progress-linear v-if="isLoading"  absolute bottom   indeterminate striped height="10" ></v-progress-linear>
-
     <ui-messages></ui-messages>
     <sidebar v-if="!$route.meta.noMenu" :show="drawerRight"  :opened="opened"/>
     <v-app-bar

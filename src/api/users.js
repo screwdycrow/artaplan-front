@@ -4,8 +4,8 @@ import User from "@/classes/User";
 export default {
     registerUser(user, password) {
         user.setPassword(password)
-        axios.post('/Users/register', user)
-            .then(resp => resp)
+       return  axios.post('/Users/register', user)
+            .then(resp => Promise.resolve(true))
     },
     authenticateUser(username, password) {
         return axios.post( '/Users/authenticate', {username: username, password: password})

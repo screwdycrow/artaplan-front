@@ -25,25 +25,33 @@ export default ({
                 commit('setJobs', jobs);
                 commit('setLoading', false, {root: true})
                 return Promise.resolve(jobs)
+            }).catch(resp => {
+                commit('setLoading', false, {root: true})
+                commit('pushMessage', {text: Messages.ERROR, type: 'successs'}, {root: true})
             })
         },
 
         updateJob({commit}, job) {
             commit('setLoading', true, {root: true})
-            return jobApi.putJob(new Job(job)).then(resp => {
-                commit('setLoading', false, {root: true})
-                commit('pushMessage', Messages.UPDATED, {root: true})
-                let job = new Job(resp);
-                commit('updateJobInList', job)
-                return Promise.resolve(job)
-            })
+            let _job = _.cloneDeep(job)
+            _job.references = JSON.stringify(_job.references);
+            return jobApi.putJob(_job)
+                .then(resp => {
+                    commit('setLoading', false, {root: true})
+                    commit('pushMessage', {text: Messages.UPDATED, type: 'success'}, {root: true})
+                    let job = new Job(resp);
+                    commit('updateJobInList', job)
+                    return Promise.resolve(job)
+                })
         },
 
         addJob({commit}, job) {
             commit('setLoading', true, {root: true})
-            return jobApi.addJob(new Job(job)).then(resp => {
+            let _job = _.cloneDeep(job)
+            _job.references = JSON.stringify(_job.references);
+            return jobApi.addJob(_job).then(resp => {
                 commit('setLoading', false, {root: true})
-                commit('pushMessage', Messages.JOB_ADDED, {root: true})
+                commit('pushMessage', {text: Messages.JOB_ADDED, type: 'success'}, {root: true})
             })
         },
         getJob({commit}, id) {
@@ -62,7 +70,7 @@ export default ({
             let index = state.jobs.findIndex(j => j.jobId === jobId)
             let index2 = state.jobs[index].jobStages.findIndex(j => j.jobStageId === jobStageId)
             let currWorkHours = state.jobs[index].jobStages[index2].workHours;
-            Vue.set(state.jobs[index].jobStages[index2],currWorkHours+=workHours)
+            Vue.set(state.jobs[index].jobStages[index2], currWorkHours += workHours)
         },
         setJobs(state, jobs) {
             state.jobs = jobs.map(j => new Job(j))
@@ -108,11 +116,15 @@ export default ({
 
     },
     getters: {
-
+        deadlinesOfDay: (s, getters) => (date) => getters.ongoingJobs.filter((j) => {
+                return moment(j.deadline).format("YYYY-MM-DD") === moment(date).format("YYYY-MM-DD")
+            }
+        ),
         job: (s) => s.job,
         pastJobs: (s) => s.jobs.filter(j => j.status === Job.STATUS.FINISHED || j.status === Job.STATUS.CANCELLED),
-        ongoingJobs: (s) => s.jobs.filter(j => j.status === Job.STATUS.ONGOING),
+        ongoingJobs: (s) => s.jobs.filter(j => j.status === Job.STATUS.ONGOING).sort((j1, j2) => moment(j1.deadline).format('YYYYMMDD') - moment(j2.deadline).format('YYYYMMDD')),
         idleJobs: (s) => s.jobs.filter(j => j.status === Job.STATUS.IDLE),
         scheduledJobs: (s) => s.jobs.filter(j => j.status === Job.STATUS.SCHEDULED),
+        jobsOfSlot: (s) => (slotId) => s.jobs.filter(j => j.slotId === slotId),
     },
 });

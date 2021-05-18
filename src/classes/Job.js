@@ -33,7 +33,11 @@ export default class Job {
         this.references = null;
         this.customerId = obj.customerId;
         this.slotId = obj.slotId
-        if (obj.references) this.setReferences(obj.references);
+        if (obj.references){
+            this.setReferences(obj.references)
+        }else{
+            this.references = {}
+        }
         this.slot = {};
         if (obj.slot) this.setSlot(obj.slot);
         if (obj.customer) this.setCustomer(obj.customer);
@@ -50,7 +54,12 @@ export default class Job {
     }
 
     setReferences(references) {
-        this.references = JSON.parse(references);
+        console.log(references);
+        try{
+            this.references = JSON.parse(references);
+        }catch (e) {
+            this.references = {}
+        }
     }
 
     setJobStages(jobStages) {
@@ -103,6 +112,9 @@ export default class Job {
         return ((workHours / jobHours) * 100).toFixed(0);
     }
 
+    reopen(){
+        this.status = Job.STATUS.ONGOING;
+    }
     markJobAsOngoing() {
         this.status = Job.STATUS.ONGOING;
         this.startedAt = moment().toISOString()

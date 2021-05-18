@@ -9,13 +9,23 @@ export default ({
         token: null,
     },
     actions: {
+        logout({commit}){
+          commit('setActiveUser',null);
+          commit('removeToken');
+        },
         authenticate({commit}, {username, password}) {
+            commit('setLoading',true)
             return api.users.authenticateUser(username, password).then(resp => {
+                commit('setLoading',false)
                 const activeUser = new User(resp.user)
                 commit('setToken', resp.token)
                 commit('setActiveUser', activeUser)
                 commit('setLoading',false,{root:true})
+                commit('pushtMessage',{type:'success',text:'Logged in '},{root:true})
                 return Promise.resolve(resp.User);
+            }).catch(()=>{
+                commit('setLoading',false,{root:true})
+                commit('pushMessage',{type:'error',text:'Could not authenticate, check password and username'},)
             })
         },
 
@@ -30,13 +40,16 @@ export default ({
                         return Promise.resolve(user)
                     })
             } else {
-                commit('setLoading',false,{root:true})
+                commit('setLoading', false, {root: true})
                 return Promise.reject('noToken')
             }
         }
 
     },
     mutations: {
+        removeToken(){
+            jsCookies.remove('auth');
+        },
         setToken(state, token) {
             jsCookies.remove('auth');
             jsCookies.set('auth', token, {expires: 30})

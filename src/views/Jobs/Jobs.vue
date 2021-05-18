@@ -91,6 +91,12 @@
                         <span class="text-md-h3">{{(getEarnings / getTotalHours) |fixed(2)}} € /hr </span>
                     </v-card-text>
                 </v-card>
+                <v-card class="mt-4" v-if="ongoingJobs.length">
+                    <v-card-text>
+                        <p>Hours Spent  </p>
+                        <span class="text-md-h3">{{getTotalHoursSpent}} hr </span>
+                    </v-card-text>
+                </v-card>
             </v-col>
         </v-row>
     </div>
@@ -137,6 +143,10 @@
             getTotalHours(){
                 return this.ongoingJobs.reduce((acc,b)=> {
                     return acc + b.getJobHours()},0);
+            },
+            getTotalHoursSpent(){
+                return this.ongoingJobs.reduce((acc,b)=> {
+                    return acc + b.getHoursSpent()},0);
             },
             ...mapGetters('jobs', [
                 'ongoingJobs',

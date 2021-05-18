@@ -18,6 +18,7 @@ instance.interceptors.request.use((config) => ({
         ...config.headers
     }
 }));
+
 axios.interceptors.response.use(function (response) {
     return response;
 }, function (error) {

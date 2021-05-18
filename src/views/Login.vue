@@ -16,6 +16,7 @@
             <v-btn color="primary" @click="login()">
               Login
             </v-btn>
+            <v-btn to="/registration"> Register Now </v-btn>
           </v-card-actions>
         </v-col>
         <v-col lg="8" md="6" sm="12" class="white">
@@ -45,6 +46,10 @@ export default {
   methods: {
     ...mapActions([
       "authenticate"
+    ]),
+    ...mapMutations([
+       "pushMessage",
+       "setLoading"
     ]),
     login() {
       this.authenticate({

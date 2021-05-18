@@ -7,8 +7,7 @@
         <v-card-title><strong> Customers </strong></v-card-title>
         <v-list color="transparent">
           <v-list-item :to="'/customers/'+customer.customerId"
-                       v-for="customer in customers"
-                       :key="customer.customerId">
+                       v-for="(customer) in customers">
             <v-list-item-action>
               <v-icon>mdi-account</v-icon>
             </v-list-item-action>
@@ -27,7 +26,7 @@
 </template>
 
 <script>
-import {mapActions, mapState} from "vuex"
+  import {mapActions, mapGetters, mapState} from "vuex"
 
 export default {
   name: "Customers",
@@ -40,7 +39,7 @@ export default {
     ])
   },
   computed: {
-    ...mapState("customers", [
+    ...mapGetters("customers", [
       "customers"
     ])
   }

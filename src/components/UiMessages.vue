@@ -8,8 +8,9 @@
         :color="message.type"
         :timeout="4000"
     >
-      {{ message.text }}
       <v-btn dark text @click="message.active = false"><v-icon>mdi-delete</v-icon></v-btn>
+      {{ message.text }}
+      <v-spacer></v-spacer>
     </v-snackbar>
   </div>
 </template>

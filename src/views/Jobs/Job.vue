@@ -18,6 +18,9 @@
             <v-btn class="mr-3" @click="finish()" color="secondary" v-if="job.status === 'ongoing'">
                 Finish
             </v-btn>
+            <v-btn class="mr-3" @click="reopen()" color="secondary" v-if="job.status === 'finished' || job.status === 'cancel'">
+                Reopen
+            </v-btn>
         </portal>
         <v-row>
             <v-col lg="3">

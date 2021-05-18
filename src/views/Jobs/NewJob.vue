@@ -140,6 +140,7 @@
                 slotId: null,
                 price: 0,
                 priority: 0,
+                status: Job.STATUS.IDLE,
                 insertedAt:  moment(Date.now()).toISOString(),
                 startedAt: null,
                 deadline: null,

@@ -1,4 +1,5 @@
 export default {
+    ERROR:'Whoops, it seems there was some error!',
     CUSTOMER_ADDED: 'The customer have been added',
     JOB_ADDED: 'The job have been added',
     UPDATED: 'Update completed',

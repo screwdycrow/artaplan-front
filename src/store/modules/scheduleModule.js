@@ -31,10 +31,11 @@ export default ({
                         commit('setLoading', false, {root: true})
                     })
             } else {
+                commit('setLoading', false, {root: true})
                 return Promise.resolve()
             }
         },
-        doScheduleEntry({commit},entry){
+        doScheduleEntry({commit}, entry) {
             commit('setLoading', true, {root: true})
             return scheduleApi.doScheduleEntry(entry).then(s => {
                 let entry = new ScheduleEntry(s)
@@ -42,7 +43,7 @@ export default ({
                 commit('updateEntryOnDay', {entry: entry, date: entry.dateFrom})
                 commit('setLoading', false, {root: true})
                 return Promise.resolve(entry);
-            }).catch(()=>{
+            }).catch(() => {
                 commit('setLoading', false, {root: true})
             })
         },
@@ -54,7 +55,7 @@ export default ({
                 commit('updateEntryOnDay', {entry: entry, date: entry.dateFrom})
                 commit('setLoading', false, {root: true})
                 return Promise.resolve(entry);
-            }).catch(()=>{
+            }).catch(() => {
                 commit('setLoading', false, {root: true})
             })
         },
@@ -71,7 +72,7 @@ export default ({
                 commit('addEntryToDay', {entry: entry, date: entry.dateFrom})
                 commit('setLoading', false, {root: true})
                 return Promise.resolve(entry);
-            }).catch(()=>{
+            }).catch(() => {
                 commit('setLoading', false, {root: true})
             })
         },
@@ -173,9 +174,9 @@ export default ({
         },
     },
     getters: {
+        workload: s=>[],
         days: s => s.days,
         schedule: s => s.schedule,
-        scheduleToday: s => s.schedule.filter(sch => moment(sch.scheduledAt).isSame(moment(Date.now()), 'day')),
         plannerOptions: s => s.plannerOptions,
         datesExceptions: s => s.datesExceptions,
         entriesOfDay: s => day => s.daysEntries[day]
