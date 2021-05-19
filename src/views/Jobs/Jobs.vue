@@ -13,7 +13,7 @@
         </portal>
         <v-row>
             <v-col sm="12" lg="10">
-                <v-card >
+                <v-card flat >
                     <v-card-text>
                         <v-card flat="">
                         <v-card-title> Ongoing ({{ongoingJobs.length}})</v-card-title>
@@ -57,7 +57,7 @@
                         </v-card>
                     </v-card-text>
                 </v-card>
-                <v-card class="mt-5">
+                <v-card flat class="mt-5">
                     <v-card-title> Past Jobs ({{pastJobs.length}})</v-card-title>
                     <v-card-text v-if="pastJobs.length">
                         <v-row  >
@@ -73,25 +73,25 @@
                 </v-card>
             </v-col>
             <v-col lg="2">
-                <v-card v-if="ongoingJobs.length">
+                <v-card flat v-if="ongoingJobs.length">
                     <v-card-text>
                         <p>Expected Earnings</p>
                         <span class="text-md-h3">{{getEarnings}} € </span>
                     </v-card-text>
                 </v-card>
-                <v-card class="mt-4" v-if="ongoingJobs.length">
+                <v-card flat class="mt-4" v-if="ongoingJobs.length">
                     <v-card-text>
                         <p>Total Hours  </p>
                         <span class="text-md-h3">{{getTotalHours}} hr </span>
                     </v-card-text>
                 </v-card>
-                <v-card class="mt-4" v-if="ongoingJobs.length">
+                <v-card flat class="mt-4" v-if="ongoingJobs.length">
                     <v-card-text>
                         <p>Value  </p>
                         <span class="text-md-h3">{{(getEarnings / getTotalHours) |fixed(2)}} € /hr </span>
                     </v-card-text>
                 </v-card>
-                <v-card class="mt-4" v-if="ongoingJobs.length">
+                <v-card flat class="mt-4" v-if="ongoingJobs.length">
                     <v-card-text>
                         <p>Hours Spent  </p>
                         <span class="text-md-h3">{{getTotalHoursSpent}} hr </span>

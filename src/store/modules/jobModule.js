@@ -3,6 +3,7 @@ import Job from "@/classes/Job";
 import Messages from "@/store/Messages";
 import _ from 'lodash'
 import moment from "moment"
+import Vue from 'vue'
 
 function findJob(id) {
     return (s) => s.jobId === id;
@@ -48,10 +49,11 @@ export default ({
         addJob({commit}, job) {
             commit('setLoading', true, {root: true})
             let _job = _.cloneDeep(job)
+            console.log(_job.references);
             _job.references = JSON.stringify(_job.references);
             return jobApi.addJob(_job).then(resp => {
                 commit('setLoading', false, {root: true})
-                commit('pushJobToList', job)
+                commit('pushJobToList', new Job(job))
                 commit('pushMessage', {text: Messages.JOB_ADDED, type: 'success'}, {root: true})
             })
         },

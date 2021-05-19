@@ -145,7 +145,6 @@
                 insertedAt:  moment(Date.now()).toISOString(),
                 startedAt: null,
                 deadline: null,
-                references:{},
                 estimatedDays:5,
                 customerId: null,
                 customer: {},

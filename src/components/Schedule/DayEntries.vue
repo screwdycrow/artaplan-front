@@ -8,7 +8,7 @@
             {{day | format}}
 
         </v-toolbar>
-        <v-list dense>
+        <v-list dense class="fill-height">
             <v-list-item dense v-for="j in deadlinesOfDay(day)">
                 <v-list-item-action>
                     <v-icon color="#ff1b0e  ">mdi-flag-checkered</v-icon>

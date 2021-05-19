@@ -20,9 +20,7 @@
                                   style="padding:0 10px 0 0">
             <v-list-item :style="'background-color:'+job.getFormatedColor(0.5)">
                 <v-list-item-content>
-                    <v-list-item-title>
                         {{job.name}}
-                    </v-list-item-title>
                     <v-list-item-subtitle>
                         {{job.customer.name}}
                     </v-list-item-subtitle>

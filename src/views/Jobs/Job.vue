@@ -47,13 +47,6 @@
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item :to="'/jobs/'+job.jobId+'/references'">
-            <v-list-item-content>
-              <v-list-item-title>
-                Schedule
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
         </v-list>
       </v-col>
       <v-col lg="9">

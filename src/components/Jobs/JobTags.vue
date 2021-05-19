@@ -11,11 +11,11 @@
             colors:{}
         }),
         created(){
-          this.colors[Job.status.IDLE] = 'orange'
-          this.colors[Job.status.FINISHED] = 'green'
-          this.colors[Job.status.ONGOING] = 'blue'
-          this.colors[Job.status.CANCELLED] = 'red'
-          this.colors[Job.status.SCHEDULED] = 'lime'
+          this.colors[Job.STATUS.IDLE] = 'orange'
+          this.colors[Job.STATUS.FINISHED] = 'green'
+          this.colors[Job.STATUS.ONGOING] = 'blue'
+          this.colors[Job.STATUS.CANCELLED] = 'red'
+          this.colors[Job.STATUS.SCHEDULED] = 'lime'
         },
         props: {
             job:Job

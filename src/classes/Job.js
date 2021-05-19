@@ -30,12 +30,11 @@ export default class Job {
         this.priority = obj.priority;
         this.insertedAt = obj.insertedAt;
         this.deadline = obj.deadline;
-        this.references = null;
         this.customerId = obj.customerId;
         this.slotId = obj.slotId
-        if (obj.references){
+        if (obj.references) {
             this.setReferences(obj.references)
-        }else{
+        } else {
             this.references = {}
         }
         this.slot = {};
@@ -54,11 +53,13 @@ export default class Job {
     }
 
     setReferences(references) {
-        console.log(references);
-        try{
-            this.references = JSON.parse(references);
-        }catch (e) {
+        if(references === '{}'){
+            console.log(references)
             this.references = {}
+
+        }else{
+            this.references = JSON.parse(references);
+            console.log(references)
         }
     }
 
@@ -94,7 +95,7 @@ export default class Job {
 
     getValue() {
         let hoursLeft = this.getHoursLeft();
-        let addedHours = hoursLeft<0? -1*hoursLeft:0
+        let addedHours = hoursLeft < 0 ? -1 * hoursLeft : 0
         return this.price / (this.getJobHours() + addedHours);
     }
 
@@ -112,9 +113,10 @@ export default class Job {
         return ((workHours / jobHours) * 100).toFixed(0);
     }
 
-    reopen(){
+    reopen() {
         this.status = Job.STATUS.ONGOING;
     }
+
     markJobAsOngoing() {
         this.status = Job.STATUS.ONGOING;
         this.startedAt = moment().toISOString()

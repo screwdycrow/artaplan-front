@@ -21,7 +21,7 @@
 
             </v-col>
             <v-col lg="10">
-                <v-card >
+                <v-card flat >
                     <v-toolbar flat dense="">
                         <v-toolbar-title>
                              3-Week Schedule

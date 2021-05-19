@@ -34,7 +34,7 @@
     <v-row>
       <v-col>
         <v-row no-gutters>
-          <div style="display: inline;" v-for="(hyperlink, index) in job.references.hyperlinks">
+          <div style="display: inline;" :key="index" v-for="(hyperlink, index) in job.references.hyperlinks">
             <v-btn
                 target="_blank" :color="job.getFormatedColor(0.5)"
                 :href="hyperlink.url">
@@ -50,7 +50,7 @@
 
 
     <v-row v-masonry>
-      <v-col cols="12" sm="4" v-for="(link, index) in job.references.links">
+      <v-col cols="12" sm="4" v-for="(link, index) in job.references.links" :key="index">
         <v-card>
           <v-img v-ripple
                  v-if="link.type === 'url'" :src="someImage"></v-img>
@@ -129,14 +129,17 @@ export default {
   methods: {
 
     repaint() {
-      setTimeout(() => this.$redrawVueMasonry(), 1500);
+      setTimeout(() => this.$redrawVueMasonry(), 100);
     },
     removeUrl(index, link) {
-      if (link.type !== 'imageUrl') {
+      if (link.type === 'imageUrl') {
         this.job.references.links.splice(index, 1)
+        this.repaint();
+
       } else {
         this.job.references.hyperlinks.splice(index, 1)
       }
+      this.$forceUpdate();
     },
     addUrl({url, title, type, description}) {
       if (this.job.references === 'null') {
@@ -163,6 +166,7 @@ export default {
           description: description
         })
       }
+      this.$forceUpdate();
       this.repaint();
 
     }
