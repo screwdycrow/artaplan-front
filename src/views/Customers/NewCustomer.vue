@@ -2,7 +2,7 @@
   <v-card>
     <v-toolbar flat>
       <v-toolbar-title >
-        <strong> {{customer.name}} </strong>
+        <strong> New Customer </strong>
       </v-toolbar-title>
     </v-toolbar>
     <v-card-text>

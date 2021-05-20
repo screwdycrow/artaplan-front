@@ -4,6 +4,9 @@ import {mapActions, mapGetters, mapMutations} from "vuex"
 export default {
   name: "JobMixin",
   methods: {
+    removeJobStage(index) {
+      this.job.jobStages.splice(index, 1);
+    },
     cancel() {
       this.job.markJobAsCancelled();
       this.updateJob(this.job);
@@ -24,7 +27,7 @@ export default {
       this.updateJob(this.job);
     },
     deleteJ() {
-      if (confirm("are you sure you want to completely delete this job")) {
+      if (!confirm("are you sure you want to completely delete this job")) {
         this.deleteJob(this.job).then(resp => {
           this.$router.push('/jobs')
         });

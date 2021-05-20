@@ -2,7 +2,7 @@
     <div>
         <v-row>
             <v-col>
-                <v-card>
+                <v-card flat>
 
                     <v-list>
                         <v-list-item>
@@ -26,7 +26,7 @@
                 </v-card>
             </v-col>
             <v-col>
-                <v-card>
+                <v-card flat>
                     <v-list>
                         <v-list-item>
                             <v-list-item-action>
@@ -47,10 +47,19 @@
                     </v-list>
                 </v-card>
             </v-col>
+          <v-col lg="2">
+            <v-card flat class="fill-height">
+              <v-card-text>
+                <label>earnings</label>
+                <br/>
+                <span class="text-md-h3">{{job.price}} € </span>
+              </v-card-text>
+            </v-card>
+          </v-col>
         </v-row>
         <v-row>
             <v-col lg="2">
-                <v-card>
+                <v-card flat>
                     <v-card-text>
                         <p>completed</p>
                         <span class="text-md-h3">{{job.getCompletionPercentage()}}%</span>
@@ -60,7 +69,7 @@
                 </v-card>
             </v-col>
             <v-col lg="2">
-                <v-card>
+                <v-card flat :color="job.isOverWork()?'red lighten-4':''">
                     <v-card-text>
                         <p> hours spent</p>
                         <span class="text-md-h3">{{job.getHoursSpent()}}hr</span>
@@ -68,7 +77,7 @@
                 </v-card>
             </v-col>
             <v-col lg="2">
-                <v-card>
+                <v-card flat :color="job.isOverWork()?'red lighten-4':''">
                     <v-card-text>
                         <p> hours left</p>
                         <span class="text-md-h3">{{job.getHoursLeft()}}hr</span>
@@ -76,25 +85,33 @@
                 </v-card>
             </v-col>
             <v-col lg="2">
-                <v-card>
+                <v-card flat :color="job.isOverWork()?'red lighten-4':''">
                     <v-card-text>
-                        <p>earnings</p>
-                        <span class="text-md-h3">{{job.price}} € </span>
-                    </v-card-text>
-                </v-card>
-            </v-col>
-            <v-col lg="2">
-                <v-card>
-                    <v-card-text>
-                        <p>value per hour</p>
+                        <p>value/hr</p>
                         <span class="text-md-h3">{{job.getValue() | fixed(2)}}€</span>
                     </v-card-text>
                 </v-card>
             </v-col>
+          <v-col lg="2" v-if="job.isOverWork()">
+            <v-card flat>
+              <v-card-text>
+                <p>Initial value/hr</p>
+                <span class="text-md-h3">{{ (job.price / job.getJobHours()) | fixed(2)}}€</span>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col lg="2" v-if="job.isOverWork()">
+            <v-card flat>
+              <v-card-text>
+                <p>Actual price </p>
+                <span class="text-md-h3">{{ (job.price - job.getHoursLeft()*(job.price / job.getJobHours()) )| fixed(0)}}€</span>
+              </v-card-text>
+            </v-card>
+          </v-col>
         </v-row>
         <v-row>
             <v-col>
-                <v-card>
+                <v-card flat>
                     <v-card-title> Description</v-card-title>
                     <v-card-text>
                         <span v-html="job.description"></span>
@@ -120,7 +137,7 @@
       </v-row>
         <v-row>
             <v-col lg="2" v-for="(link, index) in job.references.links">
-                <v-card>
+                <v-card >
                     <v-dialog
                             @input="repaint()"
                             max-width="800px"
@@ -155,7 +172,8 @@
         }),
         watch: {},
         name: "JobOverview",
-        mixins: [JobMixin]
+        mixins: [JobMixin],
+
     }
 </script>
 

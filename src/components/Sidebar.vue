@@ -24,14 +24,7 @@
                     </v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
-            <v-list-item @click="logoutClick()">
-                <v-list-item-icon><v-icon> mdi-logout</v-icon> </v-list-item-icon>
-                <v-list-item-content>
-                    <v-list-item-title>
-                        Logout
-                    </v-list-item-title>
-                </v-list-item-content>
-            </v-list-item>
+
             <v-list-item to="/slots">
                 <v-list-item-icon><v-icon> mdi-brush</v-icon> </v-list-item-icon>
                 <v-list-item-content>
@@ -41,7 +34,7 @@
                 </v-list-item-content>
             </v-list-item>
             <v-list-item to="/jobs">
-                <v-list-item-icon><v-icon small> mdi-briefcase</v-icon></v-list-item-icon>
+                <v-list-item-icon><v-icon > mdi-briefcase</v-icon></v-list-item-icon>
 
                 <v-list-item-content>
                     <v-list-item-title>
@@ -50,7 +43,7 @@
                 </v-list-item-content>
             </v-list-item>
           <v-list-item to="/customers">
-            <v-list-item-icon><v-icon small> mdi-account</v-icon></v-list-item-icon>
+            <v-list-item-icon><v-icon > mdi-account</v-icon></v-list-item-icon>
 
             <v-list-item-content>
               <v-list-item-title>
@@ -59,7 +52,7 @@
             </v-list-item-content>
           </v-list-item>
             <v-list-item to="/schedule">
-                <v-list-item-icon><v-icon small> mdi-calendar</v-icon></v-list-item-icon>
+                <v-list-item-icon><v-icon > mdi-calendar</v-icon></v-list-item-icon>
 
                 <v-list-item-content>
                     <v-list-item-title>
@@ -67,6 +60,22 @@
                     </v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
+          <v-list-item to="/settings">
+            <v-list-item-icon><v-icon> mdi-cog</v-icon> </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>
+                Settings
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item @click="logoutClick()">
+            <v-list-item-icon><v-icon> mdi-logout</v-icon> </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>
+                Logout
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </v-list>
     </v-navigation-drawer>
 </template>

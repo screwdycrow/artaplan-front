@@ -1,11 +1,11 @@
 <template>
     <div>
-        <v-toolbar flat color="transparent">
-            <v-toolbar-title>
-                <h3>Details</h3>
-            </v-toolbar-title>
-        </v-toolbar>
-            <v-card>
+            <v-card flat>
+              <v-toolbar flat color="transparent">
+                <v-toolbar-title>
+                  <h3>Details</h3>
+                </v-toolbar-title>
+              </v-toolbar>
                 <v-card-text>
                     <v-row>
                         <v-col lg="10">
@@ -72,16 +72,39 @@
                     </v-row>
                 </v-card-text>
             </v-card>
-            <v-toolbar flat color="transparent">
+
+            <v-card flat>
+              <v-toolbar flat color="transparent">
                 <v-toolbar-title>
-                    <h3>Description</h3>
+                  <h3>Description</h3>
                 </v-toolbar-title>
-            </v-toolbar>
-            <v-card>
+              </v-toolbar>
                 <v-card-text>
                     <ckeditor v-model="job.description" :config="editorConfig"></ckeditor>
 
                 </v-card-text>
+            </v-card>
+            <v-card flat>
+              <v-toolbar flat color="transparent">
+                <v-toolbar-title>
+                  <h3>Stages</h3>
+                </v-toolbar-title>
+              </v-toolbar>
+              <v-card-text>
+                    <v-list-item  v-for="(js,index) in job.jobStages">
+                      <v-list-item-action>
+                      </v-list-item-action>
+                      <v-list-item-content>
+                        <v-list-item-title>
+                          {{js.stage.name}}
+                        </v-list-item-title>
+                      </v-list-item-content>
+                      <v-list-item-action>
+                        <v-text-field label="Hours needed" style="width:100px;" filled hide-details
+                                      type="number" v-model.number="js.jobHours"/>
+                      </v-list-item-action>
+                    </v-list-item>
+              </v-card-text>
             </v-card>
 
     </div>

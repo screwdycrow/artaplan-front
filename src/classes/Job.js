@@ -53,14 +53,19 @@ export default class Job {
     }
 
     setReferences(references) {
-        if(references === '{}'){
-            console.log(references)
-            this.references = {}
+        try{
+            if(references === '{}'){
+                console.log(references)
+                this.references = {}
 
-        }else{
-            this.references = JSON.parse(references);
-            console.log(references)
+            }else{
+                this.references = JSON.parse(references);
+                console.log(references)
+            }
+        }catch (e){
+            this.references = {}
         }
+
     }
 
     setJobStages(jobStages) {
@@ -94,9 +99,14 @@ export default class Job {
     }
 
     getValue() {
-        let hoursLeft = this.getHoursLeft();
-        let addedHours = hoursLeft < 0 ? -1 * hoursLeft : 0
-        return this.price / (this.getJobHours() + addedHours);
+        if(this.status !== Job.STATUS.FINISHED){
+            let hoursLeft = this.getHoursLeft();
+            let addedHours = hoursLeft < 0 ? -1 * hoursLeft : 0
+            return this.price / (this.getJobHours() + addedHours);
+        }else{
+            return this.price / this.getHoursSpent();
+        }
+
     }
 
     getJobColor() {

@@ -1,5 +1,8 @@
 <template>
-    <v-chip-group dense ><v-chip small outlined :color="colors[job.status]"> {{job.status}}</v-chip> </v-chip-group>
+    <v-chip-group dense >
+      <v-chip small outlined color="red" v-if="job.isOverWork()"> Overwork </v-chip>
+      <v-chip small outlined :color="colors[job.status]"> {{job.status}}</v-chip>
+    </v-chip-group>
 </template>
 
 <script>

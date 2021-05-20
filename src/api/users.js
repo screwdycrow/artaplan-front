@@ -13,5 +13,9 @@ export default {
     },
     getUser() {
         return axios.get('/Users/current').then(resp => new User (resp.data));
+    },
+    changePassword( userId, password) {
+        return axios.post( '/Users/changePassword/'+userId, {password: password})
+            .then(resp => resp.data)
     }
 }

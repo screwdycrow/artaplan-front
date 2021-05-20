@@ -9,23 +9,34 @@ export default ({
         token: null,
     },
     actions: {
-        logout({commit}){
-          commit('setActiveUser',null);
-          commit('removeToken');
+        logout({commit}) {
+            commit('setActiveUser', null);
+            commit('removeToken');
+            location.reload();
+        },
+
+        changePassword({commit, state}, password) {
+            commit('setLoading',true)
+            return api.users.changePassword(state.activeUser.userId, password).then(
+                resp=>{
+                    commit('setLoading',false);
+                    return Promise.resolve(true);
+                }
+            )
         },
         authenticate({commit}, {username, password}) {
-            commit('setLoading',true)
+            commit('setLoading', true)
             return api.users.authenticateUser(username, password).then(resp => {
-                commit('setLoading',false)
+                commit('setLoading', false)
                 const activeUser = new User(resp.user)
                 commit('setToken', resp.token)
                 commit('setActiveUser', activeUser)
-                commit('setLoading',false,{root:true})
-                commit('pushtMessage',{type:'success',text:'Logged in '},{root:true})
+                commit('setLoading', false, {root: true})
+                commit('pushtMessage', {type: 'success', text: 'Logged in '}, {root: true})
                 return Promise.resolve(resp.User);
-            }).catch(()=>{
-                commit('setLoading',false,{root:true})
-                commit('pushMessage',{type:'error',text:'Could not authenticate, check password and username'},)
+            }).catch(() => {
+                commit('setLoading', false, {root: true})
+                commit('pushMessage', {type: 'error', text: 'Could not authenticate, check password and username'},)
             })
         },
 
@@ -36,7 +47,7 @@ export default ({
                 return api.users.getUser().then(
                     user => {
                         commit('setActiveUser', user)
-                        commit('setLoading',false,{root:true})
+                        commit('setLoading', false, {root: true})
                         return Promise.resolve(user)
                     })
             } else {
@@ -47,7 +58,7 @@ export default ({
 
     },
     mutations: {
-        removeToken(){
+        removeToken() {
             jsCookies.remove('auth');
         },
         setToken(state, token) {
@@ -66,6 +77,6 @@ export default ({
             return s.token !== null && s.activeUser !== null
         },
         token: (s) => s.token,
-        user:(s)=>s.activeUser
+        user: (s) => s.activeUser
     }
 });

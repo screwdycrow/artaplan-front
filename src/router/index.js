@@ -175,6 +175,14 @@ const routes = [
             noMenu: true,
 
         }
+    }, {
+        path: '/settings',
+        name: 'settings',
+        component: () => import(/* webpackChunkName: "settings" */ '../views/Settings'),
+        meta: {
+            requiresAuth: true,
+
+        }
     }
 ]
 
