@@ -3,6 +3,7 @@ export default class  {
         this.stageId = stage.stageId;
         this.description = stage.description;
         this.name = stage.name;
+        this.userId = stage.userId;
         this.estimatedHours = stage.estimatedHours;
         this.avgHours = stage.avgHours;
         this.order = stage.order;

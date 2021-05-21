@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card flat>
     <v-card-title> New Job Template</v-card-title>
     <v-card-text>
       <v-stepper v-model="el">
@@ -26,7 +26,7 @@
                 <v-row>
                   <v-col>
                     <label>Description</label>
-                    <ckeditor v-model="slot.description" ></ckeditor>
+                    <ckeditor v-model="slot.description"></ckeditor>
                   </v-col>
                 </v-row>
                 <v-btn
@@ -41,7 +41,7 @@
             </v-form>
           </v-stepper-content>
           <v-stepper-content step="2">
-            <v-card-title> Stages </v-card-title>
+            <v-card-title> Stages</v-card-title>
             <v-card-text>
               <v-form>
                 <v-row>
@@ -54,14 +54,16 @@
                               <v-text-field type="text" label="Stage Title" v-model="stage.name"></v-text-field>
                             </v-col>
                             <v-col>
-                              <v-text-field  type="number" placeholder="3" label="Estimated Hours"
-                                             v-model.number="stage.estimatedHours"></v-text-field>
+                              <v-text-field type="number" placeholder="3" label="Estimated Hours"
+                                            v-model.number="stage.estimatedHours"></v-text-field>
                             </v-col>
                           </v-row>
 
                         </v-list-item-content>
                         <v-list-item-action>
-                          <v-btn color="primary" fab @click="addStage()"><v-icon>mdi-plus</v-icon></v-btn>
+                          <v-btn color="primary" fab @click="addStage()">
+                            <v-icon>mdi-plus</v-icon>
+                          </v-btn>
                         </v-list-item-action>
                       </v-list-item>
                       <draggable v-model="slot.stages" @change="onDragEnd()">
@@ -90,19 +92,27 @@
                 </v-row>
               </v-form>
             </v-card-text>
+            <v-card-title> Sum </v-card-title>
+            <v-card-text>
+              You are planning to spend around
+              <strong> {{totalHours}} </strong> hours for a job of this template <span v-if="totalHours>0"> and you'll gain <strong>{{slot.price/totalHours |fixed(2)}}</strong> per hour </span>
+            </v-card-text>
+            <v-card-text v-if="totalHours === 0 ">
+              Add some stages first.
+            </v-card-text>
             <v-card-actions>
               <v-btn
-                      color="success"
-                      class="mr-4"
-                      @click="el--"
+                  color="success"
+                  class="mr-4"
+                  @click="el--"
               >
                 back
               </v-btn>
               <v-btn
-                      color="success"
-                      class="mr-4"
-                      @click="insert()"
-                      :disabled="!slot.stages.length"
+                  color="success"
+                  class="mr-4"
+                  @click="insert()"
+                  :disabled="!slot.stages.length"
               >
                 Submit
               </v-btn>
@@ -118,7 +128,7 @@
 </template>
 
 <script>
-import {mapGetters,mapActions} from "vuex";
+import {mapGetters, mapActions} from "vuex";
 import draggable from "vuedraggable";
 import slots from "@/api/slots";
 
@@ -128,6 +138,7 @@ export default {
     draggable
   },
   data: () => ({
+    hackUpdate:0,
     el: 1,
     stage: {
       name: null,
@@ -142,7 +153,6 @@ export default {
         valid: false
       },
     },
-    totalHours: 0,
     slot: {
       description: null,
       price: null,
@@ -160,17 +170,24 @@ export default {
   }),
   computed: {
     ...mapGetters(["user"]),
+    totalHours() {
+      this.hackUpdate;
+      return this.slot.stages.reduce((acc, b) => {
+       return  acc + b.estimatedHours;
+      }, 0);
+    },
+
   },
   created() {
     this.slot.userId = this.user.userId
   },
   methods: {
-    ...mapActions("slots",[
-        "addSlot"
+    ...mapActions("slots", [
+      "addSlot"
     ]),
 
-    insert(){
-      this.addSlot(this.slot).then(resp=>{
+    insert() {
+      this.addSlot(this.slot).then(resp => {
         this.$router.push('/slots')
       })
     },
@@ -180,10 +197,15 @@ export default {
         console.log(this.slot.stages);
       });
     },
+    change(){
+      this.hackUpdate++
+    },
     removeStage(index) {
+      this.hackUpdate++;
       this.slot.stages.splice(index, 1);
     },
     addStage() {
+      this.hackUpdate++;
       this.slot.stages.push(this.stage);
       this.stage = {
         name: null,

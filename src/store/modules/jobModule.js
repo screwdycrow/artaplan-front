@@ -53,6 +53,8 @@ export default ({
             _job.references = JSON.stringify(_job.references);
             return jobApi.addJob(_job).then(resp => {
                 commit('setLoading', false, {root: true})
+                console.log(resp);
+                job.jobId = resp.jobId
                 commit('pushJobToList', new Job(job))
                 commit('pushMessage', {text: Messages.JOB_ADDED, type: 'success'}, {root: true})
             })

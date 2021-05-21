@@ -13,10 +13,6 @@
           <v-text-field outlined v-model.number="slot.price" label="Price" append-icon="mdi-cash"/>
           <label>Description</label>
           <ckeditor v-model="slot.description"></ckeditor>
-          <v-card-actions>
-            <v-btn outlined color="success" @click="putSlot(slot)"> Update Details</v-btn>
-            <v-btn outlined color="error" @click="deleteSlot(slot)"> Delete Slot</v-btn>
-          </v-card-actions>
         </v-card-text>
       </v-tab-item>
       <v-tab-item>
@@ -25,14 +21,10 @@
             <v-list-item ripple @click="toggleStageDefault(stage)" link v-for="stage in slot.stages"
                          :key="stage.stageId">
               <v-list-item-content>
-                <v-list-item-title> {{ stage.name }}</v-list-item-title>
-                {{ stage.description }}
+                <v-text-field label="Name" outlined hide-details v-model="stage.name"> </v-text-field>
               </v-list-item-content>
               <v-list-item-action class="text-center">
-                <v-list-item-action-text>
-                  Estimated
-                </v-list-item-action-text>
-                {{ stage.estimatedHours }} h
+                <v-text-field  label="Estimated Hours" hide-details type="number" outlined v-model.number="stage.estimatedHours" append-icon="mdi-clock"> </v-text-field>
               </v-list-item-action>
             </v-list-item>
           </v-list>
@@ -55,7 +47,10 @@
         </v-row>
       </v-tab-item>
     </v-tabs>
-
+    <v-card-actions>
+      <v-btn outlined color="success" @click="putSlot(slot)"> Update Slot </v-btn>
+      <v-btn outlined color="error" @click="deleteSlot(slot)"> Delete Slot</v-btn>
+    </v-card-actions>
   </v-card>
 
 </template>
