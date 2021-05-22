@@ -62,6 +62,40 @@
         <router-view/>
       </v-container>
     </v-content>
+    <v-footer>
+      <v-card
+          flat
+          tile
+          width="100%"
+          class="transparent lighten-1 text-center"
+      >
+        <v-card-text>
+          <v-btn
+              color="grey"
+              class="mx-4"
+              text
+              to="mailto:jimmyst@hotmail.gr"
+          >
+            Contact Us
+          </v-btn>
+          <v-btn
+              color="grey"
+              class="mx-4"
+              text
+              to="https://github.com/screwdycrow"
+          >
+            Github
+          </v-btn>
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-text class="grey--text">
+          {{ new Date().getFullYear() }} — <strong>Artaplan</strong>
+        </v-card-text>
+      </v-card>
+    </v-footer>
+
   </v-app>
 </template>
 

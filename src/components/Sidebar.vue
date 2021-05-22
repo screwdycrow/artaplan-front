@@ -10,7 +10,7 @@
             expand-on-hover
     >
         <v-toolbar class="pt-4" extended extension-height="30" color="transparent" dark flat>
-            <v-app-bar-nav-icon class="" color=""  @click.stop="show = !show"><v-icon>mdi-arrow-left</v-icon> </v-app-bar-nav-icon>
+            <v-app-bar-nav-icon class="" color=""> <v-img  width="50px" contain src="@/assets/Artboard2.png"> </v-img>  </v-app-bar-nav-icon>
             <v-toolbar-title>
                 <h1 class="headline"> ARTAPLAN</h1>
             </v-toolbar-title>
