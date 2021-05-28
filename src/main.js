@@ -21,10 +21,11 @@ Vue.use(VueMasonryPlugin);
 
 Vue.component('apexchart', VueApexCharts);
 
-Vue.filter('formatDate', function (value) {
+Vue.filter('formatDate', function (value,format) {
   if (!value) return '';
+  if(!format) format = 'DD/MM/YY'
   value = value.toString();
-  return moment(value).format('DD/MM/YY')
+  return moment(value).format(format)
 });
 
 Vue.filter('fixed',function(value, digits){

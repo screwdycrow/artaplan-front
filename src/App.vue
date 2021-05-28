@@ -1,7 +1,8 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-app id="inspire">
-    <v-progress-linear v-if="isLoading"  absolute bottom   indeterminate striped height="10" ></v-progress-linear>
     <ui-messages></ui-messages>
+    <time-logs></time-logs>
+
     <sidebar v-if="!$route.meta.noMenu" :show="drawerRight"  :opened="opened"/>
     <v-app-bar
         class="hidden-md-and-up"
@@ -9,7 +10,10 @@
         flat app
 
     >
+      <v-progress-linear v-if="isLoading"  absolute top  indeterminate striped height="10" ></v-progress-linear>
+
       <v-container style="max-width: 1600px" class="d-flex align-center">
+
         <v-app-bar-nav-icon @click.stop="opened = !opened"/>
         <v-toolbar-title>
           <strong class="heading hidden-md-and-up font-weight-black">
@@ -29,6 +33,8 @@
         color="background"
         flat app
     >
+      <v-progress-linear v-if="isLoading"  absolute top  indeterminate striped height="10" ></v-progress-linear>
+
       <v-container style="max-width: 1600px" class="d-flex align-center">
         <v-toolbar-title>
           <h1 class=" font-weight-black">
@@ -50,14 +56,14 @@
       >
         <v-btn
             fixed
-            color="primary"
+            color="secondary"
             dark
             bottom
             right
             fab
-            to="/schedule"
+            @click="toggleShowTimeLog()"
         >
-          <v-icon>mdi-calendar</v-icon>
+          <v-icon>mdi-clock</v-icon>
         </v-btn>
         <router-view/>
       </v-container>
@@ -95,25 +101,33 @@
         </v-card-text>
       </v-card>
     </v-footer>
+    <time-log-now></time-log-now>
 
   </v-app>
 </template>
 
 <script>
 import Sidebar from "@/components/Sidebar";
-import {mapState} from "vuex";
+import { mapMutations, mapState} from "vuex";
 import UiMessages from "@/components/UiMessages";
+import TimeLogNow from "@/components/TimeLogs/TimeLogNow";
+import TimeLogs from "@/components/TimeLogs/TimeLogs";
 
 export default {
   name: 'App',
 
-  components: {UiMessages, Sidebar},
+  components: {TimeLogs, TimeLogNow, UiMessages, Sidebar},
   computed:{
     ...mapState([
        "isLoading"
     ]),
     ...mapState('users',[
         'activeUser'
+    ])
+  },
+  methods:{
+    ...mapMutations('timeLogs',[
+        'toggleShowTimeLog'
     ])
   },
   data: () => ({

@@ -2,7 +2,7 @@
     <div>
         <v-row>
             <v-col>
-                <v-card flat>
+                <v-card flat class="fill-height">
 
                     <v-list>
                         <v-list-item>
@@ -26,24 +26,31 @@
                 </v-card>
             </v-col>
             <v-col>
-                <v-card flat>
+                <v-card flat class="fill-height">
                     <v-list>
-                        <v-list-item>
-                            <v-list-item-action>
-                                <strong> Started: </strong>
-                            </v-list-item-action>
-                            <v-list-item-content>
-                                {{job.startedAt | formatDate }}
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-list-item>
-                            <v-list-item-action>
-                                <strong> Deadline: </strong>
-                            </v-list-item-action>
-                            <v-list-item-content>
-                                {{job.deadline | formatDate}}
-                            </v-list-item-content>
-                        </v-list-item>
+                      <v-list-item>
+                        <v-list-item-action>
+                          <strong> Started: </strong>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                          {{job.startedAt | formatDate }}
+                        </v-list-item-content>
+                        <v-list-item-action>
+                          <strong> Finished: </strong>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                          {{job.finishedAt | formatDate}}
+                        </v-list-item-content>
+                      </v-list-item>
+                      <v-list-item>
+                        <v-list-item-action>
+                          <strong> Deadline: </strong>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                          {{job.deadline | formatDate}}
+                        </v-list-item-content>
+
+                      </v-list-item>
                     </v-list>
                 </v-card>
             </v-col>

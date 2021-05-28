@@ -6,6 +6,9 @@
             <v-list-item-subtitle> {{entry.jobStage.job.name}}</v-list-item-subtitle>
         </v-list-item-content>
         <v-list-item-action class="actions">
+          <v-btn small icon @click="start()">
+            <v-icon small>mdi-play</v-icon>
+          </v-btn>
             <v-btn small icon @click="remove()">
                 <v-icon small>mdi-delete</v-icon>
             </v-btn>
@@ -17,15 +20,17 @@
 </template>
 
 <script>
-    import {createNamespacedHelpers, mapMutations} from "vuex";
+    import {mapActions, mapMutations} from "vuex";
 
-    const {mapActions} = createNamespacedHelpers('schedule');
     import ScheduleEntry from "@/classes/ScheduleEntry";
 
     export default {
         name: "scheduleEntryItem",
         props: {entry: ScheduleEntry},
         methods: {
+            start(){
+              this.startTimeLog({jobId:this.entry.jobStage.job.jobId,stageName:this.entry.jobStage.stage.name})
+            },
             done() {
                 this.doScheduleEntry(this.entry).then(() => {
                     this.entry.isDone = !this.entry.isDone;
@@ -50,7 +55,10 @@
             ...mapMutations('jobs', [
                 "updateJobStageWorkHours"
             ]),
-            ...mapActions([
+            ...mapActions('timeLogs',[
+               'startTimeLog'
+            ]),
+            ...mapActions('schedule',[
                 "deleteScheduleEntry",
                 "doScheduleEntry"
             ])

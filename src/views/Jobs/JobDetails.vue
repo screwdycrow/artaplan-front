@@ -32,7 +32,7 @@
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col lg=6>
+                        <v-col lg=4>
                             <v-text-field
                                     outlined
                                     hide-details
@@ -41,7 +41,7 @@
                                     append-icon="mdi-cash"/>
 
                         </v-col>
-                        <v-col lg="6">
+                        <v-col lg="4">
                             <v-menu
                                     ref="menu1"
                                     :close-on-content-click="false"
@@ -69,11 +69,39 @@
                                 ></v-date-picker>
                             </v-menu>
                         </v-col>
+                      <v-col lg="4" v-if="job.status !== 'idle'">
+                        <v-menu
+                            ref="menu1"
+                            :close-on-content-click="false"
+                            transition="scale-transition"
+                            offset-y
+                            max-width="290px"
+                            min-width="auto"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                                outlined
+                                readonly
+                                hide-details
+                                :value="job.startedAt|formatDate"
+                                label="Started"
+                                persistent-hint
+                                append-icon="mdi-calendar"
+                                v-bind="attrs"
+                                v-on="on"
+                            ></v-text-field>
+                          </template>
+                          <v-date-picker
+                              v-model="job.startedAt"
+                              no-title
+                          ></v-date-picker>
+                        </v-menu>
+                      </v-col>
                     </v-row>
                 </v-card-text>
             </v-card>
 
-            <v-card flat>
+            <v-card class="mt-3" flat>
               <v-toolbar flat color="transparent">
                 <v-toolbar-title>
                   <h3>Description</h3>
@@ -81,10 +109,9 @@
               </v-toolbar>
                 <v-card-text>
                     <ckeditor v-model="job.description" :config="editorConfig"></ckeditor>
-
                 </v-card-text>
             </v-card>
-            <v-card flat>
+            <v-card flat class="mt-3" >
               <v-toolbar flat color="transparent">
                 <v-toolbar-title>
                   <h3>Stages</h3>

@@ -16,7 +16,7 @@
             <v-btn color="primary" @click="login()">
               Login
             </v-btn>
-            <v-btn to="/registration"> Register Now </v-btn>
+            <v-btn to="/registration"> Register Now</v-btn>
           </v-card-actions>
         </v-col>
         <v-col lg="8" md="6" sm="12" class="white">
@@ -36,6 +36,7 @@
 
 <script>
 import {mapActions, mapGetters, mapMutations} from "vuex";
+import store from "@/store";
 
 export default {
   name: "Login",
@@ -45,11 +46,12 @@ export default {
   }),
   methods: {
     ...mapActions([
-      "authenticate"
+      "authenticate",
+      "init"
     ]),
     ...mapMutations([
-       "pushMessage",
-       "setLoading"
+      "pushMessage",
+      "setLoading"
     ]),
     login() {
       this.authenticate({

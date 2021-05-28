@@ -3,7 +3,7 @@
     <portal to="toolbar-title"> Dashboard</portal>
     <portal to="toolbar-actions">
       <v-btn color="primary" class="mr-3" to="/newCustomer"> Add a Customer</v-btn>
-      <v-btn color="primary" class="mr-3" to="/newSlot"> Add a Slot</v-btn>
+      <v-btn color="primary" class="mr-3" to="/newSlot"> Add a Job Template</v-btn>
       <v-btn color="primary" class="mr-3" to="/newJob"> Add a Job</v-btn>
     </portal>
 
@@ -63,7 +63,7 @@
               <v-col>
                 <v-row v-if="ongoingJobs.length">
                   <v-col lg="3" v-for="job in ongoingJobs">
-                    <job-item :job="job"></job-item>
+                    <job-item  :job="job"></job-item>
                   </v-col>
                 </v-row>
                 <v-card flat color="transparent" v-else>

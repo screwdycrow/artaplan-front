@@ -199,7 +199,7 @@ router.beforeEach((to, from, next) => {
             store.dispatch('getUserFromToken').then(resp => {
                 next()
             }).catch(err => {
-
+                console.log(err);
                 next('/login');
             })
             return;

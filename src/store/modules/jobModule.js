@@ -125,7 +125,27 @@ export default ({
                 return moment(j.deadline).format("YYYY-MM-DD") === moment(date).format("YYYY-MM-DD")
             }
         ),
+        statsOfMonths: (s) => {
+            let months = {}
+            s.jobs.forEach((job) => {
+                if (job.status === Job.STATUS.FINISHED) {
+                    let finishedDate = moment(job.startedAt).format('YYYY-MM')
+                    if (months[finishedDate] === undefined) {
+                        months[finishedDate] = {
+                            totalHours: job.getHoursSpent(),
+                            totalPrice: job.price
+                        }
+                    } else {
+                        months[finishedDate].totalHours += job.getHoursSpent();
+                        months[finishedDate].totalPrice += job.price;
+                    }
+                }
+            })
+            return months;
+
+        },
         job: (s) => s.job,
+        jobById: (s) => id => s.jobs[s.jobs.findIndex(j => j.jobId === id)],
         pastJobs: (s) => s.jobs.filter(j => j.status === Job.STATUS.FINISHED || j.status === Job.STATUS.CANCELLED),
         ongoingJobs: (s) => s.jobs.filter(j => j.status === Job.STATUS.ONGOING).sort((j1, j2) => moment(j1.deadline).format('YYYYMMDD') - moment(j2.deadline).format('YYYYMMDD')),
         idleJobs: (s) => s.jobs.filter(j => j.status === Job.STATUS.IDLE),

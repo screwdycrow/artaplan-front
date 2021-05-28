@@ -7,6 +7,7 @@ import scheduleModule from "@/store/modules/scheduleModule";
 import customerModule from "@/store/modules/customerModule";
 import userModule from "@/store/modules/userModule";
 import moment from 'moment'
+import timeLogModule from "@/store/modules/timeLogModule";
 
 Vue.use(Vuex);
 
@@ -18,6 +19,7 @@ export default new Vuex.Store({
 
     },
     mutations: {
+
         setLoading(state,value){
             state.isLoading = value
         },
@@ -34,7 +36,11 @@ export default new Vuex.Store({
             state.activeMessages.splice(index, 1)
         },
     },
-    actions: {},
+    actions: {
+        init({commit}){
+            commit('timeLogs/loadFromLocal')
+        }
+    },
     getters:{
         activeMessages:(s)=> s.activeMessages
     },
@@ -44,6 +50,7 @@ export default new Vuex.Store({
         jobs: jobModule,
         stages: stageModule,
         customers: customerModule,
-        users: userModule
+        users: userModule,
+        timeLogs:timeLogModule
     }
 })

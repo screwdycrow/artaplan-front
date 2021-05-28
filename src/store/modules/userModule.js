@@ -16,23 +16,24 @@ export default ({
         },
 
         changePassword({commit, state}, password) {
-            commit('setLoading',true)
+            commit('setLoading', true)
             return api.users.changePassword(state.activeUser.userId, password).then(
-                resp=>{
-                    commit('setLoading',false);
+                resp => {
+                    commit('setLoading', false);
                     return Promise.resolve(true);
                 }
             )
         },
-        authenticate({commit}, {username, password}) {
+        authenticate({commit,dispatch}, {username, password}) {
             commit('setLoading', true)
             return api.users.authenticateUser(username, password).then(resp => {
                 commit('setLoading', false)
                 const activeUser = new User(resp.user)
+                dispatch({type:'init'},{root:true})
                 commit('setToken', resp.token)
                 commit('setActiveUser', activeUser)
                 commit('setLoading', false, {root: true})
-                commit('pushtMessage', {type: 'success', text: 'Logged in '}, {root: true})
+                commit('pushMessage', {type: 'success', text: 'Logged in '}, {root: true})
                 return Promise.resolve(resp.User);
             }).catch(() => {
                 commit('setLoading', false, {root: true})
@@ -40,12 +41,14 @@ export default ({
             })
         },
 
-        getUserFromToken({commit}) {
+        getUserFromToken({commit,dispatch}) {
             let token = jsCookies.get('auth');
+            commit('setLoading', true, {root: true})
             if (token) {
                 commit('setToken', token);
                 return api.users.getUser().then(
                     user => {
+                        dispatch({type:'init'},{root:true})
                         commit('setActiveUser', user)
                         commit('setLoading', false, {root: true})
                         return Promise.resolve(user)
