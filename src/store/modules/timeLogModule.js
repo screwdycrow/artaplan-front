@@ -92,7 +92,7 @@ export default ({
                     state.timeLogNow.addMinute()
                     localStorage.setItem('timeLogNow', JSON.stringify(state.timeLogNow))
                 }
-            }, 300)
+            }, 60000)
         },
         startTimeLogNow(state, {jobId, stageName}) {
             state.timeLogNow = new TimeLog({
