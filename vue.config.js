@@ -1,5 +1,13 @@
 module.exports = {
-  "transpileDependencies": [
-    "vuetify"
-  ]
+    "transpileDependencies": [
+        "vuetify"
+    ],
+    pwa: {
+        workboxPluginMode: 'GenerateSW',
+        workboxOptions: {
+            skipWaiting: true
+        }
+    },
+
+
 }

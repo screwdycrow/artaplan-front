@@ -1,13 +1,15 @@
 <template>
   <div>
-       <span class="display-1" v-if="duration<60">
+    <strong>
+       <span class="display-0" v-if="duration<60">
                 {{ duration }} m
               </span>
-    <span class="display-1" v-if="duration>=60">
+    <span class="display-0" v-if="duration>=60">
                 {{
-        (duration / 60) | fixed
-      }}hr {{ -(Math.floor(duration / 60) * 60 - duration) }}m
+         Math.floor(duration/ 60)
+      }}hr {{ duration % 60 }}m
               </span>
+    </strong>
   </div>
 </template>
 

@@ -14,35 +14,40 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         isMobile: false,
-        isLoading:false,
+        isLoading: false,
         activeMessages: [],
 
     },
     mutations: {
 
-        setLoading(state,value){
+        setLoading(state, value) {
             state.isLoading = value
         },
         pushMessage(state, {type, text}) {
             state.activeMessages.push({
                 date: moment().format('DD/MM hh:mm:ss'),
-                active:true,
+                active: true,
                 type: type,
-                text:text,
+                text: text,
             });
         },
         removeMessage(state, message) {
-            const index = state.activeMessages.findIndex( m => m.date === message.date);
+            const index = state.activeMessages.findIndex(m => m.date === message.date);
             state.activeMessages.splice(index, 1)
         },
     },
     actions: {
-        init({commit}){
+        init({commit, state, dispatch}) {
             commit('timeLogs/loadFromLocal')
+            if (state.timeLogs.timeLogNow !== null) {
+                if (confirm('You had one time logging running. It is on pause now. Do you want to resume it?')) {
+                    commit('timeLogs/startTimer')
+                }
+            }
         }
     },
-    getters:{
-        activeMessages:(s)=> s.activeMessages
+    getters: {
+        activeMessages: (s) => s.activeMessages
     },
     modules: {
         schedule: scheduleModule,
@@ -51,6 +56,6 @@ export default new Vuex.Store({
         stages: stageModule,
         customers: customerModule,
         users: userModule,
-        timeLogs:timeLogModule
+        timeLogs: timeLogModule
     }
 })

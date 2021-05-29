@@ -61,9 +61,9 @@
             bottom
             right
             fab
-            @click="toggleShowTimeLog()"
+            to="/schedule"
         >
-          <v-icon>mdi-clock</v-icon>
+          <v-icon>mdi-calendar</v-icon>
         </v-btn>
         <router-view/>
       </v-container>

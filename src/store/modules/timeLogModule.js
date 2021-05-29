@@ -9,17 +9,23 @@ export default ({
         timeLogNow: null,
         timer: null,
         showTimeLog: false,
+        pause: false,
     },
     actions: {
         startTimeLog({commit}, {jobId, stageName}) {
+            commit('clearTimer')
             commit('stopTimeLogNow')
             commit('startTimeLogNow', {jobId, stageName})
             commit('startTimer')
         },
-        stopTimeLog({commit}) {
+        stopTimeLog({commit, state}) {
             commit('stopTimeLogNow')
             commit('saveTimeLogToLocal')
             commit('clearTimer')
+            commit('saveTimeLogNowToLocal')
+            if (!state.showTimeLog) {
+                commit('toggleShowTimeLog')
+            }
         },
         clearTimeLog({commit}) {
             commit('clearTimeLog')
@@ -31,7 +37,7 @@ export default ({
 
         },
         updateInTimeLogs({commit}, {index, timelog}) {
-            commit('updateTimeLog', {index,timelog})
+            commit('updateTimeLog', {index, timelog})
             commit('saveTimeLogToLocal')
         }
     },
@@ -76,14 +82,17 @@ export default ({
         clearTimer(state) {
             clearInterval(state.timer)
             state.timer = null;
+            state.pause = true;
         },
         startTimer(state) {
+            if (state.timeLogs === null) state.timeLogs = []
+            state.pause = false
             state.timer = setInterval(() => {
                 if (state.timeLogNow !== null) {
                     state.timeLogNow.addMinute()
                     localStorage.setItem('timeLogNow', JSON.stringify(state.timeLogNow))
                 }
-            }, 60000)
+            }, 300)
         },
         startTimeLogNow(state, {jobId, stageName}) {
             state.timeLogNow = new TimeLog({
@@ -96,7 +105,7 @@ export default ({
 
         },
         stopTimeLogNow(state) {
-            if(state.timeLogs === null ) state.timeLogs = []
+            if (state.timeLogs === null) state.timeLogs = []
             if (state.timeLogNow !== null) {
                 state.timeLogNow.endedAt = moment().toISOString()
                 state.timeLogs.unshift(state.timeLogNow)
@@ -107,9 +116,14 @@ export default ({
 
     },
     getters: {
+        totalTimeLogDurationPerJob: s => s.timeLogs.reduce((acc, timeLog) => {
+            if (acc[timeLog.jobId] === undefined) acc[timeLog.jobId] = 0
+            acc[timeLog.jobId] += timeLog.duration
+            return acc
+        }, {}),
         timeLogs: s => s.timeLogs,
         timeLogNow: s => s.timeLogNow,
-        timer: s => s.timer,
+        pause: s => s.pause,
         showTimeLog: s => s.showTimeLog
     },
 });

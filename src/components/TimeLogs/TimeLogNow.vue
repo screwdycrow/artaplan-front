@@ -11,7 +11,7 @@
     >
       <v-card color="">
         <v-toolbar :color="jobById(timeLogNow.jobId).getFormatedColor(0.4)" flat dense height="30">
-          <span> Time Logger </span>
+          <span> Time Logging - Started: {{timeLogNow.startedAt | formatDate('HH:mm')}}</span>
           <v-spacer></v-spacer>
           <v-toolbar-items>
             <v-btn icon @click="toggleShowTimeLog()" >
@@ -25,11 +25,11 @@
           </v-toolbar-items>
         </v-toolbar>
         <v-progress-linear
-
+            height="10"
             buffer-value="0"
             color="primary"
             reverse
-            :stream="timer!== null"
+            :stream="!pause"
             value="0"
         ></v-progress-linear>
         <v-list-item v-if="!minimized">
@@ -39,7 +39,7 @@
             </v-btn>
           </v-list-item-action>
           <v-list-item-action class="mr-3">
-            <v-btn color="primary" v-if="timer !== null" outlined @click="clearTimer()" icon large>
+            <v-btn color="primary" v-if="!pause" outlined @click="clearTimer()" icon large>
               <v-icon>mdi-pause</v-icon>
             </v-btn>
             <v-btn color="primary" v-else @click="startTimer()" outlined icon large>
@@ -80,7 +80,7 @@ export default {
   computed: {
     ...mapGetters('timeLogs', [
       'timeLogNow',
-      'timer'
+      'pause'
     ]),
     ...mapGetters('jobs', [
       'jobById'
