@@ -128,7 +128,7 @@ export default ({
         statsOfMonths: (s) => {
             let months = {}
             s.jobs.forEach((job) => {
-                if (job.status === Job.STATUS.FINISHED) {
+                if (job.status === Job.STATUS.FINISHED || job.status === Job.STATUS.ONGOING ) {
                     let finishedDate = moment(job.startedAt).format('YYYY-MM')
                     if (months[finishedDate] === undefined) {
                         months[finishedDate] = {

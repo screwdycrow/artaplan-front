@@ -5,6 +5,7 @@
       permanent
       app
       dark
+      touchless
       left
         v-model="opened"
       expand-on-hover

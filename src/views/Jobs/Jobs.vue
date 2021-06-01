@@ -68,14 +68,14 @@
         <v-card flat v-if="pastJobs.length">
           <v-card-text>
             <p>Earnings per month</p>
-            <span class="text-md-h3">{{ statsOfMonths[monthNow].totalPrice }} € </span>
+            <span class="text-md-h3">{{  statsOfMonths[monthNow]?statsOfMonths[monthNow].totalPrice:0 }} € </span>
           </v-card-text>
           <earning-per-month :minus="-3" :stats-per-month="statsOfMonths"></earning-per-month>
 
         </v-card>
         <v-card flat v-if="ongoingJobs.length">
           <v-card-text>
-            <p>Total expected earnings on the next months</p>
+            <p>Total expected earnings for ongoing jobs </p>
             <span class="text-md-h3">{{ getEarnings }} € </span>
           </v-card-text>
         </v-card>

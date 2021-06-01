@@ -8,7 +8,6 @@
         class="hidden-md-and-up"
         color="background"
         flat app
-
     >
       <v-progress-linear v-if="isLoading"  absolute top  indeterminate striped height="10" ></v-progress-linear>
 
