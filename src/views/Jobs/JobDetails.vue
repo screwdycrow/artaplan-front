@@ -1,6 +1,7 @@
 <template>
     <div>
-            <v-card flat>
+      <add-reference/>
+      <v-card flat>
               <v-toolbar flat color="transparent">
                 <v-toolbar-title>
                   <h3>Details</h3>
@@ -139,10 +140,12 @@
 
 <script>
     import JobMixin from "./JobMixin"
+    import AddReference from "./components/AddReference"
 
     export default {
         name: "JobDetails",
-        data:()=>({
+      components: {AddReference},
+      data:()=>({
             editorConfig: {
             }
         }),

@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import Job from "../../classes/Job"
+import Job from "../../../classes/Job"
 import JobTags from "./JobTags"
 
 export default {

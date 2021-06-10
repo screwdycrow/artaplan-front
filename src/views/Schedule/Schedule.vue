@@ -51,14 +51,15 @@
 </template>
 
 <script>
-    import ScheduleEntryItem from "@/components/Schedule/ScheduleEntryItem";
     import ScheduleEntry from "@/classes/ScheduleEntry";
-    import JobExpandable from "@/components/Jobs/JobExpandable";
-    import JobPreviewList from "@/components/Jobs/JobPreviewList";
+
     import {mapActions, mapGetters, mapMutations} from 'vuex';
     import jobs from "@/api/jobs";
     import moment from "moment"
-    import DayEntries from "../components/Schedule/DayEntries"
+    import DayEntries from "./components/DayEntries"
+    import JobPreviewList from "../Jobs/components/JobPreviewList"
+    import JobExpandable from "../Jobs/components/JobExpandable"
+    import ScheduleEntryItem from "./components/ScheduleEntryItem"
 
     export default {
         name: "Schedule",

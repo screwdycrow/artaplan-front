@@ -7,8 +7,8 @@
 </template>
 
 <script>
-    import JobExpandable from "@/components/Jobs/JobExpandable";
     import {mapActions, mapGetters} from 'vuex';
+    import JobExpandable from "./JobExpandable"
 
     export default {
         name: "JobPreviewList",

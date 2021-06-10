@@ -48,7 +48,7 @@
     import {Drag, DropList} from "vue-easy-dnd"
     import ScheduleEntryItem from "./ScheduleEntryItem"
     import {mapActions, mapGetters, mapMutations} from "vuex"
-    import JobStage from "../../classes/JobStage"
+    import JobStage from "../../../classes/JobStage"
     import moment from "moment"
 
     export default {

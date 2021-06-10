@@ -65,8 +65,8 @@
 
 <script>
     import Job from "@/classes/Job";
-    import JobStageItem from "@/components/Stages/JobStageItem";
     import {Drag} from "vue-easy-dnd"
+    import JobStageItem from "./JobStageItem"
 
     export default {
         name: "JobExpandable",

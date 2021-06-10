@@ -65,15 +65,6 @@ const routes = [
         }
     },
     {
-        path: '/preview',
-        name: 'Preview',
-
-        component: () => import(/* webpackChunkName: "about" */ '../views/Preview.vue'),
-        meta: {
-            requiresAuth: true,
-        }
-    },
-    {
         path: '/slots',
         component: Slots,
         children: [
@@ -153,7 +144,7 @@ const routes = [
     {
         path: '/schedule',
         name: 'schedule',
-        component: () => import(/* webpackChunkName: "schedule" */ '../views/Schedule'),
+        component: () => import(/* webpackChunkName: "schedule" */ '../views/Schedule/Schedule'),
         meta: {
             requiresAuth: true,
         }

@@ -18,9 +18,6 @@
           <v-form v-else>
             <v-text-field dense v-model="link.url" outlined label="Url"></v-text-field>
             <v-text-field dense v-model="link.title" outlined label="Title"></v-text-field>
-            <v-textarea dense hide-details v-model="link.description" outlined
-                        label="Description">
-            </v-textarea>
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -61,7 +58,7 @@
         Add Color
       </v-btn>
     </v-row>
-    <v-speed-dial v-else direction="top" bottom right v-model="fab" fixed transition="scale" open-on-hover>
+    <v-speed-dial v-else direction="top" bottom right v-model="fab" fixed transition="scale">
       <template v-slot:activator>
         <v-btn
             v-model="fab"
@@ -83,7 +80,7 @@
           color="secondary"
           fab
           dark
-          small
+
           @click="openDialog('imageUrl')"
       >
         <v-icon> mdi-image</v-icon>
@@ -92,7 +89,7 @@
           color="secondary"
           fab
           dark
-          small
+
           @click="openDialog('url')"
       >
         <v-icon> mdi-link</v-icon>
@@ -101,7 +98,7 @@
           color="secondary"
           fab
           dark
-          small
+
           @click="openDialog('color')"
       >
         <v-icon> mdi-palette</v-icon>
@@ -179,12 +176,14 @@ export default {
         })
       }
       this.$emit('add')
+      this.resetLink();
     },
+
     resetLink() {
       this.link = {
+        type: this.link.type,
         url: '',
         title: '',
-        type: 'imageUrl',
         description: '',
         colorHex: ''
       }

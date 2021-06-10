@@ -25,9 +25,10 @@
 </template>
 
 <script>
-    import SlotList from "@/components/Slots/SlotList";
-    import SlotEditor from "@/components/Slots/SlotEditor";
+
     import {mapActions, mapGetters} from "vuex"
+    import SlotEditor from "./components/SlotEditor"
+    import SlotList from "./components/SlotList"
 
     export default {
         name: "Slots",

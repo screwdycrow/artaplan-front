@@ -1,13 +1,18 @@
 <template>
   <div>
-    <v-card class="mb-4" flat>
-        <v-card-actions>
+    <v-card class="mb-5" >
+        <v-card-actions class="justify-center">
           <add-reference @add="repaint()" show-buttons-in-row></add-reference>
           <v-spacer></v-spacer>
-          <v-switch v-model="mansory" @click="repaint()"></v-switch>
+          <v-switch prepend-icon="mdi-wall"  class="mr-4" v-model="mansory" @click="repaint()"></v-switch>
+            <div>
+              <v-select hide-details outlined style="width:100px" dense label="Columns" v-model="cols" :items="colData" @click="repaint()">
+              </v-select>
+            </div>
         </v-card-actions>
 
     </v-card>
+
     <v-row>
       <v-col>
         <v-row no-gutters>
@@ -18,14 +23,27 @@
               <v-icon class="mr-2"> mdi-link</v-icon>
               {{ hyperlink.title || hyperlink.url }}
             </v-btn>
-            <v-icon class="ma-2 mr-5" @click="removeUrl(index,link)"> mdi-delete</v-icon>
+            <v-icon class="ma-2 mr-5" @click="removeUrl(index,hyperlink)"> mdi-delete</v-icon>
           </div>
-
         </v-row>
       </v-col>
     </v-row>
+    <v-row>
+      <v-col lg="2" v-for="(color,index) in job.references.colors">
+        <v-card>
+          <v-sheet :color="color.colorHex" height="100">
+            <span class="white"> {{color.colorHex}} </span>
+          </v-sheet>
+          <v-toolbar flat dense>
+            {{color.title || color.colorHex}}
+            <v-spacer/>
+            <v-icon class="ma-2 mr-5" @click="removeUrl(index,color)"> mdi-delete</v-icon>
+          </v-toolbar>
+        </v-card>
+      </v-col>
+    </v-row>
     <v-row v-masonry v-if="mansory">
-      <v-col cols="12" sm="3" v-for="(link, index) in job.references.links" :key="index">
+      <v-col cols="12" :sm="cols" v-for="(link, index) in job.references.links" :key="index">
         <v-card>
           <v-img v-ripple
                  v-if="link.type === 'url'" :src="someImage"></v-img>
@@ -64,21 +82,17 @@
       </v-col>
     </v-row>
     <v-row v-else>
-      <v-col cols="12" sm="3" v-for="(link, index) in job.references.links" :key="index">
+      <v-col cols="12" :sm="cols" v-for="(link, index) in job.references.links" :key="index">
         <v-card>
-          <v-img v-ripple
-                 v-if="link.type === 'url'" :src="someImage"></v-img>
           <v-dialog
-
               @input="repaint()"
               max-width="90%"
               transition="dialog-bottom-transition"
           >
             <template v-slot:activator="{ on, attrs }">
               <div>
-                <v-img contain
+                <v-img contain height="300"
                        max-width="100%"
-                       max-height="500px"
                        v-ripple v-on="on" v-bind="attrs" @load="this.$redrawVueMasonry()"
                        v-if="link.type === 'imageUrl'" :src="link.url"></v-img>
                 <v-card-title v-on="on" v-bind="attrs">
@@ -108,23 +122,25 @@
 
 <script>
 import JobMixin from "./JobMixin"
-import someImage from '@/assets/link.png'
-import AddReference from "@/views/Jobs/AddReference";
-import ReferenceImage from "@/views/Jobs/ReferenceImage";
+import AddReference from "@/views/Jobs/components/AddReference";
+import ReferenceImage from "@/views/Jobs/components/ReferenceImage";
 
 export default {
   name: "JobReferences",
   components: {ReferenceImage, AddReference},
   mixins: [JobMixin],
   data: () => ({
+    colData:[
+      {value:12,text:1},
+      {value:6,text:2},
+      {value:4,text:3},
+      {value:3,text:4},
+      {value:2,text:6},
+      {value:1,text:12},
+    ],
     mansory:true,
+    cols:3,
     modal: false,
-    link: {
-      url: '',
-      title: '',
-      type: 'imageUrl',
-      description: '',
-    }
   }),
   mounted() {
     this.repaint();
@@ -135,12 +151,15 @@ export default {
       setTimeout(() =>{
         this.$redrawVueMasonry()
         this.$forceUpdate()
-      } , 500);
+      } , 1500);
     },
     removeUrl(index, link) {
+      console.log(link)
       if (link.type === 'imageUrl') {
         this.job.references.links.splice(index, 1)
         this.repaint();
+      }else if(link.type === 'color'){
+        this.job.references.colors.splice(index, 1)
 
       } else {
         this.job.references.hyperlinks.splice(index, 1)
@@ -171,6 +190,8 @@ export default {
           title: title,
         })
       } else {
+        this.$forceUpdate();
+        this.repaint();
         this.job.references.links.push({
           url: url,
           title: title,
@@ -178,8 +199,7 @@ export default {
           description: description
         })
       }
-      this.$forceUpdate();
-      this.repaint();
+
     }
   }
 }

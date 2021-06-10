@@ -6,7 +6,7 @@
 </template>
 
 <script>
-    import Job from "../../classes/Job"
+    import Job from "../../../classes/Job"
 
     export default {
         name: "JobTags",

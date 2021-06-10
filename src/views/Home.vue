@@ -112,18 +112,19 @@
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-import ScheduleItem from "../components/Schedule/ScheduleEntryItem"
-import ScheduleEntry from "@/classes/ScheduleEntry";
+import ScheduleItem from "./Schedule/components/ScheduleEntryItem"
 import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
-import ScheduleEntryItem from "@/components/Schedule/ScheduleEntryItem";
-import JobPreviewList from "@/components/Jobs/JobPreviewList";
-import JobExpandable from "@/components/Jobs/JobExpandable";
-import WorkLoadChart from "@/components/Schedule/WorkloadChart";
-import jobs from "@/api/jobs";
-import JobItem from "../components/Jobs/JobItem"
+
+import JobItem from "./Jobs/components/JobItem"
 import moment from "moment"
-import DayEntries from "@/components/Schedule/DayEntries";
+import JobExpandable from "./Jobs/components/JobExpandable"
+import JobPreviewList from "./Jobs/components/JobPreviewList"
+import ScheduleEntryItem from "./Schedule/components/ScheduleEntryItem"
+import DayEntries from "./Schedule/components/DayEntries"
+
+function WorkLoadChart() {
+
+}
 
 export default {
   name: 'Home',

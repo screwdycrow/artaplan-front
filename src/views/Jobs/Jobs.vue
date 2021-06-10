@@ -107,12 +107,11 @@
 <script>
 
 import {mapGetters, mapActions} from 'vuex'
-import JobExpandable from "@/components/Jobs/JobExpandable";
 import NewJob from "@/views/Jobs/NewJob";
-import JobItem from "../../components/Jobs/JobItem"
-import {Swiper, SwiperSlide, directive} from 'vue-awesome-swiper'
+import JobItem from "./components/JobItem"
 import moment from 'moment'
-import EarningPerMonth from "@/components/Statistics/EarningPerMonth";
+import EarningPerMonth from "../../components/Statistics/EarningPerMonth"
+import JobExpandable from "./components/JobExpandable"
 
 export default {
   name: "Jobs",
@@ -133,12 +132,8 @@ export default {
     EarningPerMonth,
     JobItem,
     JobExpandable,
-    Swiper,
-    SwiperSlide
   },
-  directives: {
-    swiper: directive
-  },
+
 
   computed: {
     getEarnings() {

@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import JobExpandable from "../../components/Jobs/JobExpandable"
+import JobExpandable from "./components/JobExpandable"
 import JobMixin from './JobMixin'
 
 export default {
