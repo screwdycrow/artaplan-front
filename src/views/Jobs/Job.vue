@@ -24,9 +24,9 @@
 
     </portal>
     <v-row>
-      <v-col lg="3">
+      <v-col lg="2">
         <v-list>
-          <v-list-item :to="'/jobs/'+job.jobId+'/'">
+          <v-list-item :to="'/jobs/'+job.jobId+''">
             <v-list-item-content>
               <v-list-item-title>
                 Overview
@@ -49,7 +49,7 @@
           </v-list-item>
         </v-list>
       </v-col>
-      <v-col lg="9">
+      <v-col lg="10">
         <router-view></router-view>
       </v-col>
     </v-row>

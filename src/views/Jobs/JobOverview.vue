@@ -1,9 +1,22 @@
 <template>
     <div>
-        <v-row>
+      <add-reference/>
+        <v-row v-if="job.references.hyperlinks">
+          <v-col lg="12">
+            <v-row no-gutters>
+              <div style="display: inline;" v-for="(hyperlink, index) in job.references.hyperlinks">
+                <v-btn
+                    class="mr-6"
+                    target="_blank" :color="job.getFormatedColor(0.5)"
+                    :href="hyperlink.url">
+                  <v-icon class="mr-2"> mdi-link</v-icon>
+                  {{ hyperlink.title || hyperlink.url }}
+                </v-btn>
+              </div>
+            </v-row>
+          </v-col>
             <v-col>
                 <v-card flat class="fill-height">
-
                     <v-list>
                         <v-list-item>
                             <v-list-item-action>
@@ -126,38 +139,19 @@
                 </v-card>
             </v-col>
         </v-row>
-      <v-row>
-        <v-col>
-          <v-row no-gutters>
-            <div style="display: inline;" v-for="(hyperlink, index) in job.references.hyperlinks">
-              <v-btn
-                  class="mr-6"
-                  target="_blank" :color="job.getFormatedColor(0.5)"
-                  :href="hyperlink.url">
-                <v-icon class="mr-2"> mdi-link</v-icon>
-                {{ hyperlink.title || hyperlink.url }}
-              </v-btn>
-            </div>
 
-          </v-row>
-        </v-col>
-      </v-row>
         <v-row>
             <v-col lg="2" v-for="(link, index) in job.references.links">
                 <v-card >
                     <v-dialog
-                            @input="repaint()"
-                            max-width="800px"
+                            max-width="80%"
                             transition="dialog-bottom-transition"
                     >
                         <template v-slot:activator="{ on, attrs }">
                             <v-img aspect-ratio="1" v-ripple v-on="on" v-bind="attrs"
                                    v-if="link.type === 'imageUrl'" :src="link.url"></v-img>
                         </template>
-                        <v-card>
-                            <v-img v-ripple
-                                   v-if="link.type === 'imageUrl'" :src="link.url"></v-img>
-                        </v-card>
+                        <reference-image :link="link"></reference-image>
                     </v-dialog>
                     <v-img v-ripple
                            v-if="link.type === 'url'" src="link.png"></v-img>
@@ -170,9 +164,12 @@
 
 <script>
     import JobMixin from "./JobMixin"
+    import AddReference from "@/views/Jobs/AddReference";
+    import ReferenceImage from "@/views/Jobs/ReferenceImage";
 
     export default {
-        data: () => ({
+      components: {ReferenceImage, AddReference},
+      data: () => ({
             hoursSpent: 0,
             hoursLeft: 0,
             valuePerHour: 0,

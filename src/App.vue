@@ -53,17 +53,6 @@
           class="pt-2 "
           style="max-width: 1600px"
       >
-        <v-btn
-            fixed
-            color="secondary"
-            dark
-            bottom
-            right
-            fab
-            to="/schedule"
-        >
-          <v-icon>mdi-calendar</v-icon>
-        </v-btn>
         <router-view/>
       </v-container>
     </v-content>
