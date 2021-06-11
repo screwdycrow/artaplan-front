@@ -2,19 +2,6 @@
   <div>
     <add-reference/>
     <v-row>
-      <v-col lg="12">
-        <v-row no-gutters>
-          <div style="display: inline;" v-for="(hyperlink, index) in job.references.hyperlinks">
-            <v-btn
-                class="mr-6"
-                target="_blank" :color="job.getFormatedColor(0.5)"
-                :href="hyperlink.url">
-              <v-icon class="mr-2"> mdi-link</v-icon>
-              {{ hyperlink.title || hyperlink.url }}
-            </v-btn>
-          </div>
-        </v-row>
-      </v-col>
       <v-col>
         <v-card flat class="fill-height">
           <v-list>
@@ -131,6 +118,22 @@
       </v-col>
     </v-row>
     <v-row>
+      <v-col>
+        <v-row no-gutters>
+          <div style="display: inline;" :key="index" v-for="(hyperlink, index) in job.references.hyperlinks">
+            <v-btn
+
+                class="mr-3"
+                target="_blank" :color="job.getFormatedColor(0.5)"
+                :href="hyperlink.url">
+              <v-icon class="mr-2"> mdi-link</v-icon>
+              {{ hyperlink.title || hyperlink.url }}
+            </v-btn>
+          </div>
+        </v-row>
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col lg="8">
         <v-card class="fi" flat>
           <v-card-title> Description
@@ -150,7 +153,7 @@
         </v-card>
       </v-col>
       <v-col lg="4">
-        <v-row>
+        <v-row dense>
           <v-col lg="4" :key="index" v-for="(color, index)  in job.references.colors">
             <v-card :dark="isDark(color.colorHex)" :color="color.colorHex">
               <v-card-text>{{ color.colorHex }}</v-card-text>

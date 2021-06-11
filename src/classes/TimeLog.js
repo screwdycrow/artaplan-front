@@ -9,7 +9,11 @@ export default class {
     addMinute(){
         this.duration++
     }
-    getHours(){
-        this.duration/60
+    getFormattedDuration(){
+        if(this.duration<60){
+            return this.duration+'m'
+        }else{
+            return Math.floor(this.duration/60)+'h '+(this.duration % 60)
+        }
     }
 }

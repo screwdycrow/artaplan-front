@@ -20,21 +20,43 @@
         <v-card-actions>
           <v-btn color="success" :disabled="!valid" outlined @click="changePasswordClick(password)"> Change</v-btn>
         </v-card-actions>
-        `
       </v-card>
-
+      <v-card flat class="mt-4">
+        <v-toolbar dense flat>
+          <v-toolbar-title>
+            <strong> User Preferences </strong>
+          </v-toolbar-title>
+        </v-toolbar>
+        <v-list>
+          <v-list-item>
+            <v-btn
+                @click="getNotificationPermission()"
+            > Grant Notifications Permission
+            </v-btn>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-action>
+              <v-icon>mdi-brightness</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-switch label="Toggle dark mode UI (Experimental)" v-model="settings.darkMode" @change="saveSettings()"></v-switch>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-card>
     </v-col>
   </v-row>
 
 </template>
 
 <script>
-import {mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "Settings",
   data: () => ({
     valid: false,
+    notifications: false,
     repeatPasswordRules: [
       v => v === this.password || 'Password does not match'
     ],
@@ -47,15 +69,35 @@ export default {
     password: null,
     repeatPassword: null
   }),
+  computed:{
+    ...mapGetters([
+        "settings"
+    ])
+  },
   methods: {
+    getNotificationPermission() {
+      Notification
+          .requestPermission()
+          .then(permission => {
+            if (permission === "granted") {
+              this.notifications = true
+              this.notify('You are now allowing notifications for this web page')
+            } else if (permission === "denied") {
+              alert('You have disabled notifications for this web page. Please re-enable them through the browser settings. ')
+            }
+          }).catch(e => {
+      });
+    },
     changePasswordClick() {
-      if(confirm('Are you sure about this? You will need to re-login.'))
-      this.changePassword(this.password)
-          .then(resp=>{
-            this.logout()
-          })
+      if (confirm('Are you sure about this? You will need to re-login.'))
+        this.changePassword(this.password)
+            .then(resp => {
+              this.logout()
+            })
     },
     ...mapActions([
+      "saveSettings",
+      "notify",
       'changePassword',
       'logout'
     ])

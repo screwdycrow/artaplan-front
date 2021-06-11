@@ -2,7 +2,7 @@
   <div>
     <strong>
        <span class="display-0" v-if="duration<60">
-                {{ duration }} m
+                {{ duration }}m
               </span>
     <span class="display-0" v-if="duration>=60">
                 {{

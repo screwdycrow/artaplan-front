@@ -3,13 +3,13 @@
     <ui-messages></ui-messages>
     <time-logs></time-logs>
 
-    <sidebar v-if="!$route.meta.noMenu" :show="drawerRight"  :opened="opened"/>
+    <sidebar v-if="!$route.meta.noMenu" :show="drawerRight" :opened="opened"/>
     <v-app-bar
         class="hidden-md-and-up"
         color="background"
         flat app
     >
-      <v-progress-linear v-if="isLoading"  absolute top  indeterminate striped height="10" ></v-progress-linear>
+      <v-progress-linear v-if="isLoading" absolute top indeterminate striped height="10"></v-progress-linear>
 
       <v-container style="max-width: 1600px" class="d-flex align-center">
 
@@ -32,7 +32,7 @@
         color="background"
         flat app
     >
-      <v-progress-linear v-if="isLoading"  absolute top  indeterminate striped height="10" ></v-progress-linear>
+      <v-progress-linear v-if="isLoading" absolute top indeterminate striped height="10"></v-progress-linear>
 
       <v-container style="max-width: 1600px" class="d-flex align-center">
         <v-toolbar-title>
@@ -96,7 +96,7 @@
 
 <script>
 import Sidebar from "@/components/Sidebar";
-import { mapMutations, mapState} from "vuex";
+import {mapGetters, mapMutations, mapState} from "vuex";
 import UiMessages from "@/components/UiMessages";
 import TimeLogNow from "@/components/TimeLogs/TimeLogNow";
 import TimeLogs from "@/components/TimeLogs/TimeLogs";
@@ -105,17 +105,31 @@ export default {
   name: 'App',
 
   components: {TimeLogs, TimeLogNow, UiMessages, Sidebar},
-  computed:{
+  computed: {
     ...mapState([
-       "isLoading"
+      "isLoading"
     ]),
-    ...mapState('users',[
-        'activeUser'
+    ...mapGetters([
+      "settings"
+    ]),
+    ...mapState('users', [
+      'activeUser'
     ])
   },
-  methods:{
-    ...mapMutations('timeLogs',[
-        'toggleShowTimeLog'
+  mounted() {
+    this.$vuetify.theme.dark = this.settings.darkMode;
+  },
+  watch: {
+    settings: {
+      handler() {
+        this.$vuetify.theme.dark = this.settings.darkMode;
+      },
+      deep: true
+    }
+  },
+  methods: {
+    ...mapMutations('timeLogs', [
+      'toggleShowTimeLog'
     ])
   },
   data: () => ({

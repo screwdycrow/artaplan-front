@@ -12,7 +12,8 @@ export default ({
         pause: false,
     },
     actions: {
-        startTimeLog({commit}, {jobId, stageName}) {
+        startTimeLog({commit, dispatch}, {jobId, stageName}) {
+            dispatch('notify', 'Time logger initiated, next notification in 30 minutes.', {root: true})
             commit('clearTimer')
             commit('stopTimeLogNow')
             commit('startTimeLogNow', {jobId, stageName})
@@ -90,6 +91,12 @@ export default ({
             state.timer = setInterval(() => {
                 if (state.timeLogNow !== null) {
                     state.timeLogNow.addMinute()
+                    if (
+                        state.timeLogNow.duration % 60 === 30 ||
+                        state.timeLogNow.duration % 60 === 0
+                    ) {
+                        new Notification('Ding Dong! '+state.timeLogNow.getFormattedDuration()+' has passed!');
+                    }
                     localStorage.setItem('timeLogNow', JSON.stringify(state.timeLogNow))
                 }
             }, 60000)
