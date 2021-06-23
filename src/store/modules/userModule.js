@@ -2,11 +2,13 @@ import api from '@/api'
 import User from "@/classes/User";
 import jsCookies from 'js-cookie';
 import store from "../index"
+import gdFiles from "@/api/gdFiles";
 
 export default ({
     state: {
         activeUser: null,
         token: null,
+        gdFolderId: null
     },
     actions: {
         logout({commit}) {
@@ -24,12 +26,34 @@ export default ({
                 }
             )
         },
-        authenticate({commit,dispatch}, {username, password}) {
+        /**
+         *
+         * @param commit
+         * @return {Q.Promise<void> | Promise<postcss.Result | void> | Promise<any> | undefined}
+         */
+        gdGetArtaplanFolder({commit}) {
+            commit('setLoading', true)
+            return this._vm.$gapi.getGapiClient()
+                .then(gapi => gdFiles.getMainFolder(gapi))
+                .then(id => {
+                    commit('setLoading', false)
+                    return id;
+                })
+                .catch(err => {
+                    if (typeof err === Array) {
+                        commit('pushMessage', {type: 'danger', text: 'There are more than one Artaplan Folders'})
+                        commit('setLoading', false)
+                    } else {
+                    }
+                })
+        },
+
+        authenticate({commit, dispatch}, {username, password}) {
             commit('setLoading', true)
             return api.users.authenticateUser(username, password).then(resp => {
                 commit('setLoading', false)
                 const activeUser = new User(resp.user)
-                dispatch({type:'init'},{root:true})
+                dispatch({type: 'init'}, {root: true})
                 commit('setToken', resp.token)
                 commit('setActiveUser', activeUser)
                 commit('setLoading', false, {root: true})
@@ -41,14 +65,14 @@ export default ({
             })
         },
 
-        getUserFromToken({commit,dispatch}) {
+        getUserFromToken({commit, dispatch}) {
             let token = jsCookies.get('auth');
             commit('setLoading', true, {root: true})
             if (token) {
                 commit('setToken', token);
                 return api.users.getUser().then(
                     user => {
-                        dispatch({type:'init'},{root:true})
+                        dispatch({type: 'init'}, {root: true})
                         commit('setActiveUser', user)
                         commit('setLoading', false, {root: true})
                         return Promise.resolve(user)

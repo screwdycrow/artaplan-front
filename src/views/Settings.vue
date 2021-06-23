@@ -41,11 +41,18 @@
             </v-btn>
           </v-list-item>
           <v-list-item>
+            <v-btn
+                @click="getArtaplanFolder()"
+            > Check Artaplan Folder
+            </v-btn>
+          </v-list-item>
+          <v-list-item>
             <v-list-item-action>
               <v-icon>mdi-brightness</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-switch label="Toggle dark mode UI (Experimental)" v-model="settings.darkMode" @change="saveSettings()"></v-switch>
+              <v-switch label="Toggle dark mode UI (Experimental)" v-model="settings.darkMode"
+                        @change="saveSettings()"></v-switch>
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -57,6 +64,7 @@
 
 <script>
 import {mapActions, mapGetters} from "vuex";
+import gdFiles from "@/api/gdFiles";
 
 export default {
   name: "Settings",
@@ -75,16 +83,22 @@ export default {
     password: null,
     repeatPassword: null
   }),
-  computed:{
+  computed: {
     ...mapGetters([
-        "settings"
+      "settings"
     ])
   },
   methods: {
-
-    googleAuth(){
-      this.$gapi.login().then(({ currentUser, hasGrantedScopes }) => {
-        console.log({ currentUser, hasGrantedScopes })
+    createArtaplanFolder() {
+      this.$gapi.getGapiClient()
+          .then(gapi => gdFiles.createMainFolder(gapi))
+    },
+    getArtaplanFolder() {
+      this.gdGetArtaplanFolder().then(id => alert(id))
+    },
+    googleAuth() {
+      this.$gapi.login().then(({currentUser, hasGrantedScopes}) => {
+        console.log({currentUser, hasGrantedScopes})
       })
     },
     getNotificationPermission() {
@@ -108,6 +122,7 @@ export default {
             })
     },
     ...mapActions([
+      "gdGetArtaplanFolder",
       "saveSettings",
       "notify",
       'changePassword',

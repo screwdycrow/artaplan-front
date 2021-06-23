@@ -35,8 +35,7 @@
 </template>
 
 <script>
-import {mapActions, mapGetters, mapMutations} from "vuex";
-import store from "@/store";
+import {mapActions, mapMutations} from "vuex";
 
 export default {
   name: "Login",

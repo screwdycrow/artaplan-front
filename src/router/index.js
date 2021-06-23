@@ -188,8 +188,7 @@ const router = new VueRouter({
     routes
 })
 router.beforeEach((to, from, next) => {
-    if (to.matched.some((record) => record.meta.requiresAuth)) {
-
+    if (needsAuthentication(to)) {
         if (store.getters['isAuthenticated']) {
             next()
             return
@@ -205,5 +204,10 @@ router.beforeEach((to, from, next) => {
     }
     next()
 });
+
+function needsAuthentication(to){
+    return to.matched.some((record) => record.meta.requiresAuth);
+}
+
 
 export default router

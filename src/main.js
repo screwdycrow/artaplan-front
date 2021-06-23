@@ -23,12 +23,11 @@ Vue.use(VueMasonryPlugin);
 Vue.component('apexchart', VueApexCharts);
 
 Vue.use(VueGapi, {
-    //apiKey: 'SEAeenGHXIZe3BwNe9CPhmo-',
     clientId: '41613322494-t3u65gjhvejfvamd36trkq7vu2nj11el.apps.googleusercontent.com',
     discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
     scope: 'https://www.googleapis.com/auth/drive',
 })
-
+Vue.$
 Vue.filter('formatDate', function (value, format) {
     if (!value) return '';
     if (!format) format = 'DD/MM/YY'

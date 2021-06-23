@@ -4,6 +4,7 @@ import Messages from "@/store/Messages";
 import _ from 'lodash'
 import moment from "moment"
 import Vue from 'vue'
+import gdFiles from "@/api/gdFiles";
 
 const gdrive = 'https://www.googleapis.com/upload/drive/v3'
 
@@ -15,70 +16,44 @@ export default ({
     namespaced: true,
     state: {
         showJobEditor: false,
+        gDfolderId: null,
         pastJobs: [],
         jobs: [],
         ongoingJobMap: {},
         job: {},
     },
     actions: {
-        async addFileToGoogleDrive({commit, dispatch,state}, file) {
-            commit('setLoading', true, {root: true})
-            let ftu = file;
-            let f = new Blob([file]);
-                this._vm.$gapi.getGapiClient().then(gapi => {
-                gapi.client.drive.files.create({
-                    'content-type': 'application/json',
-                    uploadType: 'multipart',
-                    name: `Artaplan/${state.job.name}/ftu.name`,
-                    mimeType: ftu.type,
-                    fields: 'id, name, kind, size'
-                }).then(response => {
-                    fetch(`${gdrive}/files/${response.result.id}`, {
-                        method: 'PATCH',
-                        headers: new Headers({
-                            'Authorization': `Bearer ${gapi.client.getToken().access_token}`,
-                            'Content-Type': ftu.type
-                        }),
-                        body: f
-                    }).then(res => {
-                        console.log(res)
-                        commit('setLoading', true, {root: true})
-                    });
-                })
+
+        gdCreateJobFolder({state, dispatch}) {
+            return this._vm.$gapi.getGapiClient().then(gapi => {
+               return  gdFiles.getMainFolder(gapi)
+                    .then(folderId => gdFiles.createFolder(gapi, state.job.name, [folderId]))
             })
         },
-
-        /**
-         * @desk returns the File object from gapi, that contains the details of an folder on root called Artaplan
-         * @returns {Promise<*>}
-         */
-        getArtaplanFolder() {
-            return Vue.$gapi.getGapiClient().then(gapi => {
-                return axios.get(`${gdrive}/files/`, {
-                    headers: {
-                        'Authorization': `Bearer ${gapi.client.getToken().access_token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    params: {
-                        title: '/Artaplan',
-                        labels: {
-                            trashed: false
+        gdGetJobFolderId({state, dispatch}) {
+            return this._vm.$gapi.getGapiClient().then(gapi => {
+               return gdFiles.getMainFolder(gapi)
+                    .then(folderId => gdFiles.listFolders(gapi, {
+                        'q': `mimeType = 'application/vnd.google-apps.folder' and trashed = false  and name = '${state.job.name}' and '${folderId}' in parents`,
+                        'fields': 'nextPageToken, files(id, name)',
+                    }))
+                    .then(folders => {
+                        if (folders.length === 1) {
+                            return Promise.resolve(folders[0].id);
+                        } else if (folders.length === 0) {
+                            return dispatch('gdCreateJobFolder')
                         }
-                    }
-                })
-            }).then(resp => {
-                return resp.data
-            })
-        },
-        getJobFolder() {
+                    })
 
+            })
         },
-        addFolderToGoogleDrive() {
-            return Vue.$gapi.getGapiClient().then(gapi => {
-                retgapi.client.drive.create({
-                    name: 'Artaplan'
+        gdAddJobFile({dispatch},file){
+            return this._vm.$gapi.getGapiClient().then(gapi=>{
+                dispatch('gdGetJobFolderId').then(folderId=>{
+                    return gdFiles.addFile(gapi,file,[folderId])
                 })
             })
+
         },
         getJobs({commit}) {
             commit('setLoading', true, {root: true})
