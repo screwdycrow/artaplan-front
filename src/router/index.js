@@ -10,6 +10,7 @@ import NewCustomer from "../views/Customers/NewCustomer"
 import JobOverview from "../views/Jobs/JobOverview"
 import JobDetails from "../views/Jobs/JobDetails"
 import JobReferences from "../views/Jobs/JobReferences"
+import JobFiles from "../views/Jobs/JobFiles"
 
 
 Vue.use(VueRouter)
@@ -123,6 +124,12 @@ const routes = [
             {
                 path: 'references',
                 component: JobReferences,
+                meta: {
+                    requiresAuth: true,
+                }
+            },{
+                path: 'files',
+                component: JobFiles,
                 meta: {
                     requiresAuth: true,
                 }

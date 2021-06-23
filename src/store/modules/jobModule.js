@@ -5,6 +5,8 @@ import _ from 'lodash'
 import moment from "moment"
 import Vue from 'vue'
 
+const gdrive = 'https://www.googleapis.com/upload/drive/v3'
+
 function findJob(id) {
     return (s) => s.jobId === id;
 }
@@ -19,7 +21,65 @@ export default ({
         job: {},
     },
     actions: {
+        async addFileToGoogleDrive({commit, dispatch,state}, file) {
+            commit('setLoading', true, {root: true})
+            let ftu = file;
+            let f = new Blob([file]);
+                this._vm.$gapi.getGapiClient().then(gapi => {
+                gapi.client.drive.files.create({
+                    'content-type': 'application/json',
+                    uploadType: 'multipart',
+                    name: `Artaplan/${state.job.name}/ftu.name`,
+                    mimeType: ftu.type,
+                    fields: 'id, name, kind, size'
+                }).then(response => {
+                    fetch(`${gdrive}/files/${response.result.id}`, {
+                        method: 'PATCH',
+                        headers: new Headers({
+                            'Authorization': `Bearer ${gapi.client.getToken().access_token}`,
+                            'Content-Type': ftu.type
+                        }),
+                        body: f
+                    }).then(res => {
+                        console.log(res)
+                        commit('setLoading', true, {root: true})
+                    });
+                })
+            })
+        },
 
+        /**
+         * @desk returns the File object from gapi, that contains the details of an folder on root called Artaplan
+         * @returns {Promise<*>}
+         */
+        getArtaplanFolder() {
+            return Vue.$gapi.getGapiClient().then(gapi => {
+                return axios.get(`${gdrive}/files/`, {
+                    headers: {
+                        'Authorization': `Bearer ${gapi.client.getToken().access_token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    params: {
+                        title: '/Artaplan',
+                        labels: {
+                            trashed: false
+                        }
+                    }
+                })
+            }).then(resp => {
+                return resp.data
+            })
+        },
+        getJobFolder() {
+
+        },
+        addFolderToGoogleDrive() {
+            return Vue.$gapi.getGapiClient().then(gapi => {
+                retgapi.client.drive.create({
+                    name: 'Artaplan'
+                })
+            })
+        },
         getJobs({commit}) {
             commit('setLoading', true, {root: true})
             return jobApi.getJobs().then(jobs => {
@@ -128,7 +188,7 @@ export default ({
         statsOfMonths: (s) => {
             let months = {}
             s.jobs.forEach((job) => {
-                if (job.status === Job.STATUS.FINISHED || job.status === Job.STATUS.ONGOING ) {
+                if (job.status === Job.STATUS.FINISHED || job.status === Job.STATUS.ONGOING) {
                     let finishedDate = moment(job.startedAt).format('YYYY-MM')
                     if (months[finishedDate] === undefined) {
                         months[finishedDate] = {

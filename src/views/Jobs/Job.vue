@@ -47,6 +47,13 @@
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item :to="'/jobs/'+job.jobId+'/files'">
+            <v-list-item-content>
+              <v-list-item-title>
+                Files
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </v-list>
       </v-col>
       <v-col lg="10">

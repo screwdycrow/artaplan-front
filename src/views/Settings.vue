@@ -35,6 +35,12 @@
             </v-btn>
           </v-list-item>
           <v-list-item>
+            <v-btn
+                @click="googleAuth()"
+            > Login To Google Drive
+            </v-btn>
+          </v-list-item>
+          <v-list-item>
             <v-list-item-action>
               <v-icon>mdi-brightness</v-icon>
             </v-list-item-action>
@@ -75,6 +81,12 @@ export default {
     ])
   },
   methods: {
+
+    googleAuth(){
+      this.$gapi.login().then(({ currentUser, hasGrantedScopes }) => {
+        console.log({ currentUser, hasGrantedScopes })
+      })
+    },
     getNotificationPermission() {
       Notification
           .requestPermission()
