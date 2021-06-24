@@ -176,6 +176,7 @@ export default {
         })
       }
       this.$emit('add')
+      this.update();
       this.resetLink();
     },
 

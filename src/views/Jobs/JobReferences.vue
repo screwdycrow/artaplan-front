@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="mb-5" >
+    <v-card class="mb-6">
         <v-card-actions class="justify-center">
           <add-reference @add="repaint()" show-buttons-in-row></add-reference>
           <v-spacer></v-spacer>
@@ -13,9 +13,9 @@
 
     </v-card>
 
-    <v-row>
+    <v-row v-if="job.references.hyperlinks.length">
       <v-col>
-        <v-row no-gutters>
+        <v-row no-gutters >
           <div style="display: inline;" :key="index" v-for="(hyperlink, index) in job.references.hyperlinks">
             <v-btn
                 target="_blank" :color="job.getFormatedColor(0.5)"
@@ -28,7 +28,7 @@
         </v-row>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="job.references.colors">
       <v-col lg="2" v-for="(color,index) in job.references.colors">
         <v-card>
           <v-sheet :color="color.colorHex" height="100">

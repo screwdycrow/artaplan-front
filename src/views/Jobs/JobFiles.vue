@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import AddFile from "./components/AddFile"
+import AddFile from "./components/GoogleDriveFiles"
 export default {
   name: "JobFiles",
   components: {AddFile}

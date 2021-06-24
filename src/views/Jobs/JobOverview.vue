@@ -64,7 +64,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row class="mb-4">
       <v-col lg="2">
         <v-card flat>
           <v-card-text>
@@ -117,6 +117,7 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-divider></v-divider>
     <v-row>
       <v-col>
         <v-row no-gutters>
@@ -135,7 +136,7 @@
     </v-row>
     <v-row>
       <v-col lg="8">
-        <v-card class="fi" flat>
+        <v-card class="fill-height"  flat>
           <v-card-title> Description
             <v-spacer/>
             Text Size
@@ -146,8 +147,6 @@
               <v-icon>mdi-minus</v-icon>
             </v-btn>
           </v-card-title>
-
-
           <v-card-text :style='"font-size:"+fontsize+"px;lineHeight:"+lineHeight+"px" ' v-html="job.description">
           </v-card-text>
         </v-card>
@@ -157,7 +156,7 @@
           <v-col lg="4" :key="index" v-for="(color, index)  in job.references.colors">
             <v-card :dark="isDark(color.colorHex)" :color="color.colorHex">
               <v-card-text>{{ color.colorHex }}</v-card-text>
-            </v-card>
+            </v-card >
           </v-col>
           <v-col lg="4" :key="index" v-for="(link, index) in job.references.links">
             <v-card>

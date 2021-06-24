@@ -16,11 +16,10 @@ export default {
         const gdFile = {
             name: folderName,
             mimeType: 'application/vnd.google-apps.folder',
-            fields: 'id, name, kind, size',
+            fields: 'id, name, kind, size, web',
             parents: []
         };
         if (parents) gdFile.parents = parents
-        console.log(gdFile);
         return gapi.client.drive.files.create(gdFile)
             .then(resp => resp.result.id)
     },
@@ -38,38 +37,36 @@ export default {
         const gdFile = {
             'content-type': 'application/json',
             mimeType: ftu.type,
-            fields: 'id, name, kind, size',
+            fields: 'id, name, size, webContentLink',
+            name: ftu.name,
             parents: []
         }
+        let response = null
         if (parents) gdFile.parents = parents
-
         return gapi.client.drive.files.create(gdFile)
-            .then(resp => axios.patch(`${gdrive}/files/${resp.result.id}`, f, {
-                headers:{
-                    'Authorization': `Bearer ${gapi.client.getToken().access_token}`,
-                    'Content-Type': ftu.type
+            .then(resp => {
+                    response = resp.result
+                    return axios.patch(`${gdrive}/files/${resp.result.id}`, f, {
+                        params:{
+                            fields:'id, name, size, webContentLink'
+                        },
+                        headers: {
+                            'Authorization': `Bearer ${gapi.client.getToken().access_token}`,
+                            'Content-Type': ftu.type
+                        }
+                    })
                 }
-
-            }))
-    },
-    /** @desc lists files in google drive, can also list folders.
-     * @param gapi
-     * @param query
-     * @param parents
-     */
-    listFiles(gapi, query, parents) {
-
+            ).then(resp=>resp.data)
     },
     /**
      * @desc lists folders in google drive
      * @param gapi
      * @param query
-     * @param parents
      */
-    listFolders(gapi, query) {
+    listFiles(gapi, query) {
         return gapi.client.drive.files.list(query)
             .then(res => {
-                    return Promise.resolve(res.result.files)
+                return Promise.resolve(res.result.files)
             })
     },
     /**
