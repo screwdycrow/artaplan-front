@@ -11,7 +11,7 @@
     >
       <v-progress-linear v-if="isLoading" absolute top indeterminate striped height="10"></v-progress-linear>
 
-      <v-container style="max-width: 1600px" class="d-flex align-center">
+      <v-container style="max-width: 80%" class="d-flex align-center">
 
         <v-app-bar-nav-icon @click.stop="opened = !opened"/>
         <v-toolbar-title>
@@ -29,12 +29,12 @@
     <v-app-bar
         class="hidden-sm-and-down"
         height="100"
-        color="background"
+        color="background" hide-on-scroll
         flat app
     >
       <v-progress-linear v-if="isLoading" absolute top indeterminate striped height="10"></v-progress-linear>
 
-      <v-container style="max-width: 1600px" class="d-flex align-center">
+      <v-container style="max-width: 80%" class="d-flex align-center">
         <v-toolbar-title>
           <h1 class=" font-weight-black">
             <portal-target name="toolbar-title"/>
@@ -51,7 +51,7 @@
     <v-content class="background">
       <v-container
           class="pt-2 "
-          style="max-width: 1600px"
+          style="max-width: 80%"
       >
         <router-view/>
       </v-container>

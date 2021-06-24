@@ -13,7 +13,7 @@
 
     </v-card>
 
-    <v-row v-if="job.references.hyperlinks.length">
+    <v-row>
       <v-col>
         <v-row no-gutters >
           <div style="display: inline;" :key="index" v-for="(hyperlink, index) in job.references.hyperlinks">
