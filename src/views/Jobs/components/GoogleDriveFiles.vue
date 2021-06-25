@@ -74,14 +74,12 @@
                   </v-list>
                   <v-card-text>
                     <v-form>
-                      <v-text-field outlined label="name" v-model="file.name"></v-text-field>
-                      <v-textarea outlined label="description" v-model="file.description">
+                      <v-text-field readonly outlined label="name" v-model="file.name"></v-text-field>
+                      <v-textarea readonly  outlined label="description" v-model="file.description">
                       </v-textarea>
                     </v-form>
                   </v-card-text>
-                  <v-card-actions>
-                    <v-btn color="success" @click="">  Update </v-btn>
-                  </v-card-actions>
+                  <v-card-actions> <v-btn color="success" target="_blank" :href="file.webViewLink">Edit File in Google Drive</v-btn> </v-card-actions>
                 </v-card>
               </v-col>
             </v-row>
@@ -150,6 +148,13 @@ export default {
         this.$forceUpdate()
         this.$redrawVueMasonry()
       }, 2000);
+    },
+    updateFile(file){
+      this.$gapi.getGapiClient()
+          .then(gapi => gdFiles.updateFile(gapi, file.id,{description:file.description,name:file.name}))
+          .then(success => {
+            this.repaint();
+          })
     },
     deleteFile(file, index) {
       this.$gapi.getGapiClient()

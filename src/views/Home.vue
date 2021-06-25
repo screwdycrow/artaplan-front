@@ -8,7 +8,7 @@
     </portal>
 
     <v-row>
-      <v-col sm="12" lg="3">
+      <v-col sm="12" lg="3" xl="2">
         <v-card flat class="fill-height" v-if="schedule">
           <v-toolbar flat color="transparent">
             <v-toolbar-title>
@@ -27,7 +27,7 @@
         <v-card flat>
           <v-toolbar flat color="transparent">
             <v-toolbar-title>
-              <strong class="text--primary"> 7 days schedule</strong>
+              <strong class="text--primary"> 7 Day Schedule</strong>
             </v-toolbar-title>
             <v-spacer/>
             <v-toolbar-items>
@@ -62,7 +62,7 @@
             <v-row>
               <v-col>
                 <v-row v-if="ongoingJobs.length">
-                  <v-col lg="3" v-for="job in ongoingJobs">
+                  <v-col lg="3" xl="2" v-for="job in ongoingJobs">
                     <job-item  :job="job"></job-item>
                   </v-col>
                 </v-row>
@@ -84,7 +84,7 @@
             <v-toolbar-title> <strong> Quicklinks </strong> </v-toolbar-title>
           </v-toolbar>
             <v-row v-if="ongoingJobs.length">
-              <v-col lg="3" v-for="job in ongoingJobs">
+              <v-col lg="3" xl="2" v-for="job in ongoingJobs">
                 <v-row>
                   <v-col>
                     <v-card-title> {{job.name}}</v-card-title>

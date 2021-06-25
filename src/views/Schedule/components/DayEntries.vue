@@ -1,5 +1,5 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-    <v-card min-height="250" outlined :color="today === day?'secondary lighten-3':''">
+    <v-card min-height="250" outlined  :color="today === day?'secondary lighten-3':''">
         <v-toolbar dense flat>
             <v-toolbar-title>
                 {{day | dayName}}

@@ -43,11 +43,9 @@ export default {
             {
                 params: {
                     fields: fileFields,
-                    uploadType:'multipart'
                 },
                 headers: {
                     'Authorization': `Bearer ${gapi.client.getToken().access_token}`,
-                    'Content-Type': ftu.type
                 }
             }).then(resp=>resp.data)
     },

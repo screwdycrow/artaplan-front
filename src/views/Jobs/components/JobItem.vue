@@ -5,6 +5,23 @@
         <strong>{{ job.name }} </strong>
       </v-toolbar-title>
     </v-toolbar>
+    <v-toolbar dense flat :color="job.getFormatedColor(0.1)" >
+      <v-btn to="/jobs/'+job.jobId+'/details'" icon>
+        <v-icon>
+          mdi-pencil
+        </v-icon>
+      </v-btn>
+      <v-btn icon :to="'/jobs/'+job.jobId+'/references'">
+        <v-icon>
+          mdi-pin
+        </v-icon>
+      </v-btn>
+      <v-btn icon :to="'/jobs/'+job.jobId+'/files'">
+        <v-icon>
+          mdi-folder-image
+        </v-icon>
+      </v-btn>
+    </v-toolbar>
     <v-list dense>
       <v-list-item v-if="!dense">
         <v-list-item-action>
@@ -14,28 +31,20 @@
           {{ job.customer.name }}
         </v-list-item-content>
       </v-list-item>
-      <v-list-item v-if="!dense">
-        <v-list-item-action>
-          <v-icon> mdi-brush</v-icon>
-        </v-list-item-action>
-        <v-list-item-content>
-          {{ job.slot.name }}
-        </v-list-item-content>
-      </v-list-item>
       <v-list-item v-if="job.status === 'ongoing' || job.status === 'idle'">
         <v-list-item-action>
           <v-icon>mdi-flag-checkered</v-icon>
         </v-list-item-action>
         <v-list-item-content>
-          <v-list-item-title  v-if="job.deadline">
-            {{ job.deadline | formatDate}}
+          <v-list-item-title v-if="job.deadline">
+            {{ job.deadline | formatDate }}
           </v-list-item-title>
-          <v-list-item-title  v-else>
-             No deadline
+          <v-list-item-title v-else>
+            No deadline
           </v-list-item-title>
         </v-list-item-content>
         <v-list-item-action v-if="job.deadline" style="color:#ff1b0e">
-         in {{job.getFormattedDeadline('days')}} days
+          in {{ job.getFormattedDeadline('days') }} days
         </v-list-item-action>
       </v-list-item>
       <v-list-item>
@@ -47,6 +56,7 @@
         </v-list-item-action>
       </v-list-item>
     </v-list>
+
     <v-progress-linear :color="job.color" height="10" style="position: absolute; bottom:0;"
                        :value="job.getCompletionPercentage()"/>
   </v-card>
