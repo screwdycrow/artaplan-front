@@ -2,9 +2,9 @@
   <div class="home" id="content">
     <portal to="toolbar-title"> Dashboard</portal>
     <portal to="toolbar-actions">
-      <v-btn color="primary" class="mr-3" to="/newCustomer"> Add a Customer</v-btn>
-      <v-btn color="primary" class="mr-3" to="/newSlot"> Add a Job Template</v-btn>
-      <v-btn color="primary" class="mr-3" to="/newJob"> Add a Job</v-btn>
+      <v-btn outlined color="primary" class="mr-3" to="/newCustomer"> Add a Customer</v-btn>
+      <v-btn outlined color="primary" class="mr-3" to="/newSlot"> Add a Job Template</v-btn>
+      <v-btn outlined color="primary" class="mr-3" to="/newJob"> Add a Job</v-btn>
     </portal>
 
     <v-row>

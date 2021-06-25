@@ -53,16 +53,16 @@ export default class Job {
     }
 
     setReferences(references) {
-        try{
-            if(references === '{}'){
+        try {
+            if (references === '{}') {
                 console.log(references)
                 this.references = {}
 
-            }else{
+            } else {
                 this.references = JSON.parse(references);
                 console.log(references)
             }
-        }catch (e){
+        } catch (e) {
             this.references = {}
         }
 
@@ -99,18 +99,26 @@ export default class Job {
     }
 
     getValue() {
-        if(this.status !== Job.STATUS.FINISHED){
+        if (this.status !== Job.STATUS.FINISHED) {
             let hoursLeft = this.getHoursLeft();
             let addedHours = hoursLeft < 0 ? -1 * hoursLeft : 0
             return this.price / (this.getJobHours() + addedHours);
-        }else{
+        } else {
             return this.price / this.getHoursSpent();
         }
 
     }
 
-    getJobColor() {
-        return (this.status === this.status.FINISHED) ? 'grey' : this.color.trim();
+    getJobColor(format) {
+        const color = this.color.trim();
+        switch (format) {
+            case undefined:
+                return color;
+            case 'hex':
+                return tinycolor(color).toHexString()
+            case 'rgb':
+                return tinycolor(color).toRgbString();
+        }
     }
 
     getCompletionPercentage() {

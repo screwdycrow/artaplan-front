@@ -28,7 +28,9 @@ export default ({
         gdCreateJobFolder({state, dispatch}) {
             return this._vm.$gapi.getGapiClient().then(gapi => {
                 return gdFiles.getMainFolder(gapi)
-                    .then(folderId => gdFiles.createFolder(gapi, state.job.name, [folderId]))
+                    .then(folderId => gdFiles.createFolder(gapi, state.job.name, [folderId], {
+                        folderColorRgb: state.job.getJobColor('rgb')
+                    }))
             })
         },
         gdGetJobFiles({state, dispatch}) {
@@ -37,7 +39,6 @@ export default ({
                     .then(folderId => gdFiles.listFiles(gapi,
                         {
                             'q': `trashed = false and '${folderId}' in parents`,
-                            'fields': 'nextPageToken, files(id, name, webContentLink, size)',
                         })
                     )
             })
@@ -64,10 +65,10 @@ export default ({
             })
         }
         ,
-        gdAddJobFile({dispatch}, file) {
+        gdAddJobFile({dispatch}, {file,extras}) {
             return this._vm.$gapi.getGapiClient().then(gapi => {
                 return dispatch('gdGetJobFolderId').then(folderId => {
-                    return gdFiles.addFile(gapi, file, [folderId])
+                    return gdFiles.addFile(gapi, file, [folderId],extras)
                 })
             })
 
