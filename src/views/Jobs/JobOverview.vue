@@ -64,7 +64,8 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row class="mb-4">
+
+    <v-row class="mb-3">
       <v-col lg="2">
         <v-card flat>
           <v-card-text>
@@ -112,71 +113,73 @@
           <v-card-text>
             <p>Actual price </p>
             <span
-                class="text-md-h3">{{ (job.price - job.getHoursLeft() * (job.price / job.getJobHours()))| fixed(0) }}€</span>
+                class="text-md-h3">{{
+                (job.price - job.getHoursLeft() * (job.price / job.getJobHours()))| fixed(0)
+              }}€</span>
           </v-card-text>
         </v-card>
       </v-col>
     </v-row>
-    <v-divider></v-divider>
-    <v-row>
-      <v-col>
-        <v-row no-gutters>
-          <div style="display: inline;" :key="index" v-for="(hyperlink, index) in job.references.hyperlinks">
-            <v-btn
-
-                class="mr-3"
-                target="_blank" :color="job.getFormatedColor(0.5)"
-                :href="hyperlink.url">
-              <v-icon class="mr-2"> mdi-link</v-icon>
-              {{ hyperlink.title || hyperlink.url }}
-            </v-btn>
-          </div>
-        </v-row>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col lg="8">
-        <v-card class="fill-height"  flat>
-          <v-card-title> Description
-            <v-spacer/>
-            Text Size
-            <v-btn icon @click="fontsize++; lineHeight++">
-              <v-icon>mdi-plus</v-icon>
-            </v-btn>
-            <v-btn icon @click="fontsize--; lineHeight--">
-              <v-icon>mdi-minus</v-icon>
-            </v-btn>
-          </v-card-title>
-          <v-card-text :style='"font-size:"+fontsize+"px;lineHeight:"+lineHeight+"px" ' v-html="job.description">
-          </v-card-text>
-        </v-card>
-      </v-col>
-      <v-col lg="4">
-        <v-row dense>
-          <v-col lg="4" :key="index" v-for="(color, index)  in job.references.colors">
-            <v-card :dark="isDark(color.colorHex)" :color="color.colorHex">
-              <v-card-text>{{ color.colorHex }}</v-card-text>
-            </v-card >
-          </v-col>
-          <v-col lg="4" :key="index" v-for="(link, index) in job.references.links">
-            <v-card>
-              <v-dialog
-                  max-width="80%"
-                  transition="dialog-bottom-transition"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-img aspect-ratio="1" v-ripple v-on="on" v-bind="attrs"
-                         v-if="link.type === 'imageUrl'" :src="link.url"></v-img>
-                </template>
-                <reference-image :link="link"></reference-image>
-              </v-dialog>
-              <v-img v-ripple
-                     v-if="link.type === 'url'" src="link.png"></v-img>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
+    <v-card flat class="pa-3">
+      <v-row>
+        <v-col>
+          <v-row no-gutters>
+            <div style="display: inline;" :key="index" v-for="(hyperlink, index) in job.references.hyperlinks">
+              <v-btn
+                  class="mr-3 mt-3"
+                  target="_blank" :color="job.getFormatedColor(0.5)"
+                  :href="hyperlink.url">
+                <v-icon class="mr-2"> mdi-link</v-icon>
+                {{ hyperlink.title || hyperlink.url }}
+              </v-btn>
+            </div>
+          </v-row>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col lg="8">
+          <v-card class="fill-height" flat>
+            <v-card-title> Description
+              <v-spacer/>
+              Text Size
+              <v-btn icon @click="fontsize++; lineHeight++">
+                <v-icon>mdi-plus</v-icon>
+              </v-btn>
+              <v-btn icon @click="fontsize--; lineHeight--">
+                <v-icon>mdi-minus</v-icon>
+              </v-btn>
+            </v-card-title>
+            <v-card-text :style='"font-size:"+fontsize+"px;lineHeight:"+lineHeight+"px" ' v-html="job.description">
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col lg="4">
+          <v-row dense>
+            <v-col lg="4" :key="index" v-for="(color, index)  in job.references.colors">
+              <v-card :dark="isDark(color.colorHex)" :color="color.colorHex">
+                <v-card-text>{{ color.colorHex }}</v-card-text>
+              </v-card>
+            </v-col>
+            <v-col lg="4" :key="index" v-for="(link, index) in job.references.links">
+              <v-card>
+                <v-dialog
+                    max-width="80%"
+                    transition="dialog-bottom-transition"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-img aspect-ratio="1" v-ripple v-on="on" v-bind="attrs"
+                           v-if="link.type === 'imageUrl'" :src="link.url"></v-img>
+                  </template>
+                  <reference-image :link="link"></reference-image>
+                </v-dialog>
+                <v-img v-ripple
+                       v-if="link.type === 'url'" src="link.png"></v-img>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-card>
 
 
   </div>
@@ -199,7 +202,7 @@ export default {
     valuePerHour: 0,
   }),
   methods: {
-    isDark(color){
+    isDark(color) {
       return tinyColor(color).isDark();
     }
   },

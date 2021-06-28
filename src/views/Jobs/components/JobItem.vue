@@ -1,6 +1,6 @@
 <template>
   <v-card class="fill-height" :to="'/jobs/'+job.jobId">
-    <v-toolbar dense flat="" :color="job.getFormatedColor(0.4)">
+    <v-toolbar  dense flat="" :color="job.getFormatedColor(0.4)">
       <v-toolbar-title>
         <strong>{{ job.name }} </strong>
       </v-toolbar-title>
@@ -12,12 +12,12 @@
         </v-icon>
       </v-btn>
       <v-btn icon :to="'/jobs/'+job.jobId+'/references'">
-        <v-icon>
+        <v-icon >
           mdi-pin
         </v-icon>
       </v-btn>
       <v-btn icon :to="'/jobs/'+job.jobId+'/files'">
-        <v-icon>
+        <v-icon >
           mdi-folder-image
         </v-icon>
       </v-btn>

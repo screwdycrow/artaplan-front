@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer width="350" style="padding-left:55px" app fixed :value="showTimeLog" left>
+  <v-navigation-drawer width="350" style="padding-left:55px" app floating  :value="showTimeLog" left>
     <v-toolbar flat>
       <v-toolbar-title>
         Time Logs

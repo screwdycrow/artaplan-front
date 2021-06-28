@@ -56,14 +56,14 @@ export default class Job {
         try {
             if (references === '{}') {
                 console.log(references)
-                this.references = {}
+                this.references = {hyperlinks:[],links:[],colors:[]}
 
             } else {
                 this.references = JSON.parse(references);
                 console.log(references)
             }
         } catch (e) {
-            this.references = {}
+            this.references = {hyperlinks:[],links:[],colors:[]}
         }
 
     }

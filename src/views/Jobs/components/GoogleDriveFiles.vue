@@ -1,50 +1,49 @@
 <template>
-  <div>
-    <v-row>
-      <v-col lg="12">
-        <v-toolbar>
-          <v-toolbar-title class="mr-3"> Job Files</v-toolbar-title>
-          <v-dialog max-width="500" @change="setDefaultDescription()">
-            <template v-slot:activator="{on,attrs}">
-              <v-btn v-on="on" v-bind="attrs" color="primary"> New File</v-btn>
-            </template>
-            <v-card>
-              <v-card-title> Add file to Google Drive</v-card-title>
-              <v-card-text>
-                <v-form>
-                  <v-file-input label="file" outlined accept=".png, .jpg, .tiff, .tif, .webp, .gif" v-model="file"
-                                class="mr-4"></v-file-input>
-                  <v-textarea v-model="description" outlined label="description"></v-textarea>
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <v-btn color="primary" @click="addJobFile()" :disabled="file===null"> Add A File</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" v-if="folderId" icon target="_blank"
-                 :href="`https://drive.google.com/drive/folders/${folderId}`">
-            <v-icon>mdi-google-drive</v-icon>
+  <v-card flat>
+    <v-toolbar>
+      <v-toolbar-title class="mr-3"> Files</v-toolbar-title>
+      <v-dialog max-width="500" @change="setDefaultDescription()">
+        <template v-slot:activator="{on,attrs}">
+          <v-btn v-on="on" v-bind="attrs" text :color="job.color">
+            <v-icon>mdi-folder-image</v-icon>
+            New File
           </v-btn>
-          <v-btn color="primary" @click="getFiles()" icon>
-            <v-icon>mdi-reload</v-icon>
-          </v-btn>
-        </v-toolbar>
-      </v-col>
-    </v-row>
-    <v-card flat class="ma-4" v-if="files.length === 0 &&!loadingFiles ">
-      <v-card-text>
+        </template>
+        <v-card>
+          <v-card-title> Add file to Google Drive</v-card-title>
+          <v-card-text>
+            <v-form>
+              <v-file-input label="file" outlined accept=".png, .jpg, .tiff, .tif, .webp, .gif" v-model="file"
+                            class="mr-4"></v-file-input>
+              <v-textarea v-model="description" outlined label="description"></v-textarea>
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="primary" @click="addJobFile()" :disabled="file===null"> Add A File</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-spacer></v-spacer>
+      <v-btn :color="job.color" v-if="folderId" icon target="_blank"
+             :href="`https://drive.google.com/drive/folders/${folderId}`">
+        <v-icon>mdi-google-drive</v-icon>
+      </v-btn>
+      <v-btn :color="job.color" @click="getFiles()" icon>
+        <v-icon>mdi-reload</v-icon>
+      </v-btn>
+    </v-toolbar>
+      <v-card-text v-if="!files.length">
         No files found in your Google Drive. When you add files either directly
         either through the file uploader they will appear here.
       </v-card-text>
-    </v-card>
+    <v-card-text>
     <v-row v-masonry v-if="!loadingFiles">
       <v-col lg="3" v-for="(file,index) in files" :key="index">
         <v-card>
           <v-dialog max-width="90%">
             <template v-slot:activator="{ on, attrs }">
               <v-img :src="file.webContentLink" v-on="on" v-bind="attrs"
+                     @load="$redrawVueMasonry()"
                      alt="google drive file"/>
             </template>
             <v-row no-gutters>
@@ -75,11 +74,13 @@
                   <v-card-text>
                     <v-form>
                       <v-text-field readonly outlined label="name" v-model="file.name"></v-text-field>
-                      <v-textarea readonly  outlined label="description" v-model="file.description">
+                      <v-textarea readonly outlined label="description" v-model="file.description">
                       </v-textarea>
                     </v-form>
                   </v-card-text>
-                  <v-card-actions> <v-btn color="success" target="_blank" :href="file.webViewLink">Edit File in Google Drive</v-btn> </v-card-actions>
+                  <v-card-actions>
+                    <v-btn color="success" target="_blank" :href="file.webViewLink">Edit File in Google Drive</v-btn>
+                  </v-card-actions>
                 </v-card>
               </v-col>
             </v-row>
@@ -107,10 +108,8 @@
         <v-progress-circular size="50" indeterminate></v-progress-circular>
       </v-col>
     </v-row>
-
-
-  </div>
-
+    </v-card-text>
+  </v-card>
 
 </template>
 
@@ -149,9 +148,9 @@ export default {
         this.$redrawVueMasonry()
       }, 2000);
     },
-    updateFile(file){
+    updateFile(file) {
       this.$gapi.getGapiClient()
-          .then(gapi => gdFiles.updateFile(gapi, file.id,{description:file.description,name:file.name}))
+          .then(gapi => gdFiles.updateFile(gapi, file.id, {description: file.description, name: file.name}))
           .then(success => {
             this.repaint();
           })

@@ -24,7 +24,7 @@
     </portal>
     <v-row v-if="job">
       <v-col lg="2">
-        <v-list min-height="80vh" class="fill-height">
+        <v-list color="transparent" min-height="80vh" class="fill-height">
           <v-list-item :color="job.color" exact :to="'/jobs/'+job.jobId+'/'">
             <v-list-item-icon>
               <v-icon>mdi-eye</v-icon>
@@ -67,8 +67,8 @@
           </v-list-item>
         </v-list>
       </v-col>
-      <v-col lg="10">
-        <router-view></router-view>
+      <v-col lg="10" >
+          <router-view></router-view>
       </v-col>
     </v-row>
   </div>

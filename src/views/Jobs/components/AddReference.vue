@@ -28,8 +28,8 @@
     </v-dialog>
     <v-row v-if="showButtonsInRow">
       <v-btn
-          class="ma-3"
-          color="primary"
+          class="mr-2"
+          :color="job.color"
           text
           dark
           @click="openDialog('imageUrl')"
@@ -38,8 +38,8 @@
         Add Image
       </v-btn>
       <v-btn
-          class="ma-3"
-          color="primary"
+          class="mr-2"
+          :color="job.color"
           text
           dark
           @click="openDialog('url')"
@@ -48,8 +48,8 @@
         Add Link
       </v-btn>
       <v-btn
-          class="ma-3"
-          color="primary"
+          class="mr-2"
+          :color="job.color"
           text
           dark
           @click="openDialog('color')"

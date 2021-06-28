@@ -1,7 +1,6 @@
 <template>
 
       <v-row no-gutters>
-
         <v-col lg="10">
           <v-img 
               style="background: #333"

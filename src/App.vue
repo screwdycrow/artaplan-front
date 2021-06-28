@@ -11,7 +11,7 @@
     >
       <v-progress-linear v-if="isLoading" absolute top indeterminate striped height="10"></v-progress-linear>
 
-      <v-container style="max-width: 80%" class="d-flex align-center">
+      <v-container fluid class="d-flex align-center app-container">
 
         <v-app-bar-nav-icon @click.stop="opened = !opened"/>
         <v-toolbar-title>
@@ -34,7 +34,7 @@
     >
       <v-progress-linear v-if="isLoading" absolute top indeterminate striped height="10"></v-progress-linear>
 
-      <v-container style="max-width: 80%" class="d-flex align-center">
+      <v-container  class="d-flex align-center app-container">
         <v-toolbar-title>
           <h1 class=" font-weight-black">
             <portal-target name="toolbar-title"/>
@@ -50,13 +50,13 @@
     </v-app-bar>
     <v-content class="background">
       <v-container
-          class="pt-2 "
-          style="max-width: 80%"
+
+          class="pt-2 app-container"
       >
         <router-view/>
       </v-container>
     </v-content>
-    <v-footer>
+    <v-footer class="background">
       <v-card
           flat
           tile
@@ -141,6 +141,20 @@ export default {
 </script>
 
 <style scoped>
+
+@media only screen and (min-width: 1000px) {
+
+  .app-container {
+    max-width: 1600px;
+  }
+}
+
+@media only screen and ( min-width: 2000px) {
+  .app-container {
+    max-width: 2000px;
+  }
+}
+
 .topbar .v-toolbar__content {
   max-width: 1700px !important;
 }
