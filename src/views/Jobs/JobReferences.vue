@@ -50,127 +50,130 @@
           </v-dialog>
         </v-toolbar-items>
       </v-toolbar>
-      <v-card-title v-if="job.references.hyperlinks.length && job.references.hyperlinks"> Links</v-card-title>
-      <v-card-text v-if="job.references.hyperlinks.length &&  job.references.hyperlinks">
-        <v-row>
-          <v-col>
-            <v-row no-gutters>
-              <div style="display: inline;" :key="index" v-for="(hyperlink, index) in job.references.hyperlinks">
-                <v-btn
-                    target="_blank" :color="job.getFormatedColor(0.5)"
-                    :href="hyperlink.url">
-                  <v-icon class="mr-2"> mdi-link</v-icon>
-                  {{ hyperlink.title || hyperlink.url }}
-                </v-btn>
-                <v-icon class="ma-2 mr-5" @click="removeUrl(index,hyperlink)"> mdi-delete</v-icon>
-              </div>
-            </v-row>
-          </v-col>
-        </v-row>
-      </v-card-text>
-      <v-card-title v-if="job.references.colors.length && job.references.colors"> Colors</v-card-title>
-      <v-card-text v-if="job.references.colors.length && job.references.colors">
-        <v-row dense>
-          <v-col lg="2" v-for="(color,index) in job.references.colors">
-            <v-card>
-              <v-sheet class="pa-2" :dark="isDark(color.colorHex)" :color="color.colorHex" height="70">
-                <span :style="'color:'+isDark(color)?'white':'black'"> {{ color.colorHex }} </span>
-                <v-toolbar color="transparent" flat dense absolute bottom>
-                  {{ color.title || color.colorHex }}
-                  <v-spacer/>
-                  <v-icon class="ma-2 mr-5" @click="removeUrl(index,color)"> mdi-delete</v-icon>
-                </v-toolbar>
-              </v-sheet>
+      <div v-if="job.references !== {}">
+        <v-card-title v-if="job.references.hyperlinks.length && job.references.hyperlinks"> Links</v-card-title>
+        <v-card-text v-if="job.references.hyperlinks.length &&  job.references.hyperlinks">
+          <v-row>
+            <v-col>
+              <v-row no-gutters>
+                <div style="display: inline;" :key="index" v-for="(hyperlink, index) in job.references.hyperlinks">
+                  <v-btn
+                      target="_blank" :color="job.getFormatedColor(0.5)"
+                      :href="hyperlink.url">
+                    <v-icon class="mr-2"> mdi-link</v-icon>
+                    {{ hyperlink.title || hyperlink.url }}
+                  </v-btn>
+                  <v-icon class="ma-2 mr-5" @click="removeUrl(index,hyperlink)"> mdi-delete</v-icon>
+                </div>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-card-title v-if="job.references.colors.length && job.references.colors"> Colors</v-card-title>
+        <v-card-text v-if="job.references.colors.length && job.references.colors">
+          <v-row dense>
+            <v-col lg="2" v-for="(color,index) in job.references.colors">
+              <v-card>
+                <v-sheet class="pa-2" :dark="isDark(color.colorHex)" :color="color.colorHex" height="70">
+                  <span :style="'color:'+isDark(color)?'white':'black'"> {{ color.colorHex }} </span>
+                  <v-toolbar color="transparent" flat dense absolute bottom>
+                    {{ color.title || color.colorHex }}
+                    <v-spacer/>
+                    <v-icon class="ma-2 mr-5" @click="removeUrl(index,color)"> mdi-delete</v-icon>
+                  </v-toolbar>
+                </v-sheet>
 
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-card-text>
-      <v-card-title v-if="job.references.links.length  && job.references.links"> Media</v-card-title>
-      <v-card-text>
-        <v-row dense v-masonry v-if="mansory">
-          <v-col cols="12" :sm="cols" v-for="(link, index) in job.references.links" :key="index">
-            <v-card>
-              <v-img v-ripple
-                     v-if="link.type === 'url'" :src="someImage"></v-img>
-              <v-dialog
-                  @input="repaint()"
-                  max-width="90%"
-                  transition="dialog-bottom-transition"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-img contain
-                         max-width="100%"
-                         max-height="500px"
-                         v-ripple v-on="on" v-bind="attrs" @load="this.$redrawVueMasonry()"
-                         v-if="link.type === 'imageUrl'" :src="link.url"></v-img>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-card-title v-if="job.references.links.length  && job.references.links"> Media</v-card-title>
+        <v-card-text>
+          <v-row dense v-masonry v-if="mansory">
+            <v-col cols="12" :sm="cols" v-for="(link, index) in job.references.links" :key="index">
+              <v-card>
+                <v-img v-ripple
+                       v-if="link.type === 'url'" :src="someImage"></v-img>
+                <v-dialog
+                    @input="repaint()"
+                    max-width="90%"
+                    transition="dialog-bottom-transition"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-img contain
+                           max-width="100%"
+                           max-height="500px"
+                           v-ripple v-on="on" v-bind="attrs" @load="this.$redrawVueMasonry()"
+                           v-if="link.type === 'imageUrl'" :src="link.url"></v-img>
 
-                </template>
-                <reference-image :link="link"></reference-image>
+                  </template>
+                  <reference-image :link="link"></reference-image>
 
-              </v-dialog>
-              <v-card-title v-if="link.title !== ''&& !hideExtras" v-on="on" v-bind="attrs">
-                {{ link.title }}
-              </v-card-title>
-              <v-card-text v-if="link.description !== '' && !hideExtras" style="max-height: 80px;overflow: hidden ">
-                {{ link.description }}
-              </v-card-text>
-              <v-card-actions v-if="!hideExtras">
-                <v-btn text :href="link.url" target="_blank">
-                  <v-icon> mdi-link</v-icon>
-                  Go to Link
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-btn @click="removeUrl(index, link )" icon>
-                  <v-icon>mdi-delete</v-icon>
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
-        <v-row dense v-else>
-          <v-col cols="12" :sm="cols" v-for="(link, index) in job.references.links" :key="index">
-            <v-card>
-              <v-dialog
-                  max-width="90%"
-                  transition="dialog-bottom-transition"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <div>
-                    <v-img
-                        max-width="100%"
-                        v-ripple v-on="on" v-bind="attrs"
-                        v-if="link.type === 'imageUrl'" :src="link.url"></v-img>
-
-                  </div>
-                </template>
-                <v-card-title v-if="link.title && !hideExtras" v-on="on" v-bind="attrs">
+                </v-dialog>
+                <v-card-title v-if="link.title !== ''&& !hideExtras" v-on="on" v-bind="attrs">
                   {{ link.title }}
                 </v-card-title>
-                <reference-image :link="link"></reference-image>
+                <v-card-text v-if="link.description !== '' && !hideExtras" style="max-height: 80px;overflow: hidden ">
+                  {{ link.description }}
+                </v-card-text>
+                <v-card-actions v-if="!hideExtras">
+                  <v-btn text :href="link.url" target="_blank">
+                    <v-icon> mdi-link</v-icon>
+                    Go to Link
+                  </v-btn>
+                  <v-spacer></v-spacer>
+                  <v-btn @click="removeUrl(index, link )" icon>
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+          </v-row>
+          <v-row dense v-else>
+            <v-col cols="12" :sm="cols" v-for="(link, index) in job.references.links" :key="index">
+              <v-card>
+                <v-dialog
+                    max-width="90%"
+                    transition="dialog-bottom-transition"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <div>
+                      <v-img
+                          max-width="100%"
+                          v-ripple v-on="on" v-bind="attrs"
+                          v-if="link.type === 'imageUrl'" :src="link.url"></v-img>
 
-              </v-dialog>
-              <v-card-text v-if="link.description && !hideExtras" style="max-height: 80px;overflow: hidden ">
-                {{ link.description }}
-              </v-card-text>
-              <v-card-actions v-if="!hideExtras">
-                <v-btn text :href="link.url" target="_blank">
-                  <v-icon> mdi-link</v-icon>
-                  Go to Link
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-btn @click="removeUrl(index, link )" icon>
-                  <v-icon>mdi-delete</v-icon>
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-card-text>
-      <v-card-text
-          v-if="!job.references.colors.length && !job.references.hyperlinks.length && !job.references.links.length">
-        You haven't add any references. Please add some using the toolbar above
-      </v-card-text>
+                    </div>
+                  </template>
+                  <v-card-title v-if="link.title && !hideExtras" v-on="on" v-bind="attrs">
+                    {{ link.title }}
+                  </v-card-title>
+                  <reference-image :link="link"></reference-image>
+
+                </v-dialog>
+                <v-card-text v-if="link.description && !hideExtras" style="max-height: 80px;overflow: hidden ">
+                  {{ link.description }}
+                </v-card-text>
+                <v-card-actions v-if="!hideExtras">
+                  <v-btn text :href="link.url" target="_blank">
+                    <v-icon> mdi-link</v-icon>
+                    Go to Link
+                  </v-btn>
+                  <v-spacer></v-spacer>
+                  <v-btn @click="removeUrl(index, link )" icon>
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-card-text
+            v-if="!job.references.colors.length && !job.references.hyperlinks.length && !job.references.links.length">
+          You haven't add any references. Please add some using the toolbar above
+        </v-card-text>
+
+      </div>
 
     </v-card>
 

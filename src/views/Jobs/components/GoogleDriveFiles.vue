@@ -19,7 +19,7 @@
             </v-form>
           </v-card-text>
           <v-card-actions>
-            <v-btn color="primary" @click="addJobFile()" :disabled="file===null"> Add A File</v-btn>
+            <v-btn color="primary" @click="addJobFile()" :disabled="file === null"> Add A File</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>

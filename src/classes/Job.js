@@ -32,11 +32,7 @@ export default class Job {
         this.deadline = obj.deadline;
         this.customerId = obj.customerId;
         this.slotId = obj.slotId
-        if (obj.references) {
-            this.setReferences(obj.references)
-        } else {
-            this.references = {}
-        }
+        this.setReferences(obj.references)
         this.slot = {};
         if (obj.slot) this.setSlot(obj.slot);
         if (obj.customer) this.setCustomer(obj.customer);
@@ -54,16 +50,18 @@ export default class Job {
 
     setReferences(references) {
         try {
-            if (references === '{}') {
-                console.log(references)
-                this.references = {hyperlinks:[],links:[],colors:[]}
+            if (references === '{}' || references === null) {
+                console.log('hey', references)
+                this.references = {hyperlinks: [], links: [], colors: []}
 
             } else {
                 this.references = JSON.parse(references);
-                console.log(references)
+                if (this.references && Object.keys(this.references).length === 0 && obj.constructor === Object) {
+                    this.references = {hyperlinks: [], links: [], colors: []}
+                }
             }
         } catch (e) {
-            this.references = {hyperlinks:[],links:[],colors:[]}
+            this.references = {hyperlinks: [], links: [], colors: []}
         }
 
     }
