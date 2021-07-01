@@ -63,7 +63,7 @@
               <v-col>
                 <v-row v-if="ongoingJobs.length">
                   <v-col lg="3" xl="2" v-for="job in ongoingJobs">
-                    <job-item  :job="job"></job-item>
+                    <job-item :job="job"></job-item>
                   </v-col>
                 </v-row>
                 <v-card flat color="transparent" v-else>
@@ -81,14 +81,14 @@
       <v-col>
         <v-card flat>
           <v-toolbar flat>
-            <v-toolbar-title> <strong> Quicklinks </strong> </v-toolbar-title>
+            <v-toolbar-title><strong> Quicklinks </strong></v-toolbar-title>
           </v-toolbar>
-            <v-row v-if="ongoingJobs.length">
-              <v-col lg="3" xl="2" v-for="job in ongoingJobs">
-                <v-row>
-                  <v-col>
-                    <v-card-title> {{job.name}}</v-card-title>
-                    <v-card-text>
+          <v-row v-if="ongoingJobs.length">
+            <v-col lg="3" xl="2" v-for="job in ongoingJobs">
+              <v-row>
+                <v-col>
+                  <v-card-title> {{ job.name }}</v-card-title>
+                  <v-card-text>
                     <div style="display: inline;" v-for="(hyperlink, index) in job.references.hyperlinks">
                       <v-btn
                           class="mr-3 mb-3"
@@ -98,11 +98,11 @@
                         {{ hyperlink.title || hyperlink.url }}
                       </v-btn>
                     </div>
-                    </v-card-text>
-                  </v-col>
-                </v-row>
-              </v-col>
-            </v-row>
+                  </v-card-text>
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
         </v-card>
 
       </v-col>
@@ -148,7 +148,7 @@ export default {
       'schedule',
       'entriesOfDay',
       'workload',
-      'days'
+      'days',
     ]),
     ...mapGetters('jobs', [
       'ongoingJobs'

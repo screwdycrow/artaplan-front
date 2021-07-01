@@ -13,7 +13,8 @@ export default ({
         daysEntries: {},
         days: [],
         datesExceptions: [],
-        workload: []
+        workload: [],
+        stats: {}
     },
     actions: {
 
@@ -27,6 +28,7 @@ export default ({
                             scheduleItems[index] = entry
                             commit('addEntryToDay', {entry: entry, date: entry.dateFrom})
                         })
+                        commit('setStats',{days1:60, days2:30})
                         commit('setSchedule', scheduleItems)
                         commit('setLoading', false, {root: true})
                     })
@@ -130,6 +132,45 @@ export default ({
         },
 
 
+        setStats(s,{days1, days2}) {
+            let days = {}
+            for (const date in s.daysEntries) {
+                if (s.daysEntries.hasOwnProperty(date)) {
+                    if (moment().isAfter(date)) {
+
+                        let dateObj = moment(date);
+                        let day = dateObj.day();
+                        let dayName = dateObj.format('ddd')
+                        if (moment().subtract(days2, 'days').isBefore(date)) {
+                            if (days[day] === undefined) {
+                                days[day] = {
+                                    name:dayName,
+                                    workHours: 0,
+                                    dayCount: 0,
+                                    workHoursMonth: 0,
+                                    dayCountMonth: 0
+                                }
+                            }
+                            days[day].workHoursMonth += s.daysEntries[date].length
+                            days[day].dayCountMonth++
+                        } else if (moment().subtract(days1, 'days').isBefore(date)) {
+                            if (days[day] === undefined) {
+                                days[day] = {
+                                    name:dayName,
+                                    workHours: 0,
+                                    dayCount: 0,
+                                    workHoursMonth: 0,
+                                    dayCountMonth: 0
+                                }
+                            }
+                            days[day].workHours += s.daysEntries[date].length
+                            days[day].dayCount++
+                        }
+                    }
+                }
+            }
+            s.stats = days;
+        },
         updateScheduleEntry(state, entry) {
             const index = state.schedule.findIndex(e => e.scheduleEntriesId === entry.scheduleEntriesId)
             if (index !== -1) {
@@ -174,8 +215,9 @@ export default ({
         },
     },
     getters: {
-        workload: s=>[],
+        workload: s => [],
         days: s => s.days,
+        dayStats: s => s.stats,
         schedule: s => s.schedule,
         plannerOptions: s => s.plannerOptions,
         datesExceptions: s => s.datesExceptions,

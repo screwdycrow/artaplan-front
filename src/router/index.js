@@ -181,6 +181,15 @@ const routes = [
             requiresAuth: true,
 
         }
+    },
+    {
+        path: '/statistics',
+        name: 'statistics',
+        component: () => import(/* webpackChunkName: "statistics" */ '../views/Statistics'),
+        meta: {
+            requiresAuth: true,
+
+        }
     }
 ]
 

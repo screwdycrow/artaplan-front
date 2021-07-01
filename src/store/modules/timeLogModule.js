@@ -56,7 +56,12 @@ export default ({
             let timeLogs = localStorage.getItem('timeLogs')
             let timeLogNow = localStorage.getItem('timeLogNow')
             try {
-                state.timeLogs = JSON.parse(timeLogs)
+                const parsed = JSON.parse(timeLogs)
+                if(parsed){
+                    state.timeLogs = parsed
+                }else{
+                    state.timeLogs = []
+                }
 
             } catch (e) {
                 state.timeLogs = []

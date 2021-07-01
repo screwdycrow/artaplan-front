@@ -74,6 +74,17 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item to="/statistics">
+          <v-list-item-icon>
+            <v-icon> mdi-chart-box</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>
+              Statistics
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-item @click="toggleShowTimeLog()">
           <v-list-item-icon>
             <v-icon> mdi-clock</v-icon>

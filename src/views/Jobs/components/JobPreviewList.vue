@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-expansion-panels multiple hover class="pa-0">
+        <v-expansion-panels accordion hover class="pa-0">
             <job-expandable v-for="job in jobs" :job="job"/>
         </v-expansion-panels>
     </div>
