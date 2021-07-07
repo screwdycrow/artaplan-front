@@ -31,6 +31,14 @@
           {{ job.customer.name }}
         </v-list-item-content>
       </v-list-item>
+      <v-list-item v-if="!dense && job.isTask()">
+        <v-list-item-action>
+          <v-icon> mdi-brush</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          {{ job.slot.name}}
+        </v-list-item-content>
+      </v-list-item>
       <v-list-item v-if="job.status === 'ongoing' || job.status === 'idle'">
         <v-list-item-action>
           <v-icon>mdi-flag-checkered</v-icon>
@@ -47,7 +55,33 @@
           in {{ job.getFormattedDeadline('days') }} days
         </v-list-item-action>
       </v-list-item>
-      <v-list-item>
+      <v-list-item v-if="job.status === 'finished'">
+        <v-list-item-action>
+          <v-icon>mdi-flag-checkered</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>
+            Finished:
+          </v-list-item-title>
+        </v-list-item-content>
+        <v-list-item-action >
+          {{job.finishedAt | formatDate}}
+        </v-list-item-action>
+      </v-list-item>
+      <v-list-item v-if="job.status === 'cancelled'">
+        <v-list-item-action>
+          <v-icon>mdi-flag-checkered</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>
+            Cancelled:
+          </v-list-item-title>
+        </v-list-item-content>
+        <v-list-item-action >
+          {{job.cancelledAt | formatDate}}
+        </v-list-item-action>
+      </v-list-item>
+      <v-list-item v-if="!job.isTask()">
         <v-list-item-content>
           <job-tags :job="job"></job-tags>
         </v-list-item-content>

@@ -87,7 +87,11 @@
             </v-col>
           </v-row>
         </v-card-text>
-        <v-card-title v-if="job.references.links.length  && job.references.links"> Media</v-card-title>
+        <v-card-title v-if="job.references.links.length  && job.references.links">
+          Media
+          <v-spacer/>
+          <training-button :job="job" :images="referencesForTraining"/>
+        </v-card-title>
         <v-card-text>
           <v-row dense v-masonry v-if="mansory">
             <v-col cols="12" :sm="cols" v-for="(link, index) in job.references.links" :key="index">
@@ -185,10 +189,11 @@ import JobMixin from "./JobMixin"
 import AddReference from "@/views/Jobs/components/AddReference";
 import ReferenceImage from "@/views/Jobs/components/ReferenceImage";
 import tinyColor from "tinycolor2";
+import TrainingButton from "@/views/Jobs/components/TrainingButton";
 
 export default {
   name: "JobReferences",
-  components: {ReferenceImage, AddReference},
+  components: {TrainingButton, ReferenceImage, AddReference},
   mixins: [JobMixin],
   data: () => ({
     hideExtras: false,
@@ -206,6 +211,11 @@ export default {
   }),
   mounted() {
     this.repaint();
+  },
+  computed: {
+    referencesForTraining() {
+      return this.job.references.links.map(l => l.url)
+    },
   },
   methods: {
     isDark(color) {

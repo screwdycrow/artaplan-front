@@ -91,7 +91,9 @@ export default class Job {
         });
         return jobHours;
     }
-
+    isTask(){
+      return this.price === 0;
+    }
     getHoursLeft() {
         return this.getJobHours() - this.getHoursSpent();
     }

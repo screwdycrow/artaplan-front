@@ -89,6 +89,7 @@
         </v-card-text>
       </v-card>
     </v-footer>
+    <training-session></training-session>
     <time-log-now></time-log-now>
 
   </v-app>
@@ -100,11 +101,12 @@ import {mapGetters, mapMutations, mapState} from "vuex";
 import UiMessages from "@/components/UiMessages";
 import TimeLogNow from "@/components/TimeLogs/TimeLogNow";
 import TimeLogs from "@/components/TimeLogs/TimeLogs";
+import TrainingSession from "@/views/Jobs/components/TrainingSession";
 
 export default {
   name: 'App',
 
-  components: {TimeLogs, TimeLogNow, UiMessages, Sidebar},
+  components: {TrainingSession, TimeLogs, TimeLogNow, UiMessages, Sidebar},
   computed: {
     ...mapState([
       "isLoading"

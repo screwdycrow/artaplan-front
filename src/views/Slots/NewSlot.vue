@@ -20,7 +20,7 @@
                   </v-col>
                   <v-col lg="3">
                     <v-text-field v-model.number="slot.price" type="number" label="base price"
-                                  :rules="rules.required"></v-text-field>
+                                  :rules="rules.price"></v-text-field>
                   </v-col>
                 </v-row>
                 <v-row>
@@ -95,7 +95,7 @@
             <v-card-title> Sum </v-card-title>
             <v-card-text>
               You are planning to spend around
-              <strong> {{totalHours}} </strong> hours for a job of this template <span v-if="totalHours>0"> and you'll gain <strong>{{slot.price/totalHours |fixed(2)}}</strong> per hour </span>
+              <strong> {{totalHours}} </strong> hours for a job of this template <span v-if="totalHours>0 && slot.price !== 0 "> and you'll gain <strong>{{slot.price/totalHours |fixed(2)}}</strong> per hour </span>
             </v-card-text>
             <v-card-text v-if="totalHours === 0 ">
               Add some stages first.
@@ -163,6 +163,9 @@ export default {
       userId: null
     },
     rules: {
+      price:[
+          value => (!!value || value === 0 ) || 'required'
+      ],
       required: [
         value => !!value || 'Required.',
       ]

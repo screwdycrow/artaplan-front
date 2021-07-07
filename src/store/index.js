@@ -8,6 +8,7 @@ import customerModule from "@/store/modules/customerModule";
 import userModule from "@/store/modules/userModule";
 import moment from 'moment'
 import timeLogModule from "@/store/modules/timeLogModule";
+import trainingModule from "@/store/modules/trainingModule";
 
 Vue.use(Vuex);
 
@@ -86,6 +87,7 @@ export default new Vuex.Store({
     }
     ,
     modules: {
+        training:trainingModule,
         schedule: scheduleModule,
         slots: slotModule,
         jobs: jobModule,

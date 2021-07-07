@@ -56,10 +56,13 @@
       </v-col>
       <v-col lg="2">
         <v-card flat class="fill-height">
-          <v-card-text>
+          <v-card-text v-if="!job.isTask()">
             <label>earnings</label>
             <br/>
             <span class="text-md-h3">{{ job.price }} € </span>
+          </v-card-text>
+          <v-card-text v-else>
+            <span class="text-md-h3">Task</span>
           </v-card-text>
         </v-card>
       </v-col>
@@ -93,7 +96,7 @@
         </v-card>
       </v-col>
       <v-col lg="2">
-        <v-card flat :color="job.isOverWork()?'red lighten-4':''">
+        <v-card v-if="!job.isTask" flat :color="job.isOverWork()?'red lighten-4':''">
           <v-card-text>
             <p>value/hr</p>
             <span class="text-md-h3">{{ job.getValue() | fixed(2) }}€</span>
@@ -101,15 +104,15 @@
         </v-card>
       </v-col>
       <v-col lg="2" v-if="job.isOverWork()">
-        <v-card flat>
+        <v-card flat v-if="!job.isTask">
           <v-card-text>
             <p>Initial value/hr</p>
             <span class="text-md-h3">{{ (job.price / job.getJobHours()) | fixed(2) }}€</span>
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col lg="2" v-if="job.isOverWork()">
-        <v-card flat>
+      <v-col  lg="2" v-if="job.isOverWork()">
+        <v-card flat v-if="!job.isTask">
           <v-card-text>
             <p>Actual price </p>
             <span

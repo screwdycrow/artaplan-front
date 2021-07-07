@@ -14,23 +14,52 @@
     <v-row>
       <v-col sm="12" lg="10">
         <v-card flat>
-          <v-card-title> Ongoing ({{ ongoingJobs.length }})</v-card-title>
-          <v-card-text>
-            <v-row>
-              <v-col>
-                <v-row v-if="ongoingJobs.length">
-                  <v-col lg="3" v-for="job in ongoingJobs">
-                    <job-item :job="job"></job-item>
+          <v-card-title> Ongoing</v-card-title>
+          <v-tabs>
+            <v-tab>
+              Jobs ({{ ongoingJobs.length }})
+            </v-tab>
+            <v-tab>
+              Tasks ({{ ongoingTasks.length }})
+            </v-tab>
+            <v-tab-item>
+              <v-card-text>
+                <v-row>
+                  <v-col>
+                    <v-row v-if="ongoingJobs.length">
+                      <v-col lg="3" v-for="job in ongoingJobs">
+                        <job-item :job="job"></job-item>
+                      </v-col>
+                    </v-row>
+                    <v-card flat color="transparent" v-else>
+                      <v-card-text>
+                        There are no ongoing jobs
+                      </v-card-text>
+                    </v-card>
                   </v-col>
                 </v-row>
-                <v-card flat color="transparent" v-else>
-                  <v-card-text>
-                    There are no ongoing jobs
-                  </v-card-text>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-card-text>
+              </v-card-text>
+            </v-tab-item>
+            <v-tab-item>
+              <v-card-text>
+                <v-row>
+                  <v-col>
+                    <v-row v-if="ongoingTasks.length">
+                      <v-col lg="3" v-for="job in ongoingTasks">
+                        <job-item :job="job"></job-item>
+                      </v-col>
+                    </v-row>
+                    <v-card flat color="transparent" v-else>
+                      <v-card-text>
+                        There are no ongoing tasks
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-tab-item>
+          </v-tabs>
+
           <v-card-title> Idle ({{ idleJobs.length }})</v-card-title>
           <v-card-text>
             <v-row>
@@ -42,7 +71,7 @@
                 </v-row>
                 <v-card v-else flat color="transparent">
                   <v-card-text>
-                    There are no idle jobs
+                    There are no idle jobs or tasks
                   </v-card-text>
                 </v-card>
               </v-col>
@@ -50,25 +79,50 @@
           </v-card-text>
         </v-card>
         <v-card flat class="mt-5">
-          <v-card-title> Past Jobs ({{ pastJobs.length }})</v-card-title>
-          <v-card-text v-if="pastJobs.length">
-            <v-row>
-              <v-col lg="3" v-for="job in pastJobs">
-                <job-item :job="job"></job-item>
-              </v-col>
-            </v-row>
+          <v-card-title> Past Jobs</v-card-title>
 
-          </v-card-text>
-          <v-card-text v-else>
-            There are no idle jobs
-          </v-card-text>
+          <v-tabs>
+            <v-tab>
+              Jobs ({{ pastJobs.length }})
+            </v-tab>
+            <v-tab>
+              Tasks ({{ pastTasks.length }})
+            </v-tab>
+            <v-tab-item>
+
+              <v-card-text v-if="pastJobs.length">
+                <v-row>
+                  <v-col lg="3" v-for="job in pastJobs">
+                    <job-item :job="job"></job-item>
+                  </v-col>
+                </v-row>
+
+              </v-card-text>
+              <v-card-text v-else>
+                There are no past jobs
+              </v-card-text>
+            </v-tab-item>
+            <v-tab-item>
+
+              <v-card-text v-if="pastTasks.length">
+                <v-row>
+                  <v-col lg="3" v-for="job in pastTasks">
+                    <job-item :job="job"></job-item>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+              <v-card-text v-else>
+                There are no past tasks
+              </v-card-text>
+            </v-tab-item>
+          </v-tabs>
         </v-card>
       </v-col>
       <v-col lg="2">
         <v-card flat v-if="pastJobs.length">
           <v-card-text>
             <p>Earnings per month</p>
-            <span class="text-md-h3">{{  statsOfMonths[monthNow]?statsOfMonths[monthNow].totalPrice:0 }} € </span>
+            <span class="text-md-h3">{{ statsOfMonths[monthNow] ? statsOfMonths[monthNow].totalPrice : 0 }} € </span>
           </v-card-text>
           <earning-per-month :minus="-3" :stats-per-month="statsOfMonths"></earning-per-month>
 
@@ -154,8 +208,10 @@ export default {
     ...mapGetters('jobs', [
       'ongoingJobs',
       'pastJobs',
+      'pastTasks',
       'scheduledJobs',
       'idleJobs',
+      'ongoingTasks',
       'statsOfMonths'
     ])
   },

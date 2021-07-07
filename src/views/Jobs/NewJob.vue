@@ -45,13 +45,26 @@
                   </v-row>
                   <strong> Details </strong>
                   <v-row>
+                    <v-col lg="2">
+                      <v-switch label="This is a task." v-model="isTask" @change="job.price = 0;">
+                      </v-switch>
+                    </v-col>
+                    <v-col lg="10">
+                      <v-alert type="info" outlined>
+                        By making this job a task, it won't be listed with the regular jobs and job statistics but will appear normally for scheduling. Price will automatically be zero.
+                      </v-alert>
+                    </v-col>
+                  </v-row>
+
+                  <v-row>
                     <v-col lg="10">
                       <v-text-field :rules="rules.required" required filled type="text"
                                     label="Job Name (*)"
                                     v-model="job.name"/>
                     </v-col>
                     <v-col lg="2">
-                      <v-text-field :rules="rules.required" required filled type="number"
+                      <v-text-field v-if="!isTask" :rules="rules.price" required filled type="number"
+                                    min="1"
                                     label="Job Price (*) " v-model.number="job.price"
                                     append-icon="mdi-cash"/>
                     </v-col>
@@ -60,7 +73,6 @@
                     <v-col lg="10">
                       <label> Description </label>
                       <ckeditor v-model="job.description" :config="editorConfig"></ckeditor>
-
                     </v-col>
                     <v-col lg="2">
                       <v-color-picker v-model="job.color"></v-color-picker>
@@ -72,7 +84,7 @@
               <v-card-actions>
                 <v-btn @click="goBack"> Back</v-btn>
                 <v-btn color="primary" @click="finishDetailsStep()"
-                       :disabled="!(job.customer && job.name && job.price)"> Next
+                       :disabled="!(job.customer && job.name && (job.price || job.price === 0))"> Next
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -100,10 +112,12 @@
                   </v-list-item>
                 </draggable>
               </v-card-text>
-              <v-card-title> Sum </v-card-title>
+              <v-card-title> Sum</v-card-title>
               <v-card-text>
                 You are planning to spend around
-                <strong> {{totalHours}} </strong> hours for a job of this template <span v-if="totalHours>0"> and you'll gain <strong>{{job.price/totalHours |fixed(2)}}</strong> per hour </span>
+                <strong> {{ totalHours }} </strong> hours for a job of this template <span v-if="totalHours>0 && job.price>0 "> and you'll gain <strong>{{
+                  job.price / totalHours |fixed(2)
+                }}</strong> per hour </span>
               </v-card-text>
               <v-card-text v-if="totalHours === 0 ">
                 Add some stages first.
@@ -111,7 +125,7 @@
               <v-card-actions>
                 <v-btn @click="goBack"> Back</v-btn>
                 <v-btn color="primary" @click="finishStageStep()"
-                       :disabled="!(job.customer && job.name && job.price)"> Next
+                       :disabled="!(job.customer && job.name && (job.price || job.price === 0 )  )"> Next
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -138,6 +152,7 @@ export default {
   components: {draggable},
   data: () => ({
     el: 1,
+    isTask: false,
     hackUpdate: 0,
     customer: {
       customerId: null,
@@ -163,6 +178,9 @@ export default {
       description: "",
     },
     rules: {
+      price: [
+        value => (!!value || value === 0) || 'required'
+      ],
       required: [
         value => !!value || 'Required.',
       ]
@@ -192,7 +210,7 @@ export default {
     ]),
     totalHours() {
       this.hackUpdate;
-      return this.stages.filter(js=>js.selected).reduce((acc, b) => {
+      return this.stages.filter(js => js.selected).reduce((acc, b) => {
         return acc + b.jobHours;
       }, 0);
     },
@@ -242,6 +260,7 @@ export default {
     },
     finishSlotStep() {
       this.job.slotId = this.job.slot.slotId;
+      if(this.job.slot.price === 0 ) this.isTask = true;
       this.stages = this.job.slot.stages.map(s => {
         let js = new JobStage({});
         js.fillJobStageFromStage(s);

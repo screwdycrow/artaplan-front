@@ -18,7 +18,14 @@
           </v-toolbar>
           <job-preview-list :jobs="ongoingJobs"></job-preview-list>
         </v-card>
-
+        <v-card flat class="mt-4">
+          <v-toolbar flat dense>
+            <v-toolbar-title>
+              Ongoing Tasks
+            </v-toolbar-title>
+          </v-toolbar>
+          <job-preview-list :jobs="ongoingTasks"></job-preview-list>
+        </v-card>
       </v-col>
       <v-col lg="10">
         <v-card flat>
@@ -88,7 +95,8 @@ export default {
     ...mapGetters(
         'jobs',
         [
-          "ongoingJobs"
+          "ongoingJobs",
+          "ongoingTasks"
         ])
   },
   methods: {
