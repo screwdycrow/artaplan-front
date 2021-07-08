@@ -24,6 +24,7 @@
         </v-card>
       </v-dialog>
       <v-spacer></v-spacer>
+      <training-button v-if="files.length" :job="job" :images="trainingFiles"></training-button>
       <v-btn :color="job.color" v-if="folderId" icon target="_blank"
              :href="`https://drive.google.com/drive/folders/${folderId}`">
         <v-icon>mdi-google-drive</v-icon>
@@ -32,82 +33,85 @@
         <v-icon>mdi-reload</v-icon>
       </v-btn>
     </v-toolbar>
-      <v-card-text v-if="!files.length">
-        No files found in your Google Drive. When you add files either directly
-        either through the file uploader they will appear here.
-      </v-card-text>
+    <v-card-text v-if="!files.length">
+      No files found in your Google Drive. When you add files either directly
+      either through the file uploader they will appear here.
+    </v-card-text>
     <v-card-text>
-    <v-row v-masonry v-if="!loadingFiles">
-      <v-col lg="3" v-for="(file,index) in files" :key="index">
-        <v-card>
-          <v-dialog max-width="90%">
-            <template v-slot:activator="{ on, attrs }">
-              <v-img :src="file.webContentLink" v-on="on" v-bind="attrs"
-                     @load="$redrawVueMasonry()"
-                     alt="google drive file"/>
-            </template>
-            <v-row no-gutters>
-              <v-col lg="10">
-                <iframe
-                    height="800"
-                    width="100%"
-                    style="background: #333"
-                    :src="getEmbedLink(file)">
-                </iframe>
-              </v-col>
-              <v-col lg="2">
-                <v-card class="fill-height">
-                  <v-card-title> {{ file.name }}</v-card-title>
-                  <v-list>
-                    <v-list-item>
-                      <v-list-item-action>
-                        <v-icon>mdi-clock</v-icon>
-                      </v-list-item-action>
-                      <v-list-item-content>
-                        {{ file.createdTime | formatDate('DD/MM/YYYY HH:m') }}
-                        <v-list-item-subtitle>
-                          Uploaded
-                        </v-list-item-subtitle>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list>
-                  <v-card-text>
-                    <v-form>
-                      <v-text-field readonly outlined label="name" v-model="file.name"></v-text-field>
-                      <v-textarea readonly outlined label="description" v-model="file.description">
-                      </v-textarea>
-                    </v-form>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-btn color="success" target="_blank" :href="file.webViewLink">Edit File in Google Drive</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-dialog>
-          <v-toolbar flat dense>
-            <v-toolbar-title style="font-size:1em; line-height: 1em;">
-              {{ file.name }}
-              <br>
-              <span style="font-size: 0.8em">
+      <v-row v-masonry v-if="!loadingFiles">
+        <v-col lg="3" v-for="(file,index) in files" :key="index">
+          <v-card>
+            <v-dialog max-width="90%">
+              <template v-slot:activator="{ on, attrs }">
+                <v-img :src="file.webContentLink" v-on="on" v-bind="attrs"
+                       @load="$redrawVueMasonry()"
+                       alt="google drive file"/>
+              </template>
+              <v-row no-gutters>
+                <v-col lg="10">
+                  <v-card flat dark height="90vh">
+                    <iframe
+                        height="100%"
+                        width="100%"
+                        style="background: #333"
+                        :src="getEmbedLink(file)">
+                    </iframe>
+                  </v-card>
+
+                </v-col>
+                <v-col lg="2">
+                  <v-card class="fill-height">
+                    <v-card-title> {{ file.name }}</v-card-title>
+                    <v-list>
+                      <v-list-item>
+                        <v-list-item-action>
+                          <v-icon>mdi-calendar</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                          {{ file.createdTime | formatDate('DD/MM/YYYY HH:m') }}
+                          <v-list-item-subtitle>
+                            Uploaded
+                          </v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list>
+                    <v-card-text>
+                      <v-form>
+                        <v-text-field readonly outlined label="name" v-model="file.name"></v-text-field>
+                        <v-textarea readonly outlined label="description" v-model="file.description">
+                        </v-textarea>
+                      </v-form>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-btn color="success" target="_blank" :href="file.webViewLink">Edit File in Google Drive</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-col>
+              </v-row>
+            </v-dialog>
+            <v-toolbar flat dense>
+              <v-toolbar-title style="font-size:1em; line-height: 1em;">
+                {{ file.name }}
+                <br>
+                <span style="font-size: 0.8em">
               {{ file.createdTime | formatDate }}
               </span>
-            </v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-toolbar-items>
-              <v-btn icon @click="deleteFile(file,index)">
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
-            </v-toolbar-items>
-          </v-toolbar>
-        </v-card>
-      </v-col>
-    </v-row>
-    <v-row v-else>
-      <v-col lg="12" class="d-flex justify-center">
-        <v-progress-circular size="50" indeterminate></v-progress-circular>
-      </v-col>
-    </v-row>
+              </v-toolbar-title>
+              <v-spacer></v-spacer>
+              <v-toolbar-items>
+                <v-btn icon @click="deleteFile(file,index)">
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </v-toolbar-items>
+            </v-toolbar>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row v-else>
+        <v-col lg="12" class="d-flex justify-center">
+          <v-progress-circular size="50" indeterminate></v-progress-circular>
+        </v-col>
+      </v-row>
     </v-card-text>
   </v-card>
 
@@ -116,9 +120,11 @@
 <script>
 import {mapActions, mapState} from "vuex"
 import gdFiles from "@/api/gdFiles";
+import TrainingButton from "@/views/Jobs/components/TrainingButton";
 
 export default {
   name: "GoogleDriveFiles",
+  components: {TrainingButton},
   data: () => ({
     file: null,
     files: [],
@@ -130,6 +136,9 @@ export default {
     this.setDefaultDescription();
   },
   computed: {
+    trainingFiles() {
+      return this.files.map(file => file.webContentLink)
+    },
     ...mapState('jobs', [
       'folderId',
       'job'

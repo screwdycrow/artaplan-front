@@ -51,7 +51,8 @@
                     </v-col>
                     <v-col lg="10">
                       <v-alert type="info" outlined>
-                        By making this job a task, it won't be listed with the regular jobs and job statistics but will appear normally for scheduling. Price will automatically be zero.
+                        By making this job a task, it won't be listed with the regular jobs and job statistics but will
+                        appear normally for scheduling. Price will automatically be zero.
                       </v-alert>
                     </v-col>
                   </v-row>
@@ -115,7 +116,8 @@
               <v-card-title> Sum</v-card-title>
               <v-card-text>
                 You are planning to spend around
-                <strong> {{ totalHours }} </strong> hours for a job of this template <span v-if="totalHours>0 && job.price>0 "> and you'll gain <strong>{{
+                <strong> {{ totalHours }} </strong> hours for a job of this template <span
+                  v-if="totalHours>0 && job.price>0 "> and you'll gain <strong>{{
                   job.price / totalHours |fixed(2)
                 }}</strong> per hour </span>
               </v-card-text>
@@ -260,7 +262,7 @@ export default {
     },
     finishSlotStep() {
       this.job.slotId = this.job.slot.slotId;
-      if(this.job.slot.price === 0 ) this.isTask = true;
+      if (this.job.slot.price === 0) this.isTask = true;
       this.stages = this.job.slot.stages.map(s => {
         let js = new JobStage({});
         js.fillJobStageFromStage(s);
