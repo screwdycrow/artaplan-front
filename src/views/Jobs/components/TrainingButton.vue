@@ -9,14 +9,14 @@
         <v-form>
           <v-row class="mt-4">
             <v-col lg="5">
-              <v-text-field full-width outlined type="number" min="1" v-model="timePerImage" label="set time for all images">
+              <v-text-field full-width outlined type="number" min="1" v-model.number="timePerImage" label="set time for all images">
                 <template v-slot:append>
                   sec
                 </template>
               </v-text-field>
             </v-col>
             <v-col lg="5">
-              <v-text-field full-width outlined type="number" min="1" v-model="timePerPause"
+              <v-text-field full-width outlined type="number" min="1" v-model.number="timePerPause"
                             label="set pause time for all images">
                 <template v-slot:append>
                   sec
