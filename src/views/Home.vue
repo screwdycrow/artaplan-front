@@ -35,7 +35,7 @@
             </v-toolbar-items>
           </v-toolbar>
           <v-card-text>
-            <v-row dense v-if="ongoingJobs.length>0">
+            <v-row dense>
               <v-col class="cols-7" v-for="(day, index)   in days" v-if="index > 0 ">
                 <day-entries :day="day"></day-entries>
               </v-col>
@@ -50,7 +50,7 @@
         <v-card flat>
           <v-toolbar flat color="transparent">
             <v-toolbar-title>
-              <strong class="text--primary"> Ongoing Jobs ({{ ongoingJobs.length }}) </strong>
+              <strong class="text--primary"> Ongoing ({{ ongoingJobs.length }}) </strong>
             </v-toolbar-title>
             <v-spacer/>
 
@@ -59,20 +59,55 @@
             </v-toolbar-items>
           </v-toolbar>
           <v-card-text>
-            <v-row>
-              <v-col>
-                <v-row v-if="ongoingJobs.length">
-                  <v-col lg="3" xl="2" v-for="job in ongoingJobs">
-                    <job-item :job="job"></job-item>
-                  </v-col>
-                </v-row>
-                <v-card flat color="transparent" v-else>
-                  <v-card-text>
-                    There are no ongoing jobs
-                  </v-card-text>
-                </v-card>
-              </v-col>
-            </v-row>
+            <v-tabs>
+              <v-tab>
+                Jobs ({{ ongoingJobs.length }})
+              </v-tab>
+              <v-tab>
+                Tasks ({{ ongoingTasks.length }})
+              </v-tab>
+              <v-tab-item>
+                <v-card-text>
+                  <v-row>
+                    <v-col>
+                      <v-row v-if="ongoingJobs.length">
+                        <v-col lg="3" v-for="job in ongoingJobs">
+                          <job-item :job="job"></job-item>
+                        </v-col>
+                      </v-row>
+                      <v-card flat color="transparent" v-else>
+                        <v-card-text>
+                          <v-alert type="info" outlined>
+                            There are no ongoing jobs
+                          </v-alert>
+                        </v-card-text>
+                      </v-card>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+              </v-tab-item>
+              <v-tab-item>
+                <v-card-text>
+                  <v-row>
+                    <v-col>
+                      <v-row v-if="ongoingTasks.length">
+                        <v-col lg="3" v-for="job in ongoingTasks">
+                          <job-item :job="job"></job-item>
+                        </v-col>
+                      </v-row>
+                      <v-card flat color="transparent" v-else>
+                        <v-card-text>
+                          <v-alert type="info" outlined>
+                            There are no ongoing jobs at the moment, you need to start a job in order to
+                            appear here.
+                          </v-alert>
+                        </v-card-text>
+                      </v-card>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+              </v-tab-item>
+            </v-tabs>
           </v-card-text>
         </v-card>
       </v-col>
@@ -81,7 +116,7 @@
       <v-col>
         <v-card flat>
           <v-toolbar flat>
-            <v-toolbar-title><strong> Quicklinks </strong></v-toolbar-title>
+            <v-toolbar-title><strong> Quick Links </strong></v-toolbar-title>
           </v-toolbar>
           <v-row v-if="ongoingJobs.length">
             <v-col lg="3" xl="2" v-for="job in ongoingJobs">
@@ -103,6 +138,11 @@
               </v-row>
             </v-col>
           </v-row>
+            <v-card-text v-if="!ongoingJobs.length && !ongoingTasks.length">
+              <v-alert type="info" outlined>
+                There are no ongoing jobs
+              </v-alert>
+            </v-card-text>
         </v-card>
 
       </v-col>
@@ -151,7 +191,8 @@ export default {
       'days',
     ]),
     ...mapGetters('jobs', [
-      'ongoingJobs'
+      'ongoingJobs',
+      'ongoingTasks'
     ])
   },
   created() {

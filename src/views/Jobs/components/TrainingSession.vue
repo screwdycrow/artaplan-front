@@ -22,7 +22,7 @@
         <v-btn color="primary" icon @click="jumpToImage(activeImgIndex-1)">
           <v-icon> mdi-skip-previous</v-icon>
         </v-btn>
-        <v-btn color="primary" icon @click="jumpToImage(activeImgIndex+1)">
+        <v-btn color="primary" v-if="hasNext" icon @click="skip();">
           <v-icon> mdi-skip-next</v-icon>
         </v-btn>
         <v-btn color="primary" v-if="paused" icon @click="start()">
@@ -35,20 +35,21 @@
         </v-btn>
 
       </v-toolbar>
-      <v-img v-if="!transitionPause && !finished " :src="activeImage.link" max-height="95vh" contain></v-img>
+      <v-img v-if="!transitionPause && !finished  " :src="activeImage.link" max-height="95vh" contain></v-img>
       <v-row align="center" justify="space-around" class="mt-4" v-if="transitionPause">
         <v-card width="300" outlined>
           <v-card-title> Next Image</v-card-title>
-          <v-img height="300" width="300" :src="nextImage.link"></v-img>
+          <v-img height="300" width="300" v-if="hasNext" :src="nextImage.link"></v-img>
           <v-card-actions>
-            <v-btn outlined color="primary" @click="skipBreak()"> Skip Break</v-btn>
-            <v-btn outlined color="primary" v-if="" @click="jumpToImage(activeImgIndex+2)"> Skip Image</v-btn>
+            <v-btn outlined color="primary" v-if="hasNext" @click="skipBreak()"> Skip Break</v-btn>
+            <v-btn outlined color="primary" v-if="hasNext2" @click="jumpToImage(activeImgIndex+2)"> Skip Image</v-btn>
           </v-card-actions>
         </v-card>
       </v-row>
       <v-row align="center" justify="space-around" class="mt-4" v-if="finished">
-        <v-card width="300" outlined>
-          <v-card-title> Session Finished</v-card-title>
+        <v-card width="500" class="mt-8" outlined>
+          <v-card-title>Training session finished.</v-card-title>
+
           <v-card-actions>
             <v-btn color="primary" @click="stopTraining()"> Exit Session</v-btn>
             <v-btn outlined @click="restartTraining()"> Restart Session</v-btn>
@@ -71,7 +72,8 @@ export default {
       'nextImage',
       'remainingTime',
       'hasNext',
-      'hasBack',
+      'hasNext2',
+      'hasPrev',
       'paused',
     ]),
     ...mapState('training', [
@@ -109,6 +111,13 @@ export default {
     },
     reset() {
       this.resetTraining();
+    },
+    skip() {
+      if (!this.transitionPause) {
+        this.jumpToImage(this.activeImgIndex + 1)
+      } else {
+        this.skipBreak();
+      }
     }
   },
   props: {}

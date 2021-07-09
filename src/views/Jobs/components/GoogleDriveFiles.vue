@@ -33,7 +33,11 @@
         <v-icon>mdi-reload</v-icon>
       </v-btn>
     </v-toolbar>
-    <v-card-text v-if="!files.length">
+    <v-card-text v-if="!isSignedIn">
+        You haven't logged in with google drive
+        <google-button></google-button>
+    </v-card-text>
+    <v-card-text v-if="!files.length && !loadingFiles">
       No files found in your Google Drive. When you add files either directly
       either through the file uploader they will appear here.
     </v-card-text>
@@ -121,19 +125,28 @@
 import {mapActions, mapState} from "vuex"
 import gdFiles from "@/api/gdFiles";
 import TrainingButton from "@/views/Jobs/components/TrainingButton";
+import GoogleButton from "@/views/Settings/components/GoogleButton";
 
 export default {
   name: "GoogleDriveFiles",
-  components: {TrainingButton},
+  components: {GoogleButton, TrainingButton},
   data: () => ({
     file: null,
     files: [],
     description: null,
-    loadingFiles: false,
+    isSignedIn:true,
+    loadingFiles: true,
   }),
   created() {
-    this.getFiles()
-    this.setDefaultDescription();
+    this.$gapi.listenUserSignIn((isSignedIn) => {
+      this.isSignedIn = isSignedIn
+      if (isSignedIn) {
+        this.getFiles()
+        this.setDefaultDescription();
+      }else{
+        this.loadingFiles = false
+      }
+    })
   },
   computed: {
     trainingFiles() {

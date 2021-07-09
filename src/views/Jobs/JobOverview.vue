@@ -84,7 +84,7 @@
           <v-card-text>
             <p> hours spent</p>
             <span class="text-md-h3">{{ job.getHoursSpent() }}hr</span>
-          </v-card-text>p
+          </v-card-text>
         </v-card>
       </v-col>
       <v-col lg="2">

@@ -137,7 +137,6 @@ export default ({
             for (const date in s.daysEntries) {
                 if (s.daysEntries.hasOwnProperty(date)) {
                     if (moment().isAfter(date)) {
-
                         let dateObj = moment(date);
                         let day = dateObj.day();
                         let dayName = dateObj.format('ddd')

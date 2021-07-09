@@ -35,10 +35,7 @@
             </v-btn>
           </v-list-item>
           <v-list-item>
-            <v-btn
-                @click="googleAuth()"
-            > Login To Google Drive
-            </v-btn>
+            <google-button/>
           </v-list-item>
           <v-list-item>
             <v-btn
@@ -65,9 +62,11 @@
 <script>
 import {mapActions, mapGetters} from "vuex";
 import gdFiles from "@/api/gdFiles";
+import GoogleButton from "@/views/Settings/components/GoogleButton";
 
 export default {
   name: "Settings",
+  components: {GoogleButton},
   data: () => ({
     valid: false,
     notifications: false,
@@ -96,11 +95,7 @@ export default {
     getArtaplanFolder() {
       this.gdGetArtaplanFolder().then(id => alert(id))
     },
-    googleAuth() {
-      this.$gapi.login().then(({currentUser, hasGrantedScopes}) => {
-        console.log({currentUser, hasGrantedScopes})
-      })
-    },
+
     getNotificationPermission() {
       Notification
           .requestPermission()

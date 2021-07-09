@@ -34,9 +34,9 @@ export default ({
             commit('setActiveImgIndex', index)
 
         },
-        skipBreak({commit, state}) {
-            let duration = state.trainingSession.images[state.activeImgIndex].totalTime();
-            commit('setDuration', duration);
+        skipBreak({commit,}) {
+            commit('nextImageIndex')
+            commit('setDuration', 0);
         },
         stopTraining({commit}) {
             commit('clearTimer')
@@ -54,15 +54,18 @@ export default ({
         setDuration(state, duration) {
             state.duration = duration;
         },
+        nextImageIndex(state) {
+            state.transitionPause = false
+            state.activeImgIndex ++;
+        },
         setActiveImgIndex(state, activeImgIndex) {
             if (activeImgIndex <= state.trainingSession.images.length && activeImgIndex > 0) {
                 state.activeImgIndex = activeImgIndex - 1
                 state.duration = state.trainingSession.images[state.activeImgIndex].time + 1;
                 state.transitionPause = true
-            } else if (activeImgIndex < 0) {
+            } else if (activeImgIndex <= 0) {
                 state.activeImgIndex = 0;
-            } else {
-                state.activeImgIndex = activeImgIndex;
+            } else{
             }
         },
         clearTimer(state) {
@@ -79,7 +82,13 @@ export default ({
             state.showTraining = true
             state.timer = setInterval(() => {
                 if (state.duration === state.trainingSession.images[state.activeImgIndex].time) {
-                    state.transitionPause = true
+                    if (state.activeImgIndex + 1 < state.trainingSession.images.length) {
+                        state.transitionPause = true;
+                    }else{
+                        clearInterval(state.timer);
+                        state.timer = null;
+                        state.finished = true;
+                    }
                 }
                 if (state.duration === state.trainingSession.images[state.activeImgIndex].totalTime()) {
                     state.transitionPause = false
@@ -110,6 +119,7 @@ export default ({
     getters: {
         paused: s => s.timer === null,
         hasNext: s => s.activeImgIndex + 1 < s.trainingSession.images.length,
+        hasNext2: s => s.activeImgIndex + 2 < s.trainingSession.images.length,
         hasPrev: s => s.activeImgIndex - 1 > 0,
         activeImage: s => s.trainingSession.images[s.activeImgIndex],
         nextImage: s => s.trainingSession.images[s.activeImgIndex + 1],

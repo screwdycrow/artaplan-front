@@ -169,7 +169,7 @@ export default {
     },
     dayStatsDifference() {
       const stats = this.dayStats[moment(this.day).day()]
-      const average = stats.workHoursMonth / stats.dayCountMonth;
+      const average = stats?stats.workHoursMonth  / stats.dayCountMonth : 4;
       return {
         average: average,
         difference: average - this.entriesOfDay(this.day).length

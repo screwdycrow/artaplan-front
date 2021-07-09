@@ -17,6 +17,10 @@
             </v-toolbar-title>
           </v-toolbar>
           <job-preview-list :jobs="ongoingJobs"></job-preview-list>
+          <v-alert type="info" v-if="ongoingJobs.length === 0"  outlined>
+            There are no ongoing jobs at the moment, you need to start a job in order to
+            appear here.
+          </v-alert>
         </v-card>
         <v-card flat class="mt-4">
           <v-toolbar flat dense>
@@ -25,6 +29,10 @@
             </v-toolbar-title>
           </v-toolbar>
           <job-preview-list :jobs="ongoingTasks"></job-preview-list>
+          <v-alert type="info" v-if="ongoingTasks.length === 0"  outlined>
+            There are no ongoing jobs at the moment, you need to start a job in order to
+            appear here.
+          </v-alert>
         </v-card>
       </v-col>
       <v-col lg="10">
@@ -42,7 +50,7 @@
             </v-btn>
           </v-toolbar>
           <v-card-text>
-            <v-row dense v-if="ongoingJobs.length>0">
+            <v-row dense>
               <v-col class="cols-7" v-for="day in days">
                 <day-entries :day="day"></day-entries>
               </v-col>

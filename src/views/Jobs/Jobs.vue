@@ -33,7 +33,9 @@
                     </v-row>
                     <v-card flat color="transparent" v-else>
                       <v-card-text>
-                        There are no ongoing jobs
+                        <v-alert type="info" outlined>
+                          There are no ongoing jobs
+                        </v-alert>
                       </v-card-text>
                     </v-card>
                   </v-col>
@@ -51,7 +53,10 @@
                     </v-row>
                     <v-card flat color="transparent" v-else>
                       <v-card-text>
-                        There are no ongoing tasks
+                        <v-alert type="info" outlined>
+                          There are no ongoing jobs at the moment, you need to start a job in order to
+                          appear here.
+                        </v-alert>
                       </v-card-text>
                     </v-card>
                   </v-col>
@@ -71,7 +76,9 @@
                 </v-row>
                 <v-card v-else flat color="transparent">
                   <v-card-text>
-                    There are no idle jobs or tasks
+                    <v-alert type="info" outlined>
+                      There are no idle job or task at the moment
+                    </v-alert>
                   </v-card-text>
                 </v-card>
               </v-col>
@@ -79,7 +86,7 @@
           </v-card-text>
         </v-card>
         <v-card flat class="mt-5">
-          <v-card-title> Past Jobs</v-card-title>
+          <v-card-title> Past</v-card-title>
 
           <v-tabs>
             <v-tab>
@@ -99,7 +106,9 @@
 
               </v-card-text>
               <v-card-text v-else>
-                There are no past jobs
+                <v-alert type="info" outlined>
+                  There are no past jobs at the moment
+                </v-alert>
               </v-card-text>
             </v-tab-item>
             <v-tab-item>
@@ -112,7 +121,9 @@
                 </v-row>
               </v-card-text>
               <v-card-text v-else>
-                There are no past tasks
+                <v-alert type="info" outlined>
+                  There are no past tasks at the moment
+                </v-alert>
               </v-card-text>
             </v-tab-item>
           </v-tabs>

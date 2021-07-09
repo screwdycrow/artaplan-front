@@ -176,7 +176,7 @@ const routes = [
     }, {
         path: '/settings',
         name: 'settings',
-        component: () => import(/* webpackChunkName: "settings" */ '../views/Settings'),
+        component: () => import(/* webpackChunkName: "settings" */ '../views/Settings/Settings'),
         meta: {
             requiresAuth: true,
 
