@@ -96,6 +96,7 @@ export default {
     listFiles(gapi, query) {
         let fields = {
             'fields': `nextPageToken, files(${fileFields})`,
+            'pageSize':1000
         }
         return gapi.client.drive.files.list({...query, ...fields})
             .then(res => {
