@@ -218,7 +218,7 @@ export default {
   },
   computed: {
     referencesForTraining() {
-      return this.job.references.links.map(l => l.url)
+      return this.job.references.links.map(l => ({link:l.url,thumbnail:l.url})  )
     },
   },
   methods: {

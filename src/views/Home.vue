@@ -71,7 +71,7 @@
                   <v-row>
                     <v-col>
                       <v-row v-if="ongoingJobs.length">
-                        <v-col lg="3" v-for="job in ongoingJobs">
+                        <v-col lg="3" xl="2" v-for="job in ongoingJobs">
                           <job-item :job="job"></job-item>
                         </v-col>
                       </v-row>
@@ -91,7 +91,7 @@
                   <v-row>
                     <v-col>
                       <v-row v-if="ongoingTasks.length">
-                        <v-col lg="3" v-for="job in ongoingTasks">
+                        <v-col lg="3" xl="2" v-for="job in ongoingTasks">
                           <job-item :job="job"></job-item>
                         </v-col>
                       </v-row>

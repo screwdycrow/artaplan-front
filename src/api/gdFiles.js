@@ -2,7 +2,7 @@ import axios from "axios";
 
 const gdrive = 'https://www.googleapis.com/upload/drive/v3'
 const folderMimeType = 'application/vnd.google-apps.folder'
-const fileFields = 'id, name, webContentLink, size, createdTime, webViewLink, description'
+const fileFields = 'id, name, webContentLink, size, createdTime, webViewLink, description,thumbnailLink, mimeType'
 
 export default {
 
@@ -61,7 +61,6 @@ export default {
     addFile(gapi, file, parents, extras) {
         let ftu = file;
         let f = new Blob([file]);
-        let fileId = null
         let _extras = (extras === undefined || extras === null) ? {} : extras
 
         const gdFile = {
@@ -111,7 +110,7 @@ export default {
     deleteFile(gapi, id) {
         return gapi.client.drive.files.delete({
             fileId: id
-        }).then(resp => Promise.resolve(true))
+        }).then(() => Promise.resolve(true))
     },
     /**
      * @desc deletes a folder given its google drive id
